@@ -16,7 +16,9 @@ I am not using BNFC convention. Therefore I've created rather informal grammar. 
 Programm := ProgElem+
 
 
-ProgElem := Typedef ";" | Comment | Exp ";"                         --- def jeszcze
+ProgElem := Typedef ";" | Comment | Exp ";" 
+            | "def " identifier "=" Exp 
+            | "fun " identifier+ "=" Exp   -> rules used for defining variables/functions
 
 
 Exp := "True" | "False" | Integer
@@ -25,10 +27,9 @@ Exp := "True" | "False" | Integer
     | Exp || Exp | Exp && Exp
     | "(" Exp ")"
     | identifier    -> variables and functions | Identifier  -> constructors names
-    | "if " Exp " then " Exp " else " Exp?
-    | Exp Exp
-    | "def " identifier "=" Exp | "fun " identifier+ "=" Exp   -> rules used for defining variables/functions
-    | "\" identifier* "->" Exp     -> rule used for defining anonymous functions
+    | "if " Exp " then " Exp " else " Exp
+    | Exp : Exp       -> partial application
+    | "lambda" identifier* "->" Exp     -> rule used for defining anonymous functions
     | "match" Exp "with" ("case" MatchExp "->" Exp)+ "matchend"   -> pattern matching
 
 
@@ -46,4 +47,4 @@ Typedef := "new type" Identifier identifier* "=" Identifier (Type | identifier)*
 
 
 Comment := "/=^.^=" Char* "=^.^=/" -> multiple-line comments
-	| "/=^.^=" Char*          -> single-line comments
+	| "//=^.^=" Char*          -> single-line comments
