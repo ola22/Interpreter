@@ -1,0 +1,49 @@
+//=^.^= This is single-line comment                               -- TUTAJ
+
+/=^.^=
+    This is multiple-line comment
+=^.^=/
+
+
+//=^.^= Variables and functions declarations
+def k = 2
+fun f x y = if x == y then 2 else 4
+
+
+//=^.^= Arithmetic operators
+def a = 2 + 2
+def b = 2 - 2 * 3
+
+
+//=^.^= Comparation operators
+2 == 2  /=^.^= True
+2 != 2  /=^.^= False
+
+
+//=^.^= Match usage
+func match_func x = match x with
+			   case 2 -> True
+			   case 3 -> False
+		    matchend
+
+
+//=^.^= Calling function
+def a = match_func 2  /=^.^= True
+
+
+//=^.^= Anonymous function                                         ---- TUTAJ
+(\x -> x * 2) 6 ----->    (lambda x -> x * 2) 6
+
+
+//=^.^= Typedef usage
+new type Tree a = Leaf a | Node a Tree Tree
+new type List a = Null | Elem a List
+
+
+
+zmienic comments
+zmienic lambde pewnie
+funkcji aplikacje
+moze dodac jakiegos let ina??? -> a moze nie
+dodac sredniki wszedzie w gramatyce
+zmienic tamto def na toplevela
