@@ -15,13 +15,13 @@ type Env = M.Map String Data
 data Data = DInt Integer 
             | DBool Bool 
             | DFunc String ParseTree Env  -- bo statyczne wiazanie identyfikatorow, jeden arg to name
-            | DPrimi Primitive
+            | DPrimi PrimitiveFunc
 
 instance Show Data where                                                                --- to zmienic
     show (DInt x) = "DInt " ++ show x
     show (DBool b) = "DBool " ++ show b
     show (DFunc s t e) = "DFun " ++ show s ++ show t ++ show e
-    show (DPrimi (Primitive n f)) = "DPrimi " ++ show n
+    show (DPrimi (PrimitiveFunc n f)) = "DPrimi " ++ show n
 
 
 -- ParseTree is a tree storeing parsed programm where:
@@ -32,11 +32,18 @@ instance Show Data where                                                        
 data ParseTree = TData Data 
                 | TVar String 
                 | TFAppl ParseTree ParseTree
-                | TLambda String ParseTree
-                | ADef [(String, ParseTree)] ParseTree
+                | TFunc String ParseTree
     deriving Show
 
 
 -- Primitive is created for some primitive operations like arithmetical,
 -- logical or comparison operations and other simple statements
-data Primitive = Primitive Int ([Data] -> Data)
+data PrimitiveFunc = PrimitiveFunc Int ([Data] -> Data)
+
+
+-- ProgElem are all possible programm elemrnts: expression,
+-- variable definiction and function definition
+data ProgElem = PEExpr ParseTree
+                | PEDef String ParseTree
+                | PEFunc String ParseTree
+    deriving Show

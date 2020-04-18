@@ -16,8 +16,8 @@ def b = 2 - 2 * 3;
 
 
 //=^.^= Comparation operators
-2 == 2;  /=^.^= True
-2 != 2;  /=^.^= False
+2 == 2;  //=^.^= True
+2 != 2;  //=^.^= False
 
 
 //=^.^= Match usage
@@ -47,3 +47,16 @@ zmienic lambde pewnie
 moze dodac jakiegos let ina??? -> a moze nie
 	dodac sredniki wszedzie w gramatyce
 	zmienic tamto def na toplevela
+
+
+1. zapomnialam dodac srednikow w przykladowym -> przez przypadek zle wkleilam, ale bylo w opisie jezyka
+2. ujemnych nie przewiduje -> ?????????????????????????????????
+3. : jako aplikacja czesciowa -> ??????????????????????????????????
+4. defa i func dalam do parsera -> bo ich nie trzeba ewaluowac tylko dodac do srodowiska ???
+5. zobacze co z ta lambda ??
+6. zobaczyc czy tem if nie bedzie sprawial klopotow
+
+
+
+CO INACZEJ????
+cala struktura tego, jak to jest trzymane: ze typ danych dla funkcji i potem to tak skacze
