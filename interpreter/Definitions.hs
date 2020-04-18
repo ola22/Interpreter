@@ -1,3 +1,5 @@
+{-# Options -Wall -Wname-shadowing #-}
+
 module Definitions where
 
 import qualified Data.Map.Lazy as M

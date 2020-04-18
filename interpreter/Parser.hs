@@ -1,6 +1,6 @@
 
 {- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
-
+{-# Options -Wall -Wname-shadowing #-}
 
 module Parser where
 
@@ -28,7 +28,7 @@ readSpacesAndComments :: Parser ()
 readSpacesAndComments = L.space
     space1
     (L.skipLineComment "//=^.^=")
-    (L.skipBlockComment "/=^.^=" "=^.^=\\")
+    (L.skipBlockComment "/=^.^=" "=^.^=/")
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme readSpacesAndComments
@@ -121,6 +121,7 @@ isReservedSyntax s = s == "if"
                     || s == "def"
                     || s == "true"
                     || s == "false"
+-- || s == "lambda"
 
 
 -- Function parses variable/function name
@@ -136,10 +137,9 @@ parseidentifier = TVar <$> parseVarAndFuncNames "variable/function"
 parseLambda :: Parser ParseTree
 parseLambda = do
     readOperator "\\"
-    vars <- try (many (parseVarAndFuncNames "variable"))
+    vars <- try (some (parseVarAndFuncNames "variable"))
     readOperator "->"
     body <- parseExprHelper
-    readOperator ";"
     return (foldr TFunc body vars)
 
 
@@ -148,12 +148,12 @@ parseLambda = do
 parseTerm :: Parser ParseTree
 parseTerm = choice
   [ parseParens parseExprHelper
-  , parseNumber
-  , parseBool
-  , parseIf
-  , parseidentifier
-  --, parseIdentifier
   , parseLambda
+  , parseIf
+  , parseBool
+  , parseidentifier
+  , parseNumber
+  --, parseIdentifier
   ]
 
 
@@ -232,5 +232,22 @@ parseProgramm = between readSpacesAndComments eof
 {- | Parse programm test
 >>> parseTest parseProgramm "fun f x y = x + y; f : 1 : 2;"
 [PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y")))),PEExpr (TFAppl (TFAppl (TVar "f") (TData DInt 1)) (TData DInt 2))]
+
+>>> parseTest parseProgramm "\\x y -> x * 2 + y : 2 : 3;"
+[PEExpr (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TData DInt 2))) (TFAppl (TFAppl (TVar "y") (TData DInt 2)) (TData DInt 3)))))]
+>>> parseTest parseProgramm "fun f x y = if x == y then 2 else 4;"
+[PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TFAppl (TData DPrimi 3) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))) (TData DInt 2)) (TData DInt 4))))]
+>>> parseTest parseProgramm "2 == 2;  //=^.^= True"
+[PEExpr (TFAppl (TFAppl (TData DPrimi 2) (TData DInt 2)) (TData DInt 2))]
+
+
+parseTest parseProgramm "/=^.^=\n
+    This is multiple-line comment\n
+=^.^=/"
+PEDef "x" (TData DInt 3)
+>>> parseTest parseProgramm "//=^.^= This is single-line comment"
+[]
 -}
 
+-- eval tego z ifem
+-- inaczej parsuje ta lambde z nawiasami i bez zobaczyc, czy lambdy potem nie zmiec, gdyby user nie mogl normalnie pisac!

@@ -1,3 +1,5 @@
+{-# Options -Wall -Wname-shadowing #-}
+
 module TreeEvaluator where
 
 import Data.Maybe
