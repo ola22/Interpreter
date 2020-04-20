@@ -12,8 +12,8 @@ main = do
     args <- getArgs
     (file, input) <- (uncurry $ liftM2 (,)) $ 
         if null args
-            then (return "<stdin>", getContents)
-            else (return $ head args, readFile $ head args)
-    putStrLn input
-    putStrLn file
+            then (return "stdin", getContents)
+            else (return (head args), readFile (head args))
+    -- putStrLn input
+    -- putStrLn file
     runProgramm file input

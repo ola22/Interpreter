@@ -1,24 +1,37 @@
 
-
 def x = 3;
 fun f y = x + y;
 f : 2;  //=^.^= powinno byc 5
 
+
+
 /=^.^="
    tam wyzej powinno byc 5
 =^.^=/
+
+
 
 fun elo a b c = if c == true then a else b;
 
 elo : 2 : 3 : true; //=^.^= powinno byc 2
 elo : 2 : 3 : false;  //=^.^= powinno byc 3
 
+
+
 //=^.^=  fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : n - 1;  -?> nieskonczona petla ma sens
 fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : (n - 1);
 aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
+
+
 (\x y -> x + y * 2) : 2 : 3;  //=^.^= powinno byc 8
 \x y -> x + y * 2; //=^.^= Given function od argument x
+
+
+
+//=^.^= Comparation operators
+2 == 2;  //=^.^= True
+2 != 2;  //=^.^= False
 
 
 
