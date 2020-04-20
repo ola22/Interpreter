@@ -15,6 +15,9 @@ import Definitions
 -- zmienic evaluateTree??-- co interpreter a co evaluateTree???????
 -- tego evala jakos inaczej :o
 
+-- te całe primi na coś mniej trickowego
+-- lambdy też są jakieś trickowe
+
 
 
 
@@ -27,16 +30,16 @@ evaluateTree (TFAppl f v) env =
                     let func = evaluateTree f env -- :: Dfunc/DPrimi
                         var_val = evaluateTree v env -- :: DInt/DBool
                     in case func of
-                            DPrimi p -> makePrimi p var_val
+                            DPrimi p -> evaluatePrimi p var_val
                             DFunc var_name ftree fenv -> 
                                 evaluateTree ftree (M.insert var_name var_val fenv)
                             _ -> undefined -- error "not proper function"
 
 
 -- prymitywki :o <3
-makePrimi :: PrimitiveFunc -> Data -> Data
-makePrimi (PrimitiveFunc 1 func) var = func [var]
-makePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))   --- czy tego nie zmienic na cos mniej trickowego???
+evaluatePrimi :: PrimitiveFunc -> Data -> Data
+evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
+evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
 
 
 
@@ -110,6 +113,7 @@ primiEq = PrimitiveFunc 2 haskellEq
 
 haskellEq :: [Data] -> Data
 haskellEq ((DInt x):[DInt y]) = DBool (x == y)
+haskellEq ((DBool b1):[DBool b2]) = DBool (b1 == b2)
 haskellEq _ = undefined -- error "wrong type"
 
 
@@ -118,6 +122,7 @@ primiNotEq = PrimitiveFunc 2 haskellNotEq
 
 haskellNotEq :: [Data] -> Data
 haskellNotEq ((DInt x):[DInt y]) = DBool (not (x == y))
+haskellNotEq ((DBool b1):[DBool b2]) = DBool (not (b1 == b2))
 haskellNotEq _ = undefined -- error "wrong type"
 
 
@@ -133,7 +138,7 @@ primiMore :: PrimitiveFunc
 primiMore = PrimitiveFunc 2 haskellMore
 
 haskellMore :: [Data] -> Data
-haskellMore ((DInt x):[DInt y]) = DBool (x >y)
+haskellMore ((DInt x):[DInt y]) = DBool (x > y)
 haskellMore _ = undefined -- error "wrong type"
 
 

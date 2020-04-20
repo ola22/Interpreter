@@ -1,13 +1,14 @@
 
-{- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
 {-# Options -Wall -Wname-shadowing #-}
+
+{- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
+
 
 module Parser where
 
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import Data.Void
-import Control.Monad
 import qualified Text.Megaparsec.Char.Lexer as L
 import qualified Control.Monad.Combinators.Expr as E
 
@@ -17,6 +18,11 @@ import TreeEvaluator
 
 type Parser = Parsec Void String
 
+-- TODO
+-- signed numbers
+-- eval tego z ifem
+-- add parseIdentifier
+-- zmienic readString i readOperator
 
 
 
@@ -30,6 +36,7 @@ readSpacesAndComments = L.space
     (L.skipLineComment "//=^.^=")
     (L.skipBlockComment "/=^.^=" "=^.^=/")
 
+
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme readSpacesAndComments
 
@@ -40,9 +47,10 @@ symbol = L.symbol readSpacesAndComments
 
 -- Function reads single string 
 readString :: String -> Parser ()
-readString s = try $ string s                                        ---- TO ZMIENIC!!!!!!!!!!!!!!!
+readString s = try $ string s
             *> notFollowedBy (alphaNumChar <|> char '_') 
             *> readSpacesAndComments
+
 
 -- Function reads single operator
 readOperator :: String -> Parser ()
@@ -96,7 +104,8 @@ parseIf = do
     e1 <- parseExprHelper
     readString "else"
     e2 <- parseExprHelper
-    return (TFAppl (TFAppl (TFAppl (TData (DPrimi primiIf)) b_exp) e1) e2)
+    return (TFAppl (TFAppl (TFAppl 
+            (TData (DPrimi primiIf)) b_exp) e1) e2)
 
 
 -- parseVarAndFuncNames parses names of variables and
@@ -111,6 +120,7 @@ parseVarAndFuncNames purpose = do
             ++ purpose ++ " name.")
         else return name
 
+
 -- Function checks if a name chosen by user is not
 -- an Olol keyword
 isReservedSyntax :: String -> Bool
@@ -121,7 +131,6 @@ isReservedSyntax s = s == "if"
                     || s == "def"
                     || s == "true"
                     || s == "false"
--- || s == "lambda"
 
 
 -- Function parses variable/function name
@@ -183,6 +192,22 @@ postfix name f = E.Postfix (f <$ symbol name)
 -- Parsing expressions
 parseExprHelper :: Parser ParseTree
 parseExprHelper = E.makeExprParser parseTerm operatorTable
+{- | Parsing expressions
+evaluateTree (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 + 3 +  4")) M.empty
+DInt 10
+
+evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 < 3 then 4 else 5")) M.empty
+DInt 4
+
+evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 == 2 then true else false")) M.empty
+DInt 4
+
+evaluateTree (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 * (3 + 4)")) M.empty
+DInt 15
+
+evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "(\\x y -> x + y * 2) : 2 : 3")) M.empty
+DInt 8
+-}
 
 
 -- parsing any element of type PEExpr
@@ -204,6 +229,10 @@ parseFun = do
     body <- parseExprHelper
     readOperator ";"
     return (PEFunc name (foldr TFunc body vars))
+{- | Parse fun
+>>> parseTest parseFun "fun f x y = x + y; "
+PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))))
+-}
 
 
 -- parseDef parses variable definition
@@ -216,38 +245,32 @@ parseDef = do
     expr <- parseExprHelper
     readOperator ";"
     return (PEDef var_name (foldr TFunc expr []))
-    -- return (PEDef var_name (TFunc var_name expr))                               --- TU POWAZNA ZMIENA
-{- | Pase programm elements
+{- | Parse def
 >>> parseTest parseDef "def x = 3;"
 PEDef "x" (TData DInt 3)
->>> parseTest parseFun "fun f x y = x + y; "
-PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))))
+
+parseTest parseDef "def false = 3;"
+error
 -}
 
 
 -- parseProgamm parses whole programm
-parseProgramm :: Parser [ProgElem]
+parseProgramm :: Parser Programm
 parseProgramm = between readSpacesAndComments eof 
-                       (many (parseDef <|> parseFun <|>parseExpr))
+                       (many (parseDef <|> parseFun <|> parseExpr))
 {- | Parse programm test
 >>> parseTest parseProgramm "fun f x y = x + y; f : 1 : 2;"
 [PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y")))),PEExpr (TFAppl (TFAppl (TVar "f") (TData DInt 1)) (TData DInt 2))]
 
 >>> parseTest parseProgramm "\\x y -> x * 2 + y : 2 : 3;"
 [PEExpr (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TData DInt 2))) (TFAppl (TFAppl (TVar "y") (TData DInt 2)) (TData DInt 3)))))]
+
 >>> parseTest parseProgramm "fun f x y = if x == y then 2 else 4;"
 [PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TFAppl (TData DPrimi 3) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))) (TData DInt 2)) (TData DInt 4))))]
+
 >>> parseTest parseProgramm "2 == 2;  //=^.^= True"
 [PEExpr (TFAppl (TFAppl (TData DPrimi 2) (TData DInt 2)) (TData DInt 2))]
 
-
-parseTest parseProgramm "/=^.^=\n
-    This is multiple-line comment\n
-=^.^=/"
-PEDef "x" (TData DInt 3)
 >>> parseTest parseProgramm "//=^.^= This is single-line comment"
 []
 -}
-
--- eval tego z ifem
--- inaczej parsuje ta lambde z nawiasami i bez zobaczyc, czy lambdy potem nie zmiec, gdyby user nie mogl normalnie pisac!
