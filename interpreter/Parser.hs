@@ -113,7 +113,7 @@ parseIf = do
 -- "purpose" tells if it is func or var name
 parseVarAndFuncNames :: String -> Parser String
 parseVarAndFuncNames purpose = do
-    name <- lexeme $ (:) <$> lowerChar <*> many alphaNumChar
+    name <- lexeme $ (:) <$> lowerChar <*> many (alphaNumChar <|> char '_')
     if isReservedSyntax name
         then fail ("Word: " ++ name 
             ++ " is a reserved syntax in Olol and therefore cannot be used as " 

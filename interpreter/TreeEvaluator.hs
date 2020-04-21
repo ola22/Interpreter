@@ -27,13 +27,13 @@ evaluateTree (TData tdata) _ = tdata
 evaluateTree (TVar var) env = fromJust $ M.lookup var env
 evaluateTree (TFunc var_name tree) env = DFunc var_name tree env
 evaluateTree (TFAppl f v) env = 
-                    let func = evaluateTree f env -- :: Dfunc/DPrimi
-                        var_val = evaluateTree v env -- :: DInt/DBool
-                    in case func of
-                            DPrimi p -> evaluatePrimi p var_val
-                            DFunc var_name ftree fenv -> 
-                                evaluateTree ftree (M.insert var_name var_val fenv)
-                            _ -> undefined -- error "not proper function"
+    let func = evaluateTree f env -- :: Dfunc/DPrimi
+        var_val = evaluateTree v env -- :: DInt/DBool
+    in case func of
+            DPrimi p -> evaluatePrimi p var_val
+            DFunc var_name ftree fenv -> 
+                evaluateTree ftree (M.insert var_name var_val fenv)
+            _ -> undefined -- error "not proper function"
 
 
 -- prymitywki :o <3

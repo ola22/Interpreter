@@ -19,7 +19,7 @@ elo : 2 : 3 : false;  //=^.^= powinno byc 3
 
 
 //=^.^=  fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : n - 1;  -?> nieskonczona petla ma sens
-fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : (n - 1);
+fun aDawajSprawdzRekurencje n = if n == a then 1 else n * aDawajSprawdzRekurencje : (n - 1);
 aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
 
@@ -34,6 +34,11 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 2 != 2;  //=^.^= False
 
 
+def a = 1;
 
 
 
+//=^.^= Higher order functions
+fun f_add x y = x + y;
+fun callAdd fadd x y = fadd : x : y;
+callAdd : f_add : 2 : 3; //=^.^= 5
