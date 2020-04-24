@@ -37,6 +37,7 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 def a = 1;
 
 
+7 : 7;
 
 //=^.^= Higher order functions
 fun f_add x y = x + y;

@@ -7,6 +7,9 @@ import Executor
 
 
 
+-- sprawdzic bledy parsowania po tamtych bledach
+-- posprawdzac bledy wykonania
+
 main :: IO ()
 main = do 
     args <- getArgs

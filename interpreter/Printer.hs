@@ -15,5 +15,8 @@ import Definitions
 printProgResult :: Data -> String
 printProgResult (DInt n) = show n ++ "\n"
 printProgResult (DBool b) = show b ++ "\n"
-printProgResult (DFunc name _ _) = "Given function od argument " ++ name ++ "\n"
+printProgResult (DFunc name _ _) = "Given function of argument " ++ name ++ "\n"
 printProgResult (DPrimi (PrimitiveFunc n _)) = show n ++ "\n"
+printProgResult (DError err) = "ERROR: " ++ err ++ "\n"
+
+

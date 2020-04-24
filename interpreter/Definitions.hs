@@ -21,12 +21,14 @@ data Data = DInt Integer
             | DBool Bool 
             | DFunc String ParseTree Env  -- bo statyczne wiazanie identyfikatorow, jeden arg to name
             | DPrimi PrimitiveFunc
+            | DError String
 
 instance Show Data where
     show (DInt x) = "DInt " ++ show x
     show (DBool b) = "DBool " ++ show b
     show (DFunc s t e) = "DFun " ++ show s ++ show t ++ show e
     show (DPrimi (PrimitiveFunc n _)) = "DPrimi " ++ show n
+    show (DError err) = "DError: " ++ err
 
 
 -- ParseTree is a tree storeing parsed programm where:

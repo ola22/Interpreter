@@ -5,7 +5,7 @@ module Executor where
 
 import qualified Data.Map.Lazy as M
 import Text.Megaparsec
-import Text.Megaparsec.Char
+--import Text.Megaparsec.Char
 
 import Parser
 import Definitions

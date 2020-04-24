@@ -2,7 +2,7 @@
 
 module TreeEvaluator where
 
-import Data.Maybe
+--import Data.Maybe
 import qualified Data.Map.Lazy as M
 import Definitions
 
@@ -18,28 +18,38 @@ import Definitions
 -- te całe primi na coś mniej trickowego
 -- lambdy też są jakieś trickowe
 
+-- czy nie wole najpierw sprawdzic case var_val
+
 
 
 
 -- Function interprets and executes given ParseTree.
 evaluateTree :: ParseTree -> Env -> Data
-evaluateTree (TData tdata) _ = tdata
-evaluateTree (TVar var) env = fromJust $ M.lookup var env
-evaluateTree (TFunc var_name tree) env = DFunc var_name tree env
+evaluateTree (TData tdata) _ = tdata   --- ok
+evaluateTree (TVar var) env =                        -- TU ZMIENIC ok
+    let maybeVar = M.lookup var env
+    in case maybeVar of
+            Nothing -> DError ("Used invalid identifier: " ++ var)
+            Just res -> res
+evaluateTree (TFunc var_name tree) env = DFunc var_name tree env   ---- ok
 evaluateTree (TFAppl f v) env = 
     let func = evaluateTree f env -- :: Dfunc/DPrimi
         var_val = evaluateTree v env -- :: DInt/DBool
     in case func of
-            DPrimi p -> evaluatePrimi p var_val
-            DFunc var_name ftree fenv -> 
-                evaluateTree ftree (M.insert var_name var_val fenv)
-            _ -> undefined -- error "not proper function"
+            DPrimi p -> evaluatePrimi p var_val                        -- czy
+            DFunc var_name ftree fenv ->
+                case var_val of
+                    DError err -> DError err
+                    _ -> evaluateTree ftree (M.insert var_name var_val fenv)    -- czy tu nie moze byc jeszcze cos innego
+            DError err -> DError err                                               -- czy to napewno tak???
+            _ -> DError ("Trying to apply to sth, that is not a proper function")
 
 
 -- prymitywki :o <3
 evaluatePrimi :: PrimitiveFunc -> Data -> Data
 evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
 evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
+evaluatePrimi _ (DError err) = DError err
 
 
 
