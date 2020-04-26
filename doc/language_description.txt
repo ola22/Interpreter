@@ -4,7 +4,7 @@ My language name is Olol. It's a simple functional language. It provides followi
 	- operators <,>,==,!= are comparison operators
 	- simple logical operators: &, ||
 	- simple arithmetic operators: +,-,*,/,%
-	- with "def" olol allows user to define different variables
+	- with "def" olol allows user to define different variables, lambdas, ifs
 	- with "fun" olol allows user to define different functions
 	- "if" as usual
 	- it provides creating annymous functions with "\x -> exp" clause

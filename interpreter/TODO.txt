@@ -11,7 +11,9 @@
 - pattern matching
 - podopisywac komentarze
 - DODAC NAZWY PRYMITYWOW!!!!!!!!!!!!!!!!! -> do wypisywania wsyztskiego
-
+- FUN czego nie wrzuce bedzie dobrze
+- def -> sprawdzic, co jak ktos da defowi funkcje, dalam ze jest tez do lambd i ifow i elo
+- eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze
 
 
 JAK ROBIE TYLKO NA 20 PKT:
@@ -24,6 +26,7 @@ JAK ROBIE TYLKO NA 20 PKT:
     - evaluate expressions wewnatrz listy
     - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
+    - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
 
 JAK ROBIE NA 25 PKT:
     - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)

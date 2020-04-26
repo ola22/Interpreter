@@ -17,7 +17,7 @@ Programm := ProgElem+
 
 
 ProgElem := Typedef ";" | Comment | Exp ";" 
-            | "def " identifier "=" Exp 
+            | "def " identifier "=" Exp     -> for variables, lambdas and  ifs
             | "fun " identifier+ "=" Exp   -> rules used for defining variables/functions
 
 
