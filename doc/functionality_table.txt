@@ -3,15 +3,15 @@ If I have enough time I would do the one for 30 points too
 
 
 Na 20 punktów
-  01 (two types) +
-  02 (arithmetical operations, comparison) +
-  03 (if clause) +
-  04 (functions with multiple arguments, recurrency) +
-  05 (anonymous functions, higher order functions and partial application) +
-  06 (run-time errors) +
+  + 01 (two types) +
+  + 02 (arithmetical operations, comparison) +
+  + 03 (if clause) +
+  + 04 (functions with multiple arguments, recurrency) +
+  + 05 (anonymous functions, higher order functions and partial application) +
+  + 06 (run-time errors) +
   Lists:
   07 (with pattern matching) +
-  08 (built-in operations) maybe
+  + 08 (built-in operations) maybe
   09 ("syntax sugar") maybe
   
 For 25 points

@@ -1,29 +1,29 @@
-- typ listy
-- operacje listy
-- dodac enva jako monade readera?????
-- bledy wykonania
+    - typ listy
+    - operacje listy
+    - bledy wykonania
+
 - katalog good
 - katalog bad
 - makefile
 - tego cabal inita
-- bledy typowania
-- typedef???
-- pattern matching
 - podopisywac komentarze
+
 - DODAC NAZWY PRYMITYWOW!!!!!!!!!!!!!!!!! -> do wypisywania wsyztskiego
+
 - FUN czego nie wrzuce bedzie dobrze
 - def -> sprawdzic, co jak ktos da defowi funkcje, dalam ze jest tez do lambd i ifow i elo
 - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze
+- dodac enva jako monade readera?????
 
 
 JAK ROBIE TYLKO NA 20 PKT:
-    - czy te bledy odnosnie typow monga byc runtime??? -> TAK
-    - czy jak blad runtime to robie reszte??? -> chyba tak
-    - dodac liste
-    - dodac parse listy
-    - wtedy robie operacje na liscie
-    - parse operacji na listach
-    - evaluate expressions wewnatrz listy
+        - czy te bledy odnosnie typow monga byc runtime??? -> TAK
+        - czy jak blad runtime to robie reszte??? -> chyba tak
+        - dodac liste
+        - dodac parse listy
+        - wtedy robie operacje na liscie
+        - parse operacji na listach
+        - evaluate expressions wewnatrz listy
     - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
@@ -38,4 +38,5 @@ JAK ROBIE NA 25 PKT:
 
 Listy:
     - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
-    - dodac nowy typ dataEvalList
+    - sprawdzenie, czy tego samego typu
+    - 
