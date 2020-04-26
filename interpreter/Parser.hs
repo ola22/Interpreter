@@ -133,7 +133,7 @@ parseIf = do
 parseEmpty :: Parser ParseTree
 parseEmpty = do
     readString "empty"
-    return (TData (DListPrimi primiEmpty))
+    return (TFAppl (TData (DListPrimi primiEmpty)) (TData (DList [])))
 
 
 -- parseHead parses head functions

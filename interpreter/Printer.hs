@@ -19,6 +19,7 @@ printProgResult (DFunc name _ _) = "Given function of argument " ++ name ++ "\n"
 printProgResult (DPrimi (PrimitiveFunc n _)) = "Primitive with arg num: " ++ show n ++ "\n"
 printProgResult (DListPrimi (PrimitiveListFunc n _)) = "Primitive with arg num: " ++ show n ++ "\n"
 printProgResult (DList l) = "Parse trees of list elements: " ++ show l ++ "\n"
+printProgResult (DEvaluatedList l) = "List: " ++ show l ++ "\n"
 printProgResult (DError err) = "ERROR: " ++ err ++ "\n"
 
 

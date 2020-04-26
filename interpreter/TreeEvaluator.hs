@@ -30,7 +30,7 @@ import Definitions
 evaluateTree :: ParseTree -> Env -> Data
 evaluateTree (TData tdata) _ = 
     case tdata of
-        --DList l -> undefined
+        --DList l -> undefined         -----> eval pokolei na kazdym elemencie listy
         _ -> tdata
 evaluateTree (TVar var) env =
     let maybeVar = M.lookup var env
@@ -232,7 +232,7 @@ primiEmpty :: PrimitiveListFunc
 primiEmpty = PrimitiveListFunc 0 haskellEmpty
 
 haskellEmpty :: Env -> [Data] -> Data 
-haskellEmpty _ _ = DList []
+haskellEmpty _ _ = DEvaluatedList []
 
 
 primiHead :: PrimitiveListFunc
@@ -247,8 +247,7 @@ primiTail :: PrimitiveListFunc
 primiTail = PrimitiveListFunc 1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
---haskellTail [DList l] = DList (tail l)
-haskellTail env [DList l] = undefined
+haskellTail env [DList l] = evaluateTree (TData (DList (tail l))) env
 haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
