@@ -1,0 +1,29 @@
+- typ listy
+- operacje listy
+- dodac enva jako monade readera?????
+- bledy wykonania
+- katalog good
+- katalog bad
+- makefile
+- tego cabal inita
+- bledy typowania
+- typedef???
+- pattern matching
+- podopisywac komentarze
+
+
+JAK ROBIE TYLKO NA 20 PKT:
+    - czy te bledy odnosnie typow monga byc runtime??? -> TAK
+    - czy jak blad runtime to robie reszte??? -> chyba tak
+    - dodac liste
+    - dodac parse listy
+    - wtedy robie operacje na liscie
+    - parse operacji na listach
+    - evaluate expressions wewnatrz listy
+    - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
+
+JAK ROBIE NA 25 PKT:
+    - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
+    - statyczne wizanie -> juz mam :)
+    - typedef
+    - listy z patternmatchingiem
