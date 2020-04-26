@@ -8,56 +8,52 @@ import Definitions
 --import Debug.Trace
 
 
--- zmienic primitive
--- zmienic Show
--- zmienic testy
--- dopisac testy
--- data???
--- zmienic evaluateTree??-- co interpreter a co evaluateTree???????
--- tego evala jakos inaczej :o
-
--- te całe primi na coś mniej trickowego
--- lambdy też są jakieś trickowe
-
--- czy nie wole najpierw sprawdzic case var_val
-
+-- TODO
 -- SPRAWDZIC,CZY E2 JEST TYPU E1 W IFIE
 
 
 
 
 -- Function interprets and executes given ParseTree.
-evaluateTree :: ParseTree -> Env -> Data
-evaluateTree (TData tdata) _ = 
+evaluateTree :: Env -> ParseTree -> Data
+evaluateTree env (TData tdata) = 
     case tdata of
-        --DList l -> undefined         -----> eval pokolei na kazdym elemencie listy
+        DList l -> 
+            let evalList = map (evaluateTree env) l
+            in checkList evalList evalList
         _ -> tdata
-evaluateTree (TVar var) env =
+evaluateTree env (TVar var) =
     let maybeVar = M.lookup var env
     in case maybeVar of
             Nothing -> DError ("Used invalid identifier: " ++ var)
             Just res -> res
-evaluateTree (TFunc var_name tree) env = DFunc var_name tree env
-evaluateTree (TFAppl f v) env = 
-    let func = evaluateTree f env -- :: Dfunc/DPrimi
-        var_val = evaluateTree v env -- :: DInt/DBool
+evaluateTree env (TFunc var_name tree) = DFunc var_name tree env
+evaluateTree env (TFAppl f v) = 
+    let func = evaluateTree env f -- :: Dfunc/DPrimi
+        var_val = evaluateTree env v -- :: DInt/DBool
     in case func of
             DPrimi p -> evaluatePrimi p var_val
             DListPrimi p -> evaluateListPrimi p var_val env
             DFunc var_name ftree fenv ->
-                evaluateTree ftree (M.insert var_name var_val fenv)
+                evaluateTree (M.insert var_name var_val fenv) ftree
             DError err -> DError err
             _ -> DError ("Trying to apply to sth, that is not a proper function")
 
 
 
--- prymitywki :o <3
+-- Function checks if given list contains any errors after evaluation
+checkList :: [Data] -> [Data] -> Data
+checkList l [] = DEvaluatedList l
+checkList _ (DError err:_) = DError err
+checkList l (_:rest) = checkList l rest
+
+
+-- Functions call given primitive function or collect next arguments from
+-- parse tree
 evaluatePrimi :: PrimitiveFunc -> Data -> Data
 evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
 evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
 
-
--- prymitywki :o <3
 evaluateListPrimi :: PrimitiveListFunc -> Data -> Env -> Data
 evaluateListPrimi (PrimitiveListFunc 0 func) _ env = func env []
 evaluateListPrimi (PrimitiveListFunc 1 func) var env = func env [var]
@@ -209,12 +205,7 @@ haskellIf _ = DError "Given not a boolean expression in if statement"
 {-
 haskellIf [DError e, _, _] = DError e
 haskellIf [_, DError e, _] = DError e
-haskellIf [_, _, DError e] = DError e
-haskellIf [DBool b, e1, e2] = 
-    case (ifCheckIfExpTypesMatches e1 e2) of
-        True -> if b then e1 else e2
-        False -> DError "Types of expressions in 'then else' doesn't match"
-haskellIf _ = DError "Given not a boolean expression in if statement"
+haskellIf [_, _, DError e] = DError eftreeoolean expression in if statement"
 
 ifCheckIfExpTypesMatches :: Data -> Data -> Bool
 ifCheckIfExpTypesMatches (DInt _) (DInt _) = True
@@ -238,8 +229,9 @@ haskellEmpty _ _ = DEvaluatedList []
 primiHead :: PrimitiveListFunc
 primiHead = PrimitiveListFunc 1 haskellHead
 
-haskellHead :: Env -> [Data] -> Data 
-haskellHead env [DList l] = evaluateTree (head l) env
+haskellHead :: Env -> [Data] -> Data
+haskellHead env [DList l] = evaluateTree env (head l)
+haskellHead _ [DEvaluatedList l] = head l
 haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
 
 
@@ -247,7 +239,8 @@ primiTail :: PrimitiveListFunc
 primiTail = PrimitiveListFunc 1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
-haskellTail env [DList l] = evaluateTree (TData (DList (tail l))) env
+haskellTail env [DList l] = evaluateTree env (TData (DList (tail l)))
+haskellTail _ [DEvaluatedList l] = DEvaluatedList (tail l)
 haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
@@ -256,30 +249,30 @@ haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
 {- | Basic evaluateTree tests
->>> evaluateTree ( TData $ DInt 5 ) M.empty
+>>> evaluateTree M.empty ( TData $ DInt 5 )
 DInt 5
->>> evaluateTree ( TData $ DBool True ) M.empty
+>>> evaluateTree M.empty ( TData $ DBool True )
 DBool True
 
->>> evaluateTree ( TData $ DInt 5 ) M.empty
+>>> evaluateTree M.empty ( TData $ DInt 5 )
 DInt 5
 
->>> evaluateTree (TFAppl (TData (DFunc "x" ( TFAppl ( TFAppl (TData $ DPrimi primiMul) (TVar "x") ) (TVar "x")) M.empty)) (TData $ DInt 5)) M.empty
+>>> evaluateTree M.empty (TFAppl (TData (DFunc "x" ( TFAppl ( TFAppl (TData $ DPrimi primiMul) (TVar "x") ) (TVar "x")) M.empty)) (TData $ DInt 5))
 DInt 25
 -}
 
 
 {- | Primitives
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiAdd) (TData $ DInt 2) ) (TData $ DInt 2)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiAdd) (TData $ DInt 2) ) (TData $ DInt 2))
 DInt 4
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiSub) (TData $ DInt 5) ) (TData $ DInt 2)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiSub) (TData $ DInt 5) ) (TData $ DInt 2))
 DInt 3
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiMul) (TData $ DInt 5) ) (TData $ DInt 2)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiMul) (TData $ DInt 5) ) (TData $ DInt 2)) 
 DInt 10
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiDiv) (TData $ DInt 10) ) (TData $ DInt 3)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiDiv) (TData $ DInt 10) ) (TData $ DInt 3))
 DInt 3
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiMod) (TData $ DInt 10) ) (TData $ DInt 3)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiMod) (TData $ DInt 10) ) (TData $ DInt 3))
 DInt 1
->>> evaluateTree ( TFAppl ( TFAppl (TData $DPrimi primiAnd) (TData $ DBool True) ) (TData $ DBool True)) M.empty
+>>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiAnd) (TData $ DBool True) ) (TData $ DBool True))
 DBool True
 -}

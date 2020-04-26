@@ -5,7 +5,6 @@ module Executor where
 
 import qualified Data.Map.Lazy as M
 import Text.Megaparsec
---import Text.Megaparsec.Char
 
 import Parser
 import Definitions
@@ -14,10 +13,7 @@ import Printer
 
 
 -- TODO
--- zmienic evaluateProgramm
--- zmienic getEnv
--- concat w executeProgramm
-
+-- def i func w getEnv trzeba putStrLn na wyjście
 
 
 
@@ -47,8 +43,8 @@ getEnv programm =
     let 
         addToEnv :: ProgElem -> Env -> Env
         addToEnv (PEExpr _) env = env
-        addToEnv (PEDef n t) env = M.insert n (evaluateTree t result) env
-        addToEnv (PEFunc n t) env = M.insert n (evaluateTree t result) env
+        addToEnv (PEDef n t) env = M.insert n (evaluateTree result t) env
+        addToEnv (PEFunc n t) env = M.insert n (evaluateTree result t) env
         result = foldr addToEnv M.empty programm
     in result
 
@@ -61,10 +57,10 @@ evaluateProgramm env programm =
         evalProgElem :: ProgElem -> ProgResult -> ProgResult
         evalProgElem (PEDef _ _) resList = resList
         evalProgElem (PEFunc _ _) resList = resList
-        evalProgElem (PEExpr e) resList = evaluateTree e env : resList
+        evalProgElem (PEExpr e) resList = evaluateTree env e : resList
     in foldr evalProgElem [] programm
 {-
 evalProgElem :: ProgElem -> ProgResult -> Env -> ProgResult
 evalProgElem (PEDef _ _) resList env = resList
-evalProgElem (PEExpr e) resList env = evaluateTree e env : resList
+evalProgElem (PEExpr e) resList env = evaluateTree env e : resList
 -}

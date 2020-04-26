@@ -20,9 +20,10 @@ type Parser = Parsec Void String
 
 -- TODO
 -- signed numbers
+-- operacje listy (head i tail) dla zmiennych
+
 -- eval tego z ifem
 -- add parseIdentifier
--- zmienic readString i readOperator
 
 
 
@@ -61,8 +62,7 @@ readOperator s = try $ string s
 
 -- Function reads list
 readListOp :: String -> Parser ()
-readListOp s = try $ string s
-            -- *> notFollowedBy (oneOf "[]") 
+readListOp s = try $ string s 
             *> readSpacesAndComments
 
 
@@ -241,19 +241,19 @@ postfix name f = E.Postfix (f <$ symbol name)
 parseExprHelper :: Parser ParseTree
 parseExprHelper = E.makeExprParser parseTerm operatorTable
 {- | Parsing expressions
-evaluateTree (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 + 3 +  4")) M.empty
+evaluateTree M.empty (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 + 3 +  4"))
 DInt 10
 
-evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 < 3 then 4 else 5")) M.empty
+evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 < 3 then 4 else 5"))
 DInt 4
 
-evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 == 2 then true else false")) M.empty
+evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 == 2 then true else false"))
 DInt 4
 
-evaluateTree (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 * (3 + 4)")) M.empty
+evaluateTree M.empty (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 * (3 + 4)"))
 DInt 15
 
-evaluateTree (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "(\\x y -> x + y * 2) : 2 : 3")) M.empty
+evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "(\\x y -> x + y * 2) : 2 : 3"))
 DInt 8
 -}
 
