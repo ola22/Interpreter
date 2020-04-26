@@ -19,7 +19,7 @@ elo : 2 : 3 : false;  //=^.^= powinno byc 3
 
 
 //=^.^=  fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : n - 1;  -?> nieskonczona petla ma sens
-fun aDawajSprawdzRekurencje n = if n == a then 1 else n * aDawajSprawdzRekurencje : (n - 1);
+fun aDawajSprawdzRekurencje n = if n == 1 then 1 else n * aDawajSprawdzRekurencje : (n - 1);
 aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
 
@@ -32,6 +32,7 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 //=^.^= Comparation operators
 2 == 2;  //=^.^= True
 2 != 2;  //=^.^= False
+2 == true; //=^.^= error type
 
 
 def a = 1;
@@ -43,3 +44,37 @@ def a = 1;
 fun f_add x y = x + y;
 fun callAdd fadd x y = fadd : x : y;
 callAdd : f_add : 2 : 3; //=^.^= 5
+
+
+
+(\x y -> x + y * 2) : p : 3;  //=^.^= invalid identifier p  -> ok
+(\x y -> x + y * p) : 2 : 3;  //=^.^= type zly  ->  a chcemy invalid identifier :( -> jak wywale ta rekurencje to jest ok
+
+
+//=^.^= Static binding (if the binding was dynamic the output would be 10)
+def krowa = 3;
+fun myszka pies = pies + krowa;
+(\krowa -> (myszka : krowa)) : 5;    //=^.^= powinno być 8
+
+
+//=^.^= if errors
+if true then 2 else false; //=^.^= error e1 not match e2 NIEEEEEEEE, bo leniwie
+if 2 then 2 else false; //=^.^= error b not boolean
+if (\x y -> x + y * 2) then 2 else false; //=^.^= error b not boolean
+if ((\x -> x) : true) then 22 else 33; //=^.^= powinno byc 22
+if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
+
+
+//=^.^= if with functions
+fun f1 x = x;
+fun f2 x = 2 * x;
+(if 1 == 1 then f1 else f2) : 5;   //=^.^= ok -> 5
+(if false then f1 else f2) : 5;   //=^.^= ok -> 10
+
+
+
+
+//=^.^= def ola = fun pi pii = pii;  -> parse error reserved syntax
+pi : 2;  
+
+(if c then 1 else 2) : true;   //=^.^= invalid identifier c
