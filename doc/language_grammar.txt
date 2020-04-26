@@ -29,7 +29,7 @@ Exp := "True" | "False" | Integer
     | identifier    -> variables and functions | Identifier  -> constructors names
     | "if " Exp " then " Exp " else " Exp
     | Exp : Exp       -> partial application
-    | "lambda" identifier* "->" Exp     -> rule used for defining anonymous functions
+    | "\" identifier* "->" Exp     -> rule used for defining anonymous functions
     | "match" Exp "with" ("case" MatchExp "->" Exp)+ "matchend"   -> pattern matching
 
 

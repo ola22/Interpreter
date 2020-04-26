@@ -73,7 +73,7 @@ parseParens = between (symbol "(") (symbol ")")
 
 -- ParseNumber parses integers
 -- (negative ones are not allowed)
-parseNumber :: Parser ParseTree
+parseNumber :: Parser ParseTree                    --- parseTypeInt zwracam konstr
 parseNumber = do
     n <- lexeme L.decimal
     return (TData (DInt n))

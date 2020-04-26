@@ -2,9 +2,10 @@
 
 module TreeEvaluator where
 
---import Data.Maybe
 import qualified Data.Map.Lazy as M
 import Definitions
+
+import Debug.Trace
 
 
 -- zmienic primitive
@@ -20,36 +21,36 @@ import Definitions
 
 -- czy nie wole najpierw sprawdzic case var_val
 
+-- SPRAWDZIC,CZY E2 JEST TYPU E1 W IFIE
+
 
 
 
 -- Function interprets and executes given ParseTree.
 evaluateTree :: ParseTree -> Env -> Data
-evaluateTree (TData tdata) _ = tdata   --- ok
-evaluateTree (TVar var) env =                        -- TU ZMIENIC ok
+evaluateTree (TData tdata) _ = tdata
+evaluateTree (TVar var) env =
     let maybeVar = M.lookup var env
     in case maybeVar of
             Nothing -> DError ("Used invalid identifier: " ++ var)
             Just res -> res
-evaluateTree (TFunc var_name tree) env = DFunc var_name tree env   ---- ok
+evaluateTree (TFunc var_name tree) env = DFunc var_name tree env
 evaluateTree (TFAppl f v) env = 
     let func = evaluateTree f env -- :: Dfunc/DPrimi
         var_val = evaluateTree v env -- :: DInt/DBool
     in case func of
-            DPrimi p -> evaluatePrimi p var_val                        -- czy
+            DPrimi p -> evaluatePrimi p var_val
             DFunc var_name ftree fenv ->
-                case var_val of
-                    DError err -> DError err
-                    _ -> evaluateTree ftree (M.insert var_name var_val fenv)    -- czy tu nie moze byc jeszcze cos innego
-            DError err -> DError err                                               -- czy to napewno tak???
+                evaluateTree ftree (M.insert var_name var_val fenv)
+            DError err -> DError err
             _ -> DError ("Trying to apply to sth, that is not a proper function")
+
 
 
 -- prymitywki :o <3
 evaluatePrimi :: PrimitiveFunc -> Data -> Data
 evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
 evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
-evaluatePrimi _ (DError err) = DError err
 
 
 
@@ -62,7 +63,10 @@ primiAdd = PrimitiveFunc 2 haskellAdd
 
 haskellAdd :: [Data] -> Data
 haskellAdd ((DInt x):[DInt y]) = DInt (x + y)
-haskellAdd _ = undefined -- error "wrong type"
+haskellAdd (DError e:_) = DError e
+haskellAdd (_:[DError e]) = DError e
+haskellAdd _ = DError $ "Given argument of wrong type " ++
+                     "to '+' operator. Expected type: Int"
 
 
 primiSub :: PrimitiveFunc
@@ -70,7 +74,10 @@ primiSub = PrimitiveFunc 2 haskellSub
 
 haskellSub :: [Data] -> Data
 haskellSub ((DInt x):[DInt y]) = DInt (x - y)
-haskellSub _ = undefined -- error "wrong type"
+haskellSub (DError e:_) = DError e
+haskellSub (_:[DError e]) = DError e
+haskellSub _ = DError $ "Given argument of wrong type " ++
+                     "to '-' operator. Expected type: Int"
 
 
 primiMul :: PrimitiveFunc
@@ -78,7 +85,10 @@ primiMul = PrimitiveFunc 2 haskellMul
 
 haskellMul :: [Data] -> Data
 haskellMul ((DInt x):[DInt y]) = DInt (x * y)
-haskellMul _ = undefined -- error "wrong type"
+haskellMul (DError e:_) = DError e
+haskellMul (_:[DError e]) = DError e
+haskellMul _ = DError $ "Given argument of wrong type " ++
+                     "to '*' operator. Expected type: Int"
 
 
 primiDiv :: PrimitiveFunc
@@ -86,7 +96,10 @@ primiDiv = PrimitiveFunc 2 haskellDiv
 
 haskellDiv :: [Data] -> Data
 haskellDiv ((DInt x):[DInt y]) = DInt (x `div` y)
-haskellDiv _ = undefined -- error "wrong type"
+haskellDiv (DError e:_) = DError e
+haskellDiv (_:[DError e]) = DError e
+haskellDiv _ = DError $ "Given argument of wrong type " ++
+                     "to '/' operator. Expected type: Int"
 
 
 primiMod :: PrimitiveFunc
@@ -94,7 +107,10 @@ primiMod = PrimitiveFunc 2 haskellMod
 
 haskellMod :: [Data] -> Data
 haskellMod ((DInt x):[DInt y]) = DInt (x `mod` y)
-haskellMod _ = undefined -- error "wrong type"
+haskellMod (DError e:_) = DError e
+haskellMod (_:[DError e]) = DError e
+haskellMod _ = DError $ "Given argument of wrong type " ++
+                     "to '%' operator. Expected type: Int"
 
 
 
@@ -105,7 +121,10 @@ primiAnd = PrimitiveFunc 2 haskellAnd
 
 haskellAnd :: [Data] -> Data
 haskellAnd ((DBool b1):[DBool b2]) = DBool (b1 && b2)
-haskellAnd _ = undefined -- error "wrong type"
+haskellAnd (DError e:_) = DError e
+haskellAnd (_:[DError e]) = DError e
+haskellAnd _ = DError $ "Given argument of wrong type " ++
+                     "to '&&' operator. Expected type: Bool"
 
 
 primiOr :: PrimitiveFunc
@@ -113,7 +132,10 @@ primiOr = PrimitiveFunc 2 haskellOr
 
 haskellOr :: [Data] -> Data
 haskellOr ((DBool b1):[DBool b2]) = DBool (b1 || b2)
-haskellOr _ = undefined -- error "wrong type"
+haskellOr (DError e:_) = DError e
+haskellOr (_:[DError e]) = DError e
+haskellOr _ = DError $ "Given argument of wrong type " ++
+                     "to '||' operator. Expected type: Bool"
 
 
 ----------------------------------------- PrimitiveFunc comparison operations ---------------------------------
@@ -123,8 +145,10 @@ primiEq = PrimitiveFunc 2 haskellEq
 
 haskellEq :: [Data] -> Data
 haskellEq ((DInt x):[DInt y]) = DBool (x == y)
-haskellEq ((DBool b1):[DBool b2]) = DBool (b1 == b2)
-haskellEq _ = undefined -- error "wrong type"
+haskellEq (DError e:_) = DError e
+haskellEq (_:[DError e]) = DError e
+haskellEq _ = DError $ "Given argument of wrong type " ++
+                     "to '==' operator. Expected type: Int"
 
 
 primiNotEq :: PrimitiveFunc
@@ -132,8 +156,10 @@ primiNotEq = PrimitiveFunc 2 haskellNotEq
 
 haskellNotEq :: [Data] -> Data
 haskellNotEq ((DInt x):[DInt y]) = DBool (not (x == y))
-haskellNotEq ((DBool b1):[DBool b2]) = DBool (not (b1 == b2))
-haskellNotEq _ = undefined -- error "wrong type"
+haskellNotEq (DError e:_) = DError e
+haskellNotEq (_:[DError e]) = DError e
+haskellNotEq _ = DError $ "Given argument of wrong type " ++
+                     "to '!=' operator. Expected type: Int"
 
 
 primiLess :: PrimitiveFunc
@@ -141,7 +167,10 @@ primiLess = PrimitiveFunc 2 haskellLess
 
 haskellLess :: [Data] -> Data
 haskellLess ((DInt x):[DInt y]) = DBool (x < y)
-haskellLess _ = undefined -- error "wrong type"
+haskellLess (DError e:_) = DError e
+haskellLess (_:[DError e]) = DError e
+haskellLess _ = DError $ "Given argument of wrong type " ++
+                     "to '<' operator. Expected type: Int"
 
 
 primiMore :: PrimitiveFunc
@@ -149,7 +178,10 @@ primiMore = PrimitiveFunc 2 haskellMore
 
 haskellMore :: [Data] -> Data
 haskellMore ((DInt x):[DInt y]) = DBool (x > y)
-haskellMore _ = undefined -- error "wrong type"
+haskellMore (DError e:_) = DError e
+haskellMore (_:[DError e]) = DError e
+haskellMore _ = DError $ "Given argument of wrong type " ++
+                     "to '>' operator. Expected type: Int"
 
 
 ------------------------------------------- If statement ----------------------------------------
@@ -157,10 +189,30 @@ haskellMore _ = undefined -- error "wrong type"
 primiIf :: PrimitiveFunc
 primiIf = PrimitiveFunc 3 haskellIf
 
-haskellIf :: [Data] -> Data
-haskellIf [DBool b, e1, e2] = if b then e1 
-                                   else e2
-haskellIf _ = undefined -- error "not a boolean expression in if statement"
+haskellIf :: [Data] -> Data 
+haskellIf [DError e, _, _] = DError e
+haskellIf [DBool b, e1, e2] = if b then e1 else e2
+haskellIf _ = DError "Given not a boolean expression in if statement"
+
+
+{-
+haskellIf [DError e, _, _] = DError e
+haskellIf [_, DError e, _] = DError e
+haskellIf [_, _, DError e] = DError e
+haskellIf [DBool b, e1, e2] = 
+    case (ifCheckIfExpTypesMatches e1 e2) of
+        True -> if b then e1 else e2
+        False -> DError "Types of expressions in 'then else' doesn't match"
+haskellIf _ = DError "Given not a boolean expression in if statement"
+
+ifCheckIfExpTypesMatches :: Data -> Data -> Bool
+ifCheckIfExpTypesMatches (DInt _) (DInt _) = True
+ifCheckIfExpTypesMatches (DBool _) (DBool _) = True
+ifCheckIfExpTypesMatches (DFunc _ _ _) (DFunc _ _ _) = True
+ifCheckIfExpTypesMatches (DPrimi _) (DPrimi _) = True
+ifCheckIfExpTypesMatches _ _ = False
+-}
+
 
 
 
