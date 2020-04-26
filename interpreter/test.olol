@@ -47,8 +47,11 @@ callAdd : f_add : 2 : 3; //=^.^= 5
 
 
 
+
 (\x y -> x + y * 2) : p : 3;  //=^.^= invalid identifier p  -> ok
 (\x y -> x + y * p) : 2 : 3;  //=^.^= type zly  ->  a chcemy invalid identifier :( -> jak wywale ta rekurencje to jest ok
+
+
 
 
 //=^.^= Static binding (if the binding was dynamic the output would be 10)
@@ -57,12 +60,16 @@ fun myszka pies = pies + krowa;
 (\krowa -> (myszka : krowa)) : 5;    //=^.^= powinno być 8
 
 
+
+
 //=^.^= if errors
 if true then 2 else false; //=^.^= error e1 not match e2 NIEEEEEEEE, bo leniwie
 if 2 then 2 else false; //=^.^= error b not boolean
 if (\x y -> x + y * 2) then 2 else false; //=^.^= error b not boolean
 if ((\x -> x) : true) then 22 else 33; //=^.^= powinno byc 22
 if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
+
+
 
 
 //=^.^= if with functions
@@ -76,5 +83,30 @@ fun f2 x = 2 * x;
 
 //=^.^= def ola = fun pi pii = pii;  -> parse error reserved syntax
 pi : 2;  
-
 (if c then 1 else 2) : true;   //=^.^= invalid identifier c
+
+
+
+def koko = 4 / 0;
+if true then koko else 4;    //=^.^=  chcemy błąd
+
+
+
+/=^.^=  def i fun
+
+def k s = k + 2;    -> nie sparsuje sie
+uzycie fun, jak defa i cokolwiek jest ok  -> <3
+def dla list ???????? -> czy bedzie dzialac
+def = lambda jest u nas ok <3
+=^.^=/
+
+
+
+
+//=^.^=  Lists                        -> czy dziala def dla listy????????????????????
+def l = [3, 1, 2];
+
+l == 2;     //=^.^=  zły type
+
+head [1, 1, 2];   //=^.^=  1
+empty;
