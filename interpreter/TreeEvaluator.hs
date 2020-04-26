@@ -5,7 +5,7 @@ module TreeEvaluator where
 import qualified Data.Map.Lazy as M
 import Definitions
 
-import Debug.Trace
+--import Debug.Trace
 
 
 -- zmienic primitive
@@ -28,7 +28,10 @@ import Debug.Trace
 
 -- Function interprets and executes given ParseTree.
 evaluateTree :: ParseTree -> Env -> Data
-evaluateTree (TData tdata) _ = tdata
+evaluateTree (TData tdata) _ = 
+    case tdata of
+        --DList l -> undefined
+        _ -> tdata
 evaluateTree (TVar var) env =
     let maybeVar = M.lookup var env
     in case maybeVar of
@@ -40,6 +43,7 @@ evaluateTree (TFAppl f v) env =
         var_val = evaluateTree v env -- :: DInt/DBool
     in case func of
             DPrimi p -> evaluatePrimi p var_val
+            DListPrimi p -> evaluateListPrimi p var_val env
             DFunc var_name ftree fenv ->
                 evaluateTree ftree (M.insert var_name var_val fenv)
             DError err -> DError err
@@ -51,6 +55,13 @@ evaluateTree (TFAppl f v) env =
 evaluatePrimi :: PrimitiveFunc -> Data -> Data
 evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
 evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
+
+
+-- prymitywki :o <3
+evaluateListPrimi :: PrimitiveListFunc -> Data -> Env -> Data
+evaluateListPrimi (PrimitiveListFunc 0 func) _ env = func env []
+evaluateListPrimi (PrimitiveListFunc 1 func) var env = func env [var]
+evaluateListPrimi (PrimitiveListFunc _ _) _ _ = DError "List primitive got too many arguments"
 
 
 
@@ -95,6 +106,7 @@ primiDiv :: PrimitiveFunc
 primiDiv = PrimitiveFunc 2 haskellDiv
 
 haskellDiv :: [Data] -> Data
+haskellDiv (_:[DInt 0]) = DError "Divide by 0"
 haskellDiv ((DInt x):[DInt y]) = DInt (x `div` y)
 haskellDiv (DError e:_) = DError e
 haskellDiv (_:[DError e]) = DError e
@@ -194,7 +206,6 @@ haskellIf [DError e, _, _] = DError e
 haskellIf [DBool b, e1, e2] = if b then e1 else e2
 haskellIf _ = DError "Given not a boolean expression in if statement"
 
-
 {-
 haskellIf [DError e, _, _] = DError e
 haskellIf [_, DError e, _] = DError e
@@ -212,6 +223,34 @@ ifCheckIfExpTypesMatches (DFunc _ _ _) (DFunc _ _ _) = True
 ifCheckIfExpTypesMatches (DPrimi _) (DPrimi _) = True
 ifCheckIfExpTypesMatches _ _ = False
 -}
+
+
+
+----------------------------------------- PrimitiveFuncs for list operations ---------------------------------
+
+primiEmpty :: PrimitiveListFunc
+primiEmpty = PrimitiveListFunc 0 haskellEmpty
+
+haskellEmpty :: Env -> [Data] -> Data 
+haskellEmpty _ _ = DList []
+
+
+primiHead :: PrimitiveListFunc
+primiHead = PrimitiveListFunc 1 haskellHead
+
+haskellHead :: Env -> [Data] -> Data 
+haskellHead env [DList l] = evaluateTree (head l) env
+haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
+
+
+primiTail :: PrimitiveListFunc
+primiTail = PrimitiveListFunc 1 haskellTail
+
+haskellTail :: Env -> [Data] -> Data 
+--haskellTail [DList l] = DList (tail l)
+haskellTail env [DList l] = undefined
+haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
+
 
 
 

@@ -20,6 +20,7 @@ import Printer
 
 
 
+
 -- runProgramm parses input string. If the input is not
 -- a proper programm returns parsing error. Otherwise it
 -- returns programm's output

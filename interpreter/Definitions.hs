@@ -21,14 +21,18 @@ data Data = DInt Integer
             | DBool Bool 
             | DFunc String ParseTree Env  -- bo statyczne wiazanie identyfikatorow, jeden arg to name
             | DPrimi PrimitiveFunc
+            | DListPrimi PrimitiveListFunc
             | DError String
+            | DList [ParseTree]
 
 instance Show Data where
     show (DInt x) = "DInt " ++ show x
     show (DBool b) = "DBool " ++ show b
     show (DFunc s t e) = "DFun " ++ show s ++ show t ++ show e
     show (DPrimi (PrimitiveFunc n _)) = "DPrimi " ++ show n
+    show (DListPrimi (PrimitiveListFunc n _)) = "DListPrimi " ++ show n
     show (DError err) = "DError: " ++ err
+    show (DList l) = "DList " ++ show l
 
 
 -- ParseTree is a tree storeing parsed programm where:
@@ -46,6 +50,8 @@ data ParseTree = TData Data
 -- Primitive is created for some primitive operations like arithmetical,
 -- logical or comparison operations and other simple statements
 data PrimitiveFunc = PrimitiveFunc Int ([Data] -> Data)
+
+data PrimitiveListFunc = PrimitiveListFunc Int (Env -> [Data] -> Data)
 
 
 -- ProgElem are all possible programm elemrnts: expression,

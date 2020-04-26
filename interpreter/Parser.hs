@@ -55,7 +55,14 @@ readString s = try $ string s
 -- Function reads single operator
 readOperator :: String -> Parser ()
 readOperator s = try $ string s 
-            *> notFollowedBy (oneOf "=!<>&|-+*/%\\;") 
+            *> notFollowedBy (oneOf "[]=!<>&|-+*/%\\;") 
+            *> readSpacesAndComments
+
+
+-- Function reads list
+readListOp :: String -> Parser ()
+readListOp s = try $ string s
+            -- *> notFollowedBy (oneOf "[]") 
             *> readSpacesAndComments
 
 
@@ -95,6 +102,20 @@ TData DBool False
 -}
 
 
+-- Function parses list
+-- [1, 2, 3]
+parseList :: Parser ParseTree
+parseList = do
+    readListOp "["
+    content <- sepBy parseExprHelper (symbol ",")
+    readListOp "]"
+    return (TData (DList content))
+{- | List
+>>> parseTest parseList "[1, 2, 3]"
+
+-}
+
+
 -- parseIf parses if statement
 parseIf :: Parser ParseTree
 parseIf = do
@@ -106,6 +127,29 @@ parseIf = do
     e2 <- parseExprHelper
     return (TFAppl (TFAppl (TFAppl 
             (TData (DPrimi primiIf)) b_exp) e1) e2)
+
+
+-- parseEmpty parses empty functions
+parseEmpty :: Parser ParseTree
+parseEmpty = do
+    readString "empty"
+    return (TData (DListPrimi primiEmpty))
+
+
+-- parseHead parses head functions
+parseHead :: Parser ParseTree
+parseHead = do
+    readString "head"
+    list <- parseList
+    return (TFAppl (TData (DListPrimi primiHead)) list)
+
+
+-- parseTail parses tail functions
+parseTail :: Parser ParseTree
+parseTail = do
+    readString "tail"
+    list <- parseList
+    return (TFAppl (TData (DListPrimi primiTail)) list)
 
 
 -- parseVarAndFuncNames parses names of variables and
@@ -157,6 +201,10 @@ parseLambda = do
 parseTerm :: Parser ParseTree
 parseTerm = choice
   [ parseParens parseExprHelper
+  , parseList
+  , parseTail
+  , parseEmpty
+  , parseHead
   , parseLambda
   , parseIf
   , parseBool
