@@ -27,9 +27,15 @@ JAK ROBIE TYLKO NA 20 PKT:
     - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
+    - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
 
 JAK ROBIE NA 25 PKT:
     - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
     - statyczne wizanie -> juz mam :)
     - typedef
     - listy z patternmatchingiem
+
+
+Listy:
+    - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
+    - dodac nowy typ dataEvalList

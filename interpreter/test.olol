@@ -11,7 +11,7 @@ f : 2;  //=^.^= powinno byc 5
 
 
 
-fun elo a b c = if c == true then a else b;
+fun elo a b c = if c && true then a else b;
 
 elo : 2 : 3 : true; //=^.^= powinno byc 2
 elo : 2 : 3 : false;  //=^.^= powinno byc 3
@@ -110,3 +110,7 @@ l == 2;     //=^.^=  zły type
 
 head [1, 1, 2];   //=^.^=  1
 empty;
+
+fun list_fun = [3, 1, 2];
+list_fun;
+head [[2, 3], 1, 2];   //=^.^=  [2, 3]
