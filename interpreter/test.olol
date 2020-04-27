@@ -189,7 +189,7 @@ tail haha;
 def nested = [[[[111, 2], 3], 4], 5];
 head (head (head (head nested)));
 
-
+//=^.^= def true = 2;   parse error reserved syntax
 
 head pipis; //=^.^=  błąd: head na pustej liście
 

@@ -174,6 +174,9 @@ isReservedSyntax s = s == "if"
                     || s == "def"
                     || s == "true"
                     || s == "false"
+                    || s == "head"
+                    || s == "tail"
+                    || s == "empty"
 
 
 -- Function parses variable/function name
