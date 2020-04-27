@@ -3,7 +3,7 @@ def x = 3;
 fun f y = x + y;
 f : 2;  //=^.^= powinno byc 5
 
-
+120 - 300;    //=^.^= powinno byc -180
 
 /=^.^="
    tam wyzej powinno byc 5

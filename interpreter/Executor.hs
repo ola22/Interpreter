@@ -32,7 +32,7 @@ runProgramm file input = do
 -- and returns its string
 executeProgramm :: Programm -> String
 executeProgramm programm = let env = getEnv programm
-                               results = evaluateProgramm env programm
+                               results = reverse (evaluateProgramm env programm [])
                             in concat (map printProgResult results)
 
 
@@ -50,17 +50,15 @@ getEnv programm =
 
 
 -- evaluateProgramm evaluates all expressions and function's
--- applications, which occur in given, parsed programm
-evaluateProgramm :: Env -> Programm -> ProgResult
-evaluateProgramm env programm = 
-    let
-        evalProgElem :: ProgElem -> ProgResult -> ProgResult
-        evalProgElem (PEDef _ _) resList = resList
-        evalProgElem (PEFunc _ _) resList = resList
-        evalProgElem (PEExpr e) resList = evaluateTree env e : resList
-    in foldr evalProgElem [] programm
-{-
-evalProgElem :: ProgElem -> ProgResult -> Env -> ProgResult
-evalProgElem (PEDef _ _) resList env = resList
-evalProgElem (PEExpr e) resList env = evaluateTree env e : resList
--}
+-- applications, which occur in given, parsed programm.
+-- Evaluation stops after getting error
+evaluateProgramm :: Env -> Programm -> ProgResult -> ProgResult
+evaluateProgramm _ [] resList = resList
+evaluateProgramm env ((PEDef _ _):rest) resList = evaluateProgramm env rest resList
+evaluateProgramm env ((PEFunc _ _):rest) resList = evaluateProgramm env rest resList
+evaluateProgramm env ((PEExpr e):rest) resList = 
+    let evaluated = evaluateTree env e 
+    in case evaluated of
+        DError _ -> evaluated:resList
+        _ -> evaluateProgramm env rest (evaluated:resList)
+
