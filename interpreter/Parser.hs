@@ -107,7 +107,7 @@ TData DBool False
 parseList :: Parser ParseTree
 parseList = do
     readListOp "["
-    content <- sepBy parseExprHelper (symbol ",")
+    content <- sepBy (parseExprHelper <|> parseidentifier) (symbol ",")
     readListOp "]"
     return (TData (DList content))
 {- | List
@@ -140,7 +140,7 @@ parseEmpty = do
 parseHead :: Parser ParseTree
 parseHead = do
     readString "head"
-    list <- parseList
+    list <- parseExprHelper
     return (TFAppl (TData (DListPrimi primiHead)) list)
 
 
@@ -148,7 +148,7 @@ parseHead = do
 parseTail :: Parser ParseTree
 parseTail = do
     readString "tail"
-    list <- parseList
+    list <- parseExprHelper
     return (TFAppl (TData (DListPrimi primiTail)) list)
 
 

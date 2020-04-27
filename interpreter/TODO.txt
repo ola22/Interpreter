@@ -18,7 +18,7 @@
 
 JAK ROBIE TYLKO NA 20 PKT:
         - czy te bledy odnosnie typow monga byc runtime??? -> TAK
-        - czy jak blad runtime to robie reszte??? -> chyba tak
+        - czy jak blad runtime to robie reszte??? -> NIE, ale już poprawiłam :)
         - dodac liste
         - dodac parse listy
         - wtedy robie operacje na liscie
@@ -28,6 +28,7 @@ JAK ROBIE TYLKO NA 20 PKT:
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
     - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
+    - ZEBY DZIALALO Z STDINA
 
 JAK ROBIE NA 25 PKT:
     - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)

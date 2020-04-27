@@ -32,6 +32,15 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 //=^.^= Comparation operators
 2 == 2;  //=^.^= True
 2 != 2;  //=^.^= False
+
+
+
+
+/=^.^=
+
+
+
+
 2 == true; //=^.^= error type
 
 
@@ -92,21 +101,28 @@ if true then koko else 4;    //=^.^=  chcemy błąd
 
 
 
-/=^.^=  def i fun
+  def i fun
 
 def k s = k + 2;    -> nie sparsuje sie
 uzycie fun, jak defa i cokolwiek jest ok  -> <3
 def dla list ???????? -> czy bedzie dzialac
 def = lambda jest u nas ok <3
+
+
+
+
+
+//=^.^=  Lists
+def lo = [3, 1, 2];
+
+lo == 2;     //=^.^=  zły type
+
+
+
+
+
 =^.^=/
 
-
-
-
-//=^.^=  Lists                        -> czy dziala def dla listy????????????????????
-def l = [3, 1, 2];
-
-l == 2;     //=^.^=  zły type
 
 head [1, 1, 2];   //=^.^=  1
 empty;
@@ -127,5 +143,75 @@ if (head [true, false]) then 23 else 48; //=^.^=  23
 
 
 
+//=^.^=  def dla listy
+def l = [1, 2, 3, 4];
+fun helo l = l;
+helo : l;
+tail l;
+
+
+//=^.^=  parsing empty
+def pipis = [];
+helo : pipis;
+
+
+//=^.^=  lista zmiennych
+def łoś = 15 * 2;
+def mućka = \x -> x + 2;
+fun alpaczka b = if b then 44 else 66;
+def lista_ze_zmiennymi = [łoś, mućka, alpaczka];
+def lista_ze_zmiennymi2 = [alpaczka, mućka, alpaczka];
+def lista_ze_zmiennymi3 = [mućka, mućka, alpaczka];
+
+
+head lista_ze_zmiennymi;
+head lista_ze_zmiennymi2;
+(head lista_ze_zmiennymi2) : true;    //=^.^=  44
+
+
+head lista_ze_zmiennymi3;
+//=^.^=   tail lista_ze_zmiennymi3;                                          NIE DZIAŁA!!!!!!!!!!
+
+
+//=^.^=  head i tail na zmiennej
+head l;
+
+
+
+//=^.^=   zagnieżdżony head tail
+head (tail lista_ze_zmiennymi3);
+
+
+//=^.^=   zagnieżdżone listy
+def haha = [[1, 2], [if true then 4 else 5], [1, [[true, true], false]]];
+tail haha;
+
+def nested = [[[[111, 2], 3], 4], 5];
+head (head (head (head nested)));
+
+
+
+head pipis; //=^.^=  błąd: head na pustej liście
+
+
+
 fun list_wrong = [true == false, 1, 2];
 list_wrong;   //=^.^=  błąd wewnątrz ewaluacji listy
+
+
+head (1 + 2);
+head (empty);
+
+
+
+
+/=^.^=
+
+   head, tail dla pustej listy, head empty na zmiennej
+   listy zmiennych
+   head i tail od funkcji i od empty.
+   head i tail od siebie samych;
+   head, tail dla pustych
+
+TAIL OD NIEARGUMENTOWANYCH FUNKCJI NIE DZIALA
+=^.^=/

@@ -22,4 +22,6 @@ printProgResult (DList l) = "Parse trees of list elements: " ++ show l ++ "\n"
 printProgResult (DEvaluatedList l) = "List: " ++ show l ++ "\n"
 printProgResult (DError err) = "ERROR: " ++ err ++ "\n"
 
+  
+
 

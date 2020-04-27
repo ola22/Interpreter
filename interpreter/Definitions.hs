@@ -34,7 +34,7 @@ instance Show Data where
     show (DListPrimi (PrimitiveListFunc n _)) = "DListPrimi " ++ show n
     show (DError err) = "DError: " ++ err
     show (DList l) = "DList " ++ show l
-    show (DEvaluatedList l) = "DEvaluatedList" ++ show l
+    show (DEvaluatedList l) = "List : " ++ show l
 
 
 -- ParseTree is a tree storeing parsed programm where:

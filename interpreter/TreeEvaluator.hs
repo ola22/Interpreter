@@ -230,8 +230,14 @@ primiHead :: PrimitiveListFunc
 primiHead = PrimitiveListFunc 1 haskellHead
 
 haskellHead :: Env -> [Data] -> Data
-haskellHead env [DList l] = evaluateTree env (head l)
-haskellHead _ [DEvaluatedList l] = head l
+haskellHead env [DList l] = 
+    case l of
+        [] -> DError "Trying to apply 'head' to empty list"
+        _ -> evaluateTree env (head l)
+haskellHead _ [DEvaluatedList l] =
+    case l of
+        [] -> DError "Trying to apply 'head' to empty list"
+        _ -> head l
 haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
 
 
@@ -239,8 +245,14 @@ primiTail :: PrimitiveListFunc
 primiTail = PrimitiveListFunc 1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
-haskellTail env [DList l] = evaluateTree env (TData (DList (tail l)))
-haskellTail _ [DEvaluatedList l] = DEvaluatedList (tail l)
+haskellTail env [DList l] =
+    case l of
+        [] -> DError "Trying to apply 'tail' to empty list"
+        _ -> evaluateTree env (TData (DList (tail l)))
+haskellTail _ [DEvaluatedList l] =
+    case l of
+        [] -> DError "Trying to apply 'tail' to empty list"
+        _ -> DEvaluatedList (tail l)
 haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
