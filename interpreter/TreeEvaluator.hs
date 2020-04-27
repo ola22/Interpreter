@@ -230,6 +230,7 @@ primiHead :: PrimitiveListFunc
 primiHead = PrimitiveListFunc 1 haskellHead
 
 haskellHead :: Env -> [Data] -> Data
+haskellHead _ [DError err] = DError (err ++ ". Error inside list")
 haskellHead env [DList l] = 
     case l of
         [] -> DError "Trying to apply 'head' to empty list"
@@ -245,6 +246,7 @@ primiTail :: PrimitiveListFunc
 primiTail = PrimitiveListFunc 1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
+haskellTail _ [DError err] = DError (err ++ ". Error inside list")
 haskellTail env [DList l] =
     case l of
         [] -> DError "Trying to apply 'tail' to empty list"
@@ -255,7 +257,22 @@ haskellTail _ [DEvaluatedList l] =
         _ -> DEvaluatedList (tail l)
 haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
+{-
+primiConcat :: PrimitiveListFunc
+primiConcat = PrimitiveListFunc 2 haskellConcat
 
+haskellConcat :: Env -> [Data] -> Data 
+haskellConcat env [DList l1] [DList l2] =
+    case l1 of
+        [] -> DError "Trying to apply 'tail' to empty list"
+        _ -> evaluateTree env (TData (DList (tail l)))
+haskellConcat _ [DEvaluatedList l] =
+    case l of
+        [] -> DError "Trying to apply 'tail' to empty list"
+        _ -> DEvaluatedList (tail l)
+haskellConcat _ _ = DError "Trying to apply 'tail' to not-list object"
+
+-}
 
 
 

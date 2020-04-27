@@ -183,7 +183,8 @@ head (tail lista_ze_zmiennymi3);
 
 
 //=^.^=   zagnieżdżone listy
-def haha = [[1, 2], [if true then 4 else 5], [1, [[true, true], false]]];
+//=^.^=def haha2 = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]]; -> error inside list
+def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
 tail haha;
 
 def nested = [[[[111, 2], 3], 4], 5];
