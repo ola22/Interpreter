@@ -4,9 +4,6 @@ module Definitions where
 
 import qualified Data.Map.Lazy as M
 
--- TODO
--- zmienic instance show data
-
 
 
 

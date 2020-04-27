@@ -212,6 +212,6 @@ head (empty);
    head i tail od funkcji i od empty.
    head i tail od siebie samych;
    head, tail dla pustych
-
+concat !!!!
 TAIL OD NIEARGUMENTOWANYCH FUNKCJI NIE DZIALA
 =^.^=/

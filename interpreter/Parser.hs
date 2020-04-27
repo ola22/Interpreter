@@ -20,7 +20,6 @@ type Parser = Parsec Void String
 
 -- TODO
 -- signed numbers
--- operacje listy (head i tail) dla zmiennych
 
 -- eval tego z ifem
 -- add parseIdentifier

@@ -12,7 +12,7 @@ Na 20 punktów
   Lists:
   07 (with pattern matching) +
   + 08 (built-in operations) maybe
-  09 ("syntax sugar") maybe
+  + 09 ("syntax sugar") maybe
   
 For 25 points
   10 (lists of any type, nested lists and lists of functions) +

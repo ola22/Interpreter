@@ -6,9 +6,6 @@ module Printer where
 import Definitions
 
 
--- TODO
--- zmienic nazwe funkcji na jakies stringify
-
 
 
 -- Function used for printing programm's output
@@ -22,6 +19,6 @@ printProgResult (DList l) = "Parse trees of list elements: " ++ show l ++ "\n"
 printProgResult (DEvaluatedList l) = "List: " ++ show l ++ "\n"
 printProgResult (DError err) = "ERROR: " ++ err ++ "\n"
 
-  
+
 
 

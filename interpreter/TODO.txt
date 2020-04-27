@@ -27,7 +27,7 @@ JAK ROBIE TYLKO NA 20 PKT:
     - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
-    - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
+        - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
     - ZEBY DZIALALO Z STDINA
 
 JAK ROBIE NA 25 PKT:
@@ -35,9 +35,21 @@ JAK ROBIE NA 25 PKT:
     - statyczne wizanie -> juz mam :)
     - typedef
     - listy z patternmatchingiem
+    - listy zagnieżdżone itd
 
 
 Listy:
-    - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
+    -   LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
     - sprawdzenie, czy tego samego typu
-    - 
+    - concat
+    - tail od funkcji????
+
+
+    STDINA
+good
+bad
+makefile
+readme
+tabelka
+bledy z linijkami
+listy tak porządnie!!!!!
