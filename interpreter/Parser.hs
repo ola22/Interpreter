@@ -135,6 +135,14 @@ parseEmpty = do
     return (TFAppl (TData (DListPrimi primiEmpty)) (TData (DList [])))
 
 
+-- parseIsEmpty parses isEmpty functions
+parseIsEmpty :: Parser ParseTree
+parseIsEmpty = do
+    readString "isEmpty"
+    list <- parseExprHelper
+    return (TFAppl (TData (DListPrimi primiIsEmpty)) list)
+
+
 -- parseHead parses head functions
 parseHead :: Parser ParseTree
 parseHead = do
@@ -149,6 +157,16 @@ parseTail = do
     readString "tail"
     list <- parseExprHelper
     return (TFAppl (TData (DListPrimi primiTail)) list)
+
+
+-- parseConcat parses concat functions
+parseConcat :: Parser ParseTree
+parseConcat = do
+    readString "concat"
+    list1 <- parseExprHelper
+    list2 <- parseExprHelper
+    return (TFAppl (TFAppl 
+            (TData (DListPrimi primiConcat)) list1) list2)
 
 
 -- parseVarAndFuncNames parses names of variables and
@@ -177,6 +195,8 @@ isReservedSyntax s = s == "if"
                     || s == "head"
                     || s == "tail"
                     || s == "empty"
+                    || s == "concat"
+                    || s == "isEmpty"
 
 
 -- Function parses variable/function name
@@ -207,6 +227,8 @@ parseTerm = choice
   , parseTail
   , parseEmpty
   , parseHead
+  , parseConcat
+  , parseIsEmpty
   , parseLambda
   , parseIf
   , parseBool

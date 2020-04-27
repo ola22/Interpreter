@@ -183,12 +183,43 @@ head (tail lista_ze_zmiennymi3);
 
 
 //=^.^=   zagnieżdżone listy
-//=^.^=def haha2 = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]]; -> error inside list
+//=^.^=   def haha2 = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]]; -> error inside list
+//=^.^=   [1, 2 - true, 4, 5]; -> error inside list
 def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
 tail haha;
 
 def nested = [[[[111, 2], 3], 4], 5];
 head (head (head (head nested)));
+
+
+//=^.^=   concat
+concat [1, 2, 3] [4, 5, 6];
+concat [1 -2, 4, 8] [];
+concat [] [true, false];
+head (concat [] [true, false]);   //=^.^=   true
+(head (concat lista_ze_zmiennymi2 lista_ze_zmiennymi)) : false;    //=^.^=   66
+//=^.^=  concat łoś (mućka : 2);    //=^.^=   concat not to list object
+
+
+
+//=^.^=   isEmpty
+isEmpty empty;
+isEmpty [];
+isEmpty [1, 2];
+//=^.^= isEmpty 1;    //=^.^=   concat not to list object
+
+
+//=^.^= list recurency
+def liista = [1, 2, 3, 4];
+fun rec_list l = if (isEmpty l) then [true] else (rec_list : (tail l));
+rec_list : liista;            //=^.^=   List: [DBool True]
+
+
+fun rec_list2 n l = if (n == 0) then l else rec_list2 : (n - 1) : (concat l [n]) ;
+rec_list2 : 5 : [];        //=^.^=      List: [DInt 5,DInt 4,DInt 3,DInt 2,DInt 1]
+
+
+
 
 //=^.^= def true = 2;   parse error reserved syntax
 
