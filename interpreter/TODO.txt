@@ -28,28 +28,44 @@ JAK ROBIE TYLKO NA 20 PKT:
     - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
         - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
-    - ZEBY DZIALALO Z STDINA
+        - ZEBY DZIALALO Z STDINA
 
 JAK ROBIE NA 25 PKT:
     - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
     - statyczne wizanie -> juz mam :)
-    - typedef
-    - listy z patternmatchingiem
+    - typedef -> nie
+    - listy z patternmatchingiem -> nie
     - listy zagnieżdżone itd
 
 
 Listy:
     -   LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
     - sprawdzenie, czy tego samego typu
-    - concat
+        - concat
     - tail od funkcji????
 
 
-    STDINA
+
+---------------------------------- PLANY
+
 good
 bad
-makefile
+
 readme
 tabelka
-bledy z linijkami
+
+makefile
+    STDINA
+cabal init
+
+bledy z linijkami                   !!!!!!!!!!!!!!!!!!
+monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
+TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+if e1 e2                            !!!!!!!!!!!!!!!!!!
+def i fun errory                    !!!!!!!!!!!!!!!!!!
+
 listy tak porządnie!!!!!
+list ten bug :/                     !!!!!!!!!!!!!!!!!!
+
+
