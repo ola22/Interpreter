@@ -11,6 +11,8 @@ import Text.Megaparsec.Char
 import Data.Void
 import qualified Text.Megaparsec.Char.Lexer as L
 import qualified Control.Monad.Combinators.Expr as E
+import qualified Data.Set as S
+import Control.Monad
 
 import Definitions
 import TreeEvaluator
@@ -63,6 +65,15 @@ readOperator s = try $ string s
 readListOp :: String -> Parser ()
 readListOp s = try $ string s 
             *> readSpacesAndComments
+
+
+-- Function checks if any element from list appears
+-- there more than once
+checkIfNotRepeted :: [String] -> Parser ()
+checkIfNotRepeted l = foldM_ (\acc e ->
+    if S.member e acc
+        then fail ("Repeated variable name: " ++ show e)
+        else return $ S.insert e acc) S.empty l
 
 
 
@@ -213,6 +224,7 @@ parseLambda :: Parser ParseTree
 parseLambda = do
     readOperator "\\"
     vars <- try (some (parseVarAndFuncNames "variable"))
+    checkIfNotRepeted vars
     readOperator "->"
     body <- parseExprHelper
     return (foldr TFunc body vars)
@@ -297,6 +309,7 @@ parseFun = do
     readString "fun"
     name <- parseVarAndFuncNames "function"
     vars <- try (many (parseVarAndFuncNames "variable"))
+    checkIfNotRepeted vars
     readOperator "="
     body <- parseExprHelper
     readOperator ";"

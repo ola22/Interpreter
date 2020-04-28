@@ -1,0 +1,3 @@
+//=^.^= Multiple variable declaration
+
+(\x x -> x + x) : 2 : 3;
