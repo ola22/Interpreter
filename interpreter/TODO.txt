@@ -48,7 +48,7 @@ Listy:
 
 ---------------------------------- PLANY
 
-good
+    good
 bad
 
 readme
@@ -58,15 +58,15 @@ makefile
     STDINA
 cabal init
 
-bledy z linijkami                   !!!!!!!!!!!!!!!!!!
+bledy z linijkami                   !!!!!!!!!!!!!!!!!! TRUDNE
 monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
-TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
 
 if e1 e2                            !!!!!!!!!!!!!!!!!!
 def i fun errory                    !!!!!!!!!!!!!!!!!!
-nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!!
+nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!! TRUDNE
 
 listy tak porządnie!!!!!
-list ten bug :/                     !!!!!!!!!!!!!!!!!!
+list ten bug :/                     !!!!!!!!!!!!!!!!!! TRUDNE
 
 
