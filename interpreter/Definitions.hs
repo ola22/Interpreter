@@ -24,9 +24,9 @@ data Data = DInt Integer
             | DEvaluatedList [Data]
 
 instance Show Data where
-    show (DInt x) = "DInt " ++ show x
-    show (DBool b) = "DBool " ++ show b
-    show (DFunc s t e) = "DFun " ++ show s ++ show t ++ show e
+    show (DInt x) = show x 
+    show (DBool b) = show b
+    show (DFunc s _ _) = "Given function of argument " ++ show s
     show (DPrimi (PrimitiveFunc n _)) = "DPrimi " ++ show n
     show (DListPrimi (PrimitiveListFunc n _)) = "DListPrimi " ++ show n
     show (DError err) = "DError: " ++ err
