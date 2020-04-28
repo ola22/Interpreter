@@ -2,16 +2,16 @@
     - operacje listy
     - bledy wykonania
 
-- katalog good
-- katalog bad
+-    katalog good
+    - katalog bad
 - makefile
 - tego cabal inita
-- podopisywac komentarze
+    - podopisywac komentarze
 
 - DODAC NAZWY PRYMITYWOW!!!!!!!!!!!!!!!!! -> do wypisywania wsyztskiego
 
-- FUN czego nie wrzuce bedzie dobrze
-- def -> sprawdzic, co jak ktos da defowi funkcje, dalam ze jest tez do lambd i ifow i elo
+    - FUN czego nie wrzuce bedzie dobrze
+    - def -> sprawdzic, co jak ktos da defowi funkcje, dalam ze jest tez do lambd i ifow i elo
 - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze
 - dodac enva jako monade readera?????
 
@@ -32,17 +32,17 @@ JAK ROBIE TYLKO NA 20 PKT:
 
 JAK ROBIE NA 25 PKT:
     - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
-    - statyczne wizanie -> juz mam :)
-    - typedef -> nie
-    - listy z patternmatchingiem -> nie
-    - listy zagnieżdżone itd
+        - statyczne wizanie -> juz mam :)
+        - typedef -> nie
+        - listy z patternmatchingiem -> nie
+        - listy zagnieżdżone itd
 
 
 Listy:
     -   LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
     - sprawdzenie, czy tego samego typu
         - concat
-    - tail od funkcji????
+        - tail od funkcji????                                          JEEEEEEJ UDAŁO SIĘ <3
 
 
 
@@ -52,7 +52,7 @@ Listy:
     bad
 
 readme
-tabelka
+    tabelka
 
 makefile
     STDINA
@@ -63,10 +63,11 @@ monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
 TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
 
 if e1 e2                            !!!!!!!!!!!!!!!!!!
-def i fun errory                    !!!!!!!!!!!!!!!!!! -> ???
-    nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!! TRUDNE -> jescze te w defach
 
-listy tak porządnie!!!!!
-    list ten bug :/                     !!!!!!!!!!!!!!!!!! TRUDNE -> <3
+    listy tak porządnie!!!!!
+    list ten bug :/                          !!!!!!!!!!!!!!!!!! TRUDNE -> <3
 
+? listy tego samego typu?
+? def i fun errors?
+? def multiple declarations ?
 

@@ -11,8 +11,8 @@ For 20 points
   + 06 (run-time errors)
   Lists:
     07 (with pattern matching)
-  + 08 (built-in operations) maybe
-  + 09 ("syntax sugar") maybe
+  + 08 (built-in operations)
+  + 09 ("syntax sugar")
   
 For 25 points
   + 10 (lists of any type, nested lists and lists of functions)
@@ -25,7 +25,7 @@ For 30 points
   15 (nested pattern matching, complete test) ? when enough time
 
 Bonus
-  16 (polimorfic types with types reconstruction algorithm)
+  16 (polimorphic types with types reconstruction algorithm)
 
 
 
