@@ -1,0 +1,6 @@
+//=^.^= If statement (combined with arithmetic and logical operations)
+
+if (true || false) then false else true;  //=^.^= False
+
+if false then 22 else 20 + 6;   //=^.^= 26
+

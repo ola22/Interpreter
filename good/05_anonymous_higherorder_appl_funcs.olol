@@ -1,0 +1,16 @@
+//=^.^= Anonymous functions 
+(\x -> x + 2) : 2;  //=^.^= 4
+
+//=^.^= Anonymous, multiargument function
+(\x y -> x + y * 2) : 2 : 3;  //=^.^= 8
+
+
+//=^.^= Application, higher order functions
+fun f_add x y = x + y;
+fun callAdd fadd x y = fadd : x : y;
+callAdd : f_add : 2 : 3; //=^.^= 5
+
+
+//=^.^= Polymorphic functions
+fun id x = x;
+if (id : true) then (id : 4) else (id : 6);  //=^.^= 4

@@ -1,0 +1,7 @@
+//=^.^=  Static binding (if the binding was dynamic the output would be 10)
+
+def static = 3;
+fun y z = z + static;
+
+(\static -> (y : static)) : 5;   //=^.^= 8
+

@@ -1,0 +1,7 @@
+//=^.^= Int type
+def x = 1;
+x;
+
+//=^.^= Bool type
+def b = true;
+b;

@@ -1,3 +1,12 @@
+//=^.^=  Static binding (if the binding was dynamic the output would be 10)   12
+def x = 3;
+fun y z = z + x;
+
+(\x -> (y : x)) : 5;   //=^.^= 8
+
+
+
+/=^.^=
 def łoś = 15 * 2;
 fun mućka = \x -> x + 2;
 fun alpaczka b = if b then 44 else 66;
@@ -11,7 +20,7 @@ head (tail lista_ze_zmiennymi3);
 head (empty);
 head (1 + 2);
 head (empty);
-
+=^.^=/
 
 
 /=^.^=

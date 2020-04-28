@@ -1,0 +1,9 @@
+//=^.^=  Function which uses lists, if, multiargument, higher order
+
+fun combination_fun f l x b = if b then (f : l : x) * 2
+                 else (f : (tail l) : x) * 2;
+
+fun ret_head_plus_x l x = (head l) + x;
+
+combination_fun : ret_head_plus_x : [5, 4] : 6 : true;  //=^.^=  22
+combination_fun : ret_head_plus_x : [5, 4] : 6 : false;  //=^.^=  20

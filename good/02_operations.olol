@@ -1,0 +1,21 @@
+//=^.^= Arithmetical operations
+12 + 2 * 3 + (5 - 4) * 8;   //=^.^=  26
+120 - 300;    //=^.^=  -180
+8 / 2;   //=^.^=  4
+(479 / 2) % 2;  //=^.^= 1
+
+
+//=^.^= Comparison operations
+2 < 4;    //=^.^= True
+6 == 6;   //=^.^= True
+7 != 7;   //=^.^= False
+
+
+//=^.^= Logical operations
+true || false;  //=^.^= True
+true && false;  //=^.^= False
+
+
+//=^.^= Combinations
+2 < 4 && 7 != 7;  //=^.^= False
+2 < 44 - 50;    //=^.^= False

@@ -1,0 +1,4 @@
+//=^.^= "Syntax sugar" for lists
+def sugar = [1, 2, 3, 0-10, 20 * 4];
+sugar;     //=^.^=  [1,2,3,-10,80]
+

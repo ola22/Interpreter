@@ -64,6 +64,7 @@ TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 if e1 e2                            !!!!!!!!!!!!!!!!!!
 def i fun errory                    !!!!!!!!!!!!!!!!!!
+nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!!
 
 listy tak porządnie!!!!!
 list ten bug :/                     !!!!!!!!!!!!!!!!!!

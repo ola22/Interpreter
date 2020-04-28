@@ -1,13 +1,268 @@
+//=^.^= Int type 01
+def x = 1;
+x;
 
-def x = 3;
-fun f y = x + y;
-f : 2;  //=^.^= powinno byc 5
+//=^.^= Bool type
+def b = true;
+b;
 
-120 - 300;    //=^.^= powinno byc -180
 
-/=^.^="
-   tam wyzej powinno byc 5
+
+//=^.^= Arithmetical operations 02
+
+12 + 2 * 3 + (5 - 4) * 8;   //=^.^=  26
+120 - 300;    //=^.^=  -180
+8 / 2;   //=^.^=  4
+(479 / 2) % 2;  //=^.^= 1
+
+
+//=^.^= Comparison operations
+2 < 4;    //=^.^= True
+6 == 6;   //=^.^= True
+7 != 7;   //=^.^= False
+
+
+//=^.^= Logical operations
+true || false;  //=^.^= True
+true && false;  //=^.^= False
+
+
+//=^.^= Combinations
+2 < 4 && 7 != 7;  //=^.^= False
+2 < 44 - 50;    //=^.^= False
+
+
+
+
+/=^.^= comments
+   This is
+   a block comment
 =^.^=/
+
+//=^.^= This is a single line comment
+
+
+
+
+//=^.^= If statement 03  02                             -> if z funkcjami i algebraicznymi i listami
+if (true || false) then false else true;   //=^.^= False
+
+if false then 22 else 20 + 6;   //=^.^= 26
+
+
+
+//=^.^= Multiargument functions   04                                   -> rekurencja list, funkcje list
+fun multi a b c = 20 * a + b * c;
+multi : 1 : 2 : 6;  //=^.^= 32
+
+//=^.^= Recursion
+fun rec n = if n == 1 then n else n * rec : (n - 1);
+rec : 6;   //=^.^=  720
+
+//=^.^= Recursion in two func (each one calls the other one)
+fun rec1 x = if x == 1 then x else x * rec2 : (x - 1);
+fun rec2 x = if x == 1 then x else x + rec1 : (x - 1);
+rec1 : 3;   //=^.^= 9
+
+
+
+//=^.^= Anonymous functions   05  
+(\x -> x + 2) : 2;  //=^.^= 4
+
+//=^.^= Anonymous, multiargument function
+(\x y -> x + y * 2) : 2 : 3;  //=^.^= 8
+
+
+//=^.^= Application, higher order functions
+fun f_add x y = x + y;
+fun callAdd fadd x y = fadd : x : y;
+callAdd : f_add : 2 : 3; //=^.^= 5
+
+//=^.^= Polymorphic functions
+fun id x = x;
+if (id : true) then (id : 4) else (id : 6);  //=^.^= 4
+
+
+
+//=^.^= Lists   08 
+def l = [1, 2, 3, 4];
+l;  //=^.^= [1,2,3,4]
+
+//=^.^= Function empty
+empty;   //=^.^= []
+
+//=^.^= Function isEmpty
+isEmpty empty;   //=^.^= True
+isEmpty [];    //=^.^= True
+isEmpty [1, 2];   //=^.^= False
+isEmpty l;   //=^.^= False (on variable)
+
+//=^.^= Function head
+head [3, 1, 2];   //=^.^= 3
+head [1 + 3 * 4, 1, 2];  //=^.^=  13
+head l;   //=^.^= 1 (on variable)
+
+//=^.^= Function tail
+tail [3, 1, 2];   //=^.^= [1,2]
+tail [2, 1 + 3 * 4, 1, 2];  //=^.^=  [13,1,2]
+tail l;   //=^.^= [2,3,4] (on variable)
+
+//=^.^= Function concat
+concat [1, 2] [4, 5, 6];   //=^.^= [1,2,4,5,6]
+concat l [1, 2];   //=^.^= [1,2,3,4,1,2]
+def l2 = [4];
+concat l l2;    //=^.^= [1,2,3,4,4] (on variable)
+concat [] [1];   //=^.^=  [1]
+concat [2 - 4] [];   //=^.^=  [-2]
+
+//=^.^= Combination of those functions
+head (concat [] [true, false]);   //=^.^=  True
+
+isEmpty (concat [] [1, 2]);   //=^.^=  False
+
+head (tail (tail (tail l)));  //=^.^=  4
+
+head (tail concat empty [1, 2]);   //=^.^=  2
+
+
+
+//=^.^= "Syntax sugar" for Lists 09
+def sugar = [1, 2, 3, 0-10, 20 * 4];
+sugar;     //=^.^=  [1,2,3,-10,80]
+
+
+
+
+//=^.^=  Lists of any type     10 08 03
+def l_int = [1, 2, 3];
+l_int;
+
+def l_bool = [true, false, true];
+l_bool;      //=^.^=  [True,False,True]
+
+
+//=^.^=  Lists of variables
+def a = 3 + 5;
+def b = true;
+[a, b];   //=^.^=  [8,True]
+
+
+//=^.^=  Lists of ifs
+head [if true then 2 else 4, 5, 7, 8];    //=^.^=  2
+tail [if true then 2 else 4, 12, if false then 2 else 4, 8];   //=^.^=  [12,4,8]
+
+
+//=^.^=  Lists of functions
+//=^.^=  higher order, multui lambda and "variable" function inside list
+fun sqr x = x * x;
+def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
+(head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
+(head (tail list_of_funcs)) : sqr : 3;   //=^.^=  9 
+
+fun new b = if b then 44 else 66;
+(head (concat [new] list_of_funcs)) : false;  //=^.^=  66 
+
+
+//=^.^=  Nested lists
+head [[2, 3], 1, 2];   //=^.^=  [2, 3]
+def nested = [[[[111, 2], 3], 4], 5];
+head (head (head (head nested)));  //=^.^=  111
+
+
+//=^.^=  Nested lists with different types
+def nested_func_list = [[[\x y -> x + y * 2, \x y -> x + y], [[[sqr]]]], [[sqr]]];
+def second_func_from_list = head (tail (head (head nested_func_list)));
+second_func_from_list : 2 : 18;   //=^.^=  20
+
+
+//=^.^=  Nested lists with list functions
+[concat [] [1, 2], [3, 8], tail nested];  //=^.^=  [[1,2],[3,8],[5]]
+
+
+
+
+//=^.^=  Static binding (if the binding was dynamic the output would be 10)   12 ???
+def static = 3;
+fun y z = z + static;
+
+(\static -> (y : static)) : 5;   //=^.^= 8
+
+
+
+
+
+
+//=^.^=  Functions taking lists as arguments/returning lists 04 08 10
+fun ret_concat l1 l2 = concat l1 l2;
+ret_concat : [1, [2, 3], 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,[2,3],4,5,11,3]
+
+
+
+
+//=^.^=  If with lists     03 08 10
+if (head [true, false]) 
+   then empty
+   else [1, 2]; //=^.^=  []
+
+//=^.^=  If with functions
+if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
+
+//=^.^= If returning functions
+fun f1 x = x;
+fun f2 x = 2 * x;
+(if 1 == 1 then f1 else f2) : 5;   //=^.^= ok -> 5
+(if false then f1 else f2) : 5;   //=^.^= ok -> 10
+
+//=^.^=  If with nested lists
+if (false) then [[[1]]] else (concat [[[2]]] [[[3]]]); //=^.^=  [[[2]], [[3]]]
+
+
+//=^.^=  If with list of function
+if ((head [\x -> x, \y -> y + y]) : true) then 4 else 5;  //=^.^=  4
+
+
+
+
+//=^.^=  Function which uses lists, if, multiargument, higher order   03 04 05 08
+fun combination_fun f l x b = if b then (f : l : x) * 2
+                 else (f : (tail l) : x) * 2;
+
+fun ret_head_plus_x l x = (head l) + x;
+
+combination_fun : ret_head_plus_x : [5, 4] : 6 : true;  //=^.^=  22
+combination_fun : ret_head_plus_x : [5, 4] : 6 : false;  //=^.^=  20
+
+
+
+
+//=^.^=  List recursion   04 08
+def rec_l = [1, 2, 3, 4];
+fun rec_list1 l = if (isEmpty l) then [true] else (rec_list1 : (tail l));
+rec_list1 : rec_l;       //=^.^= [True]
+
+
+fun rec_list2 n l = if (n == 0) 
+                        then l 
+                        else rec_list2 : (n - 1) : (concat l [n]) ;
+rec_list2 : 5 : [];   //=^.^=  [5,4,3,2,1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -24,68 +279,32 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
 
 
-(\x y -> x + y * 2) : 2 : 3;  //=^.^= powinno byc 8
-\x y -> x + y * 2; //=^.^= Given function od argument x
 
 
 
-//=^.^= Comparation operators
-2 == 2;  //=^.^= True
-2 != 2;  //=^.^= False
 
 
 
 
 /=^.^=
 
-
-
+head [];
+tail [];
 
 2 == true; //=^.^= error type
 
-
 def a = 1;
-
 
 7 : 7;
 
-//=^.^= Higher order functions
-fun f_add x y = x + y;
-fun callAdd fadd x y = fadd : x : y;
-callAdd : f_add : 2 : 3; //=^.^= 5
-
-
-
-
 (\x y -> x + y * 2) : p : 3;  //=^.^= invalid identifier p  -> ok
 (\x y -> x + y * p) : 2 : 3;  //=^.^= type zly  ->  a chcemy invalid identifier :( -> jak wywale ta rekurencje to jest ok
-
-
-
-
-//=^.^= Static binding (if the binding was dynamic the output would be 10)
-def krowa = 3;
-fun myszka pies = pies + krowa;
-(\krowa -> (myszka : krowa)) : 5;    //=^.^= powinno być 8
-
-
 
 
 //=^.^= if errors
 if true then 2 else false; //=^.^= error e1 not match e2 NIEEEEEEEE, bo leniwie
 if 2 then 2 else false; //=^.^= error b not boolean
 if (\x y -> x + y * 2) then 2 else false; //=^.^= error b not boolean
-if ((\x -> x) : true) then 22 else 33; //=^.^= powinno byc 22
-if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
-
-
-
-
-//=^.^= if with functions
-fun f1 x = x;
-fun f2 x = 2 * x;
-(if 1 == 1 then f1 else f2) : 5;   //=^.^= ok -> 5
-(if false then f1 else f2) : 5;   //=^.^= ok -> 10
 
 
 
@@ -100,7 +319,6 @@ def koko = 4 / 0;
 if true then koko else 4;    //=^.^=  chcemy błąd
 
 
-
   def i fun
 
 def k s = k + 2;    -> nie sparsuje sie
@@ -110,49 +328,36 @@ def = lambda jest u nas ok <3
 
 
 
-
-
-//=^.^=  Lists
-def lo = [3, 1, 2];
-
 lo == 2;     //=^.^=  zły type
 
+//=^.^=   zagnieżdżone listy
+//=^.^=   def haha2 = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]]; -> error inside list
+//=^.^=   [1, 2 - true, 4, 5]; -> error inside list
 
 
+//=^.^=  concat łoś (mućka : 2);    //=^.^=   concat not to list object
+//=^.^= isEmpty 1;    //=^.^=   concat not to list object
 
+//=^.^= def true = 2;   parse error reserved syntax
+
+head pipis; //=^.^=  błąd: head na pustej liście
+
+
+fun list_wrong = [true == false, 1, 2];
+list_wrong;   //=^.^=  błąd wewnątrz ewaluacji listy
+
+
+head (1 + 2);
+head (empty);
 
 =^.^=/
 
 
-head [1, 1, 2];   //=^.^=  1
-empty;
-
-fun list_fun = [3, 1, 2];
-list_fun;
-head [[2, 3], 1, 2];   //=^.^=  [2, 3]
-tail [[2, 3], 1, 2];
-head [1 + 3 * 4, 1, 2];  //=^.^=  12
-head [if true then 2 else 4, 5, 7, 8];    //=^.^=  2
-tail [if true then 2 else 4, 12, if false then 2 else 4, 8];    //=^.^=  [12, 4, 8]
-
-
-fun lii x = x;
-lii : [1, 2, 4, 5];
-
-if (head [true, false]) then 23 else 48; //=^.^=  23
 
 
 
-//=^.^=  def dla listy
-def l = [1, 2, 3, 4];
-fun helo l = l;
-helo : l;
-tail l;
 
 
-//=^.^=  parsing empty
-def pipis = [];
-helo : pipis;
 
 
 //=^.^=  lista zmiennych
@@ -173,66 +378,12 @@ head lista_ze_zmiennymi3;
 //=^.^=   tail lista_ze_zmiennymi3;                                          NIE DZIAŁA!!!!!!!!!!
 
 
-//=^.^=  head i tail na zmiennej
-head l;
-
-
-
 //=^.^=   zagnieżdżony head tail
 head (tail lista_ze_zmiennymi3);
 
 
-//=^.^=   zagnieżdżone listy
-//=^.^=   def haha2 = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]]; -> error inside list
-//=^.^=   [1, 2 - true, 4, 5]; -> error inside list
 def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
 tail haha;
-
-def nested = [[[[111, 2], 3], 4], 5];
-head (head (head (head nested)));
-
-
-//=^.^=   concat
-concat [1, 2, 3] [4, 5, 6];
-concat [1 -2, 4, 8] [];
-concat [] [true, false];
-head (concat [] [true, false]);   //=^.^=   true
-(head (concat lista_ze_zmiennymi2 lista_ze_zmiennymi)) : false;    //=^.^=   66
-//=^.^=  concat łoś (mućka : 2);    //=^.^=   concat not to list object
-
-
-
-//=^.^=   isEmpty
-isEmpty empty;
-isEmpty [];
-isEmpty [1, 2];
-//=^.^= isEmpty 1;    //=^.^=   concat not to list object
-
-
-//=^.^= list recurency
-def liista = [1, 2, 3, 4];
-fun rec_list l = if (isEmpty l) then [true] else (rec_list : (tail l));
-rec_list : liista;            //=^.^=   List: [DBool True]
-
-
-fun rec_list2 n l = if (n == 0) then l else rec_list2 : (n - 1) : (concat l [n]) ;
-rec_list2 : 5 : [];        //=^.^=      List: [DInt 5,DInt 4,DInt 3,DInt 2,DInt 1]
-
-
-
-
-//=^.^= def true = 2;   parse error reserved syntax
-
-head pipis; //=^.^=  błąd: head na pustej liście
-
-
-
-fun list_wrong = [true == false, 1, 2];
-list_wrong;   //=^.^=  błąd wewnątrz ewaluacji listy
-
-
-head (1 + 2);
-head (empty);
 
 
 

@@ -1,0 +1,13 @@
+//=^.^=  List recursion
+
+def rec_l = [1, 2, 3, 4];
+fun rec_list1 l = if (isEmpty l) then [true] else (rec_list1 : (tail l));
+rec_list1 : rec_l;       //=^.^= [True]
+
+
+
+fun rec_list2 n l = 
+    if (n == 0) 
+        then l 
+        else rec_list2 : (n - 1) : (concat l [n]) ;
+rec_list2 : 5 : [];   //=^.^=  [5,4,3,2,1]
