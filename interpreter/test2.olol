@@ -1,14 +1,11 @@
-//=^.^= ERROR: Unknown function
-f : 4;
 
-(\x x -> x + x) : 2 : 3;
+[(\x y -> x / y), \x -> 2 * x];
 
-(\x y -> x / y) : 2 : 0;
+(\x y -> x / y);
 
 
 
 
-/=^.^=
 def łoś = 15 * 2;
 fun mućka = \x -> x + 2;
 fun alpaczka b = if b then 44 else 66;
@@ -18,11 +15,10 @@ def lista_ze_zmiennymi3 = [mućka,  mućka, łoś];
 fun f = tail lista_ze_zmiennymi3;
 
 head lista_ze_zmiennymi3;
-head (tail lista_ze_zmiennymi3);
-head (empty);
-head (1 + 2);
-head (empty);
-=^.^=/
+tail lista_ze_zmiennymi3;
+lista_ze_zmiennymi3;
+
+
 
 
 /=^.^=

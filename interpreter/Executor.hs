@@ -26,7 +26,6 @@ runProgramm file input = do
     case parsedProg of
         Left parse_error -> putStrLn (errorBundlePretty parse_error)
         Right programm -> putStrLn (executeProgramm programm)
-        -- Right programm -> putStrLn (show programm)
 
 
 -- executeProgramm executes given, parsed programm

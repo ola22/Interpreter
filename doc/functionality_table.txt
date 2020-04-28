@@ -2,23 +2,23 @@ First I plan to create language for 20 points and than probably the one for 25 p
 If I have enough time I would do the one for 30 points too
 
 
-Na 20 punktów
-  + 01 (two types) +
-  + 02 (arithmetical operations, comparison) +
-  + 03 (if clause) +
-  + 04 (functions with multiple arguments, recurrency) +
-  + 05 (anonymous functions, higher order functions and partial application) +
-  + 06 (run-time errors) +
+For 20 points
+  + 01 (two types)
+  + 02 (arithmetical operations, comparison)
+  + 03 (if clause)
+  + 04 (functions with multiple arguments, recurrency)
+  + 05 (anonymous functions, higher order functions and partial application)
+  + 06 (run-time errors)
   Lists:
-  07 (with pattern matching) +
+    07 (with pattern matching)
   + 08 (built-in operations) maybe
   + 09 ("syntax sugar") maybe
   
 For 25 points
-  10 (lists of any type, nested lists and lists of functions) +
-  11 (simple algebraic types with one level pattern matching) +
-  12 (static identifier binding) +
-  13 (static typing) +
+  + 10 (lists of any type, nested lists and lists of functions)
+    11 (simple algebraic types with one level pattern matching)
+  + 12 (static identifier binding)
+  13 (static typing)
 
 For 30 points
   14 (polimorfic and recurrency algebraic types) ? when enough time

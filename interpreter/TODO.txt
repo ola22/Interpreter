@@ -49,7 +49,7 @@ Listy:
 ---------------------------------- PLANY
 
     good
-bad
+    bad
 
 readme
 tabelka
@@ -63,10 +63,10 @@ monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
 TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
 
 if e1 e2                            !!!!!!!!!!!!!!!!!!
-def i fun errory                    !!!!!!!!!!!!!!!!!!
-nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!! TRUDNE
+def i fun errory                    !!!!!!!!!!!!!!!!!! -> ???
+    nadpisywanie wartość -> error       !!!!!!!!!!!!!!!!!! TRUDNE -> jescze te w defach
 
 listy tak porządnie!!!!!
-list ten bug :/                     !!!!!!!!!!!!!!!!!! TRUDNE
+    list ten bug :/                     !!!!!!!!!!!!!!!!!! TRUDNE -> <3
 
 

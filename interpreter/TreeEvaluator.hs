@@ -37,7 +37,7 @@ evaluateTree env (TFAppl f v) =
             DFunc var_name ftree fenv ->
                 evaluateTree (M.insert var_name var_val fenv) ftree
             DError err -> DError err
-            _ -> DError ("Trying to apply to sth, that is not a proper function")
+            _ -> DError ("Trying to apply argumentto non-function object")
 
 
 
