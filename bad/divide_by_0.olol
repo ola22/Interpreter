@@ -1,0 +1,2 @@
+//=^.^= ERROR: dividing by 0
+(\x y -> x / y) : 2 : 0;

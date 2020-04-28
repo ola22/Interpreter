@@ -1,0 +1,3 @@
+//=^.^= ERROR: ParseError : def is for variables, not functions
+
+def k s = k + 2;

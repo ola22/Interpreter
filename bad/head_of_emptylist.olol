@@ -1,0 +1,3 @@
+//=^.^= ERROR: head, tail of empty list
+head empty;
+tail [];

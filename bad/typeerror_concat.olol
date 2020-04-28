@@ -1,0 +1,3 @@
+//=^.^= ERROR: concat of not list type
+
+concat 1 [2, 3];

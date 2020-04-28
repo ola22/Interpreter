@@ -1,0 +1,4 @@
+//=^.^=  List functions with functions 
+
+fun list_maker a b c = [a, b, c];
+concat (list_maker : 4 : 8 : 9) [4];  //=^.^= [4,8,9,4]

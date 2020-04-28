@@ -1,0 +1,4 @@
+//=^.^= ERROR: Wrong type in if statement: not a bool expr
+//=^.^= It is parsing, but not typing
+
+if (\x y -> x + y * 2) then 2 else false;

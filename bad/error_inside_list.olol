@@ -1,0 +1,4 @@
+//=^.^= ERROR: Evaluation, type error inside list (true - 1)
+
+def l = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]];
+l;

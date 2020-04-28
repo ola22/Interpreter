@@ -248,7 +248,9 @@ rec_list2 : 5 : [];   //=^.^=  [5,4,3,2,1]
 
 
 
-
+//=^.^=  List functions with functions   04 08
+fun list_maker a b c = [a, b, c];
+concat (list_maker : 4 : 8 : 9) [4];  //=^.^= [4,8,9,4]
 
 
 
@@ -288,38 +290,67 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
 /=^.^=
 
-head [];
+//=^.^= ERROR: dividing by 0
+(\x y -> x / y) : 2 : 0;
+
+
+//=^.^= ERROR: head, tail of empty list
+head empty;
 tail [];
 
+//=^.^= ERROR: concat of not list type
+concat 1 [2, 3];
+
+
+//=^.^= ERROR: Type error: == is reserved for int expressions
 2 == true; //=^.^= error type
 
-def a = 1;
 
+//=^.^= ERROR: Trying to apply argument to non-function object
 7 : 7;
 
-(\x y -> x + y * 2) : p : 3;  //=^.^= invalid identifier p  -> ok
+
+//=^.^= ERROR: Invalid identifier p
+(\x y -> x + y * 2) : p : 3;
+
+//=^.^= ERROR: Unknown function
+f : 4;
+
+
+//=^.^= ERROR: Wrong type in if statement: not a bool expr
+//=^.^= It is parsing, but not typing
+if (\x y -> x + y * 2) then 2 else false;
+
+
+//=^.^= ERROR: ParseError : olol reserved syntax
+def tail = 5;
+
+
+//=^.^= ERROR: ParseError : def is for variables, not functions
+def k s = k + 2;
+
+
+//=^.^= ERROR: Evaluation, type error inside list (true - 1)
+def l = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]];
+l;
+
+
+
+
+
+
 (\x y -> x + y * p) : 2 : 3;  //=^.^= type zly  ->  a chcemy invalid identifier :( -> jak wywale ta rekurencje to jest ok
 
 
 //=^.^= if errors
 if true then 2 else false; //=^.^= error e1 not match e2 NIEEEEEEEE, bo leniwie
-if 2 then 2 else false; //=^.^= error b not boolean
-if (\x y -> x + y * 2) then 2 else false; //=^.^= error b not boolean
-
-
 
 
 //=^.^= def ola = fun pi pii = pii;  -> parse error reserved syntax
-pi : 2;  
-(if c then 1 else 2) : true;   //=^.^= invalid identifier c
-
 
 
 def koko = 4 / 0;
 if true then koko else 4;    //=^.^=  chcemy błąd
-
-
-  def i fun
 
 def k s = k + 2;    -> nie sparsuje sie
 uzycie fun, jak defa i cokolwiek jest ok  -> <3
@@ -395,6 +426,6 @@ tail haha;
    head i tail od funkcji i od empty.
    head i tail od siebie samych;
    head, tail dla pustych
-concat !!!!
+   concat !!!!
 TAIL OD NIEARGUMENTOWANYCH FUNKCJI NIE DZIALA
 =^.^=/
