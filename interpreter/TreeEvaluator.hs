@@ -25,7 +25,7 @@ evaluateTree env (TData tdata) =
 evaluateTree env (TVar var) =
     let maybeVar = M.lookup var env
     in case maybeVar of
-            Nothing -> DError ("Used invalid identifier: " ++ var)
+            Nothing -> DError ("Used unknown identifier: " ++ var)
             Just res -> res
 evaluateTree env (TFunc var_name tree) = DFunc var_name tree env
 evaluateTree env (TFAppl f v) = 
