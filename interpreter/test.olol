@@ -1,3 +1,5 @@
+[-1, -2, -3];
+
 //=^.^= Int type 01
 def x = 1;
 x;
@@ -416,7 +418,8 @@ head (tail lista_ze_zmiennymi3);
 def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
 tail haha;
 
-
+-20 + 4;
+-20 - -60;
 
 
 /=^.^=

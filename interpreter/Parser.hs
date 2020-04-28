@@ -20,11 +20,8 @@ import TreeEvaluator
 
 type Parser = Parsec Void String
 
--- TODO
--- signed numbers
 
--- eval tego z ifem
--- add parseIdentifier
+
 
 
 
@@ -67,15 +64,6 @@ readListOp s = try $ string s
             *> readSpacesAndComments
 
 
--- Function checks if any element from list appears
--- there more than once
-checkIfNotRepeted :: [String] -> Parser ()
-checkIfNotRepeted l = foldM_ (\acc e ->
-    if S.member e acc
-        then fail ("Repeated variable name: " ++ show e)
-        else return $ S.insert e acc) S.empty l
-
-
 
 
 
@@ -88,16 +76,23 @@ parseParens :: Parser a -> Parser a
 parseParens = between (symbol "(") (symbol ")")
 
 
--- ParseNumber parses integers
--- (negative ones are not allowed)
-parseNumber :: Parser ParseTree                    --- parseTypeInt zwracam konstr
-parseNumber = do
+-- ParseNumber parses positive integers
+parsePositiveNumber :: Parser ParseTree                    --- parseTypeInt zwracam konstr
+parsePositiveNumber = do
     n <- lexeme L.decimal
     return (TData (DInt n))
 {- | pInt
 >>> parseTest parseNumber "376"
 TData DInt 376
 -}
+
+
+-- ParseNegativeNumber parses negative integers
+parseNegativeNumber :: Parser ParseTree
+parseNegativeNumber = do
+    readOperator "-"
+    n <- lexeme L.decimal
+    return (TData (DInt (0 - n)))
 
 
 -- ParseNumber parses boolExpressions
@@ -193,6 +188,15 @@ parseVarAndFuncNames purpose = do
         else return name
 
 
+-- Function checks if any element from list appears
+-- there more than once
+checkIfNotRepeted :: [String] -> Parser ()
+checkIfNotRepeted l = foldM_ (\x e ->
+    if S.member e x
+        then fail ("Repeated variable name: " ++ show e)
+        else return $ S.insert e x) S.empty l
+
+
 -- Function checks if a name chosen by user is not
 -- an Olol keyword
 isReservedSyntax :: String -> Bool
@@ -245,7 +249,8 @@ parseTerm = choice
   , parseIf
   , parseBool
   , parseidentifier
-  , parseNumber
+  , parsePositiveNumber
+  , parseNegativeNumber
   --, parseIdentifier
   ]
 
