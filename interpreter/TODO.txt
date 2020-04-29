@@ -70,4 +70,5 @@ if e1 e2                            !!!!!!!!!!!!!!!!!!
 ? listy tego samego typu?
 ? def i fun errors?
 ? def multiple declarations ?
+??? to ze nie ma bledu za malo argumenntow, tylko zwraca funkcje ???
 

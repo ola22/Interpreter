@@ -1,7 +1,6 @@
 //=^.^=  Static binding (if the binding was dynamic the output would be 10)
 
 def static = 3;
-fun y z = z + static;
+fun static_fun z = z + static;
 
-(\static -> (y : static)) : 5;   //=^.^= 8
-
+(\static -> (static_fun : static)) : 5;   //=^.^= 8

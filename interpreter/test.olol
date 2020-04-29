@@ -185,9 +185,9 @@ second_func_from_list : 2 : 18;   //=^.^=  20
 
 //=^.^=  Static binding (if the binding was dynamic the output would be 10)   12 ???
 def static = 3;
-fun y z = z + static;
+fun static_fun z = z + static;
 
-(\static -> (y : static)) : 5;   //=^.^= 8
+(\static -> (static_fun : static)) : 5;   //=^.^= 8
 
 
 
@@ -402,24 +402,26 @@ def lista_ze_zmiennymi2 = [alpaczka, mućka, alpaczka];
 def lista_ze_zmiennymi3 = [mućka, mućka, alpaczka];
 
 
-head lista_ze_zmiennymi;
-head lista_ze_zmiennymi2;
+head lista_ze_zmiennymi;  //=^.^= 30
+head lista_ze_zmiennymi2;  //=^.^= function
 (head lista_ze_zmiennymi2) : true;    //=^.^=  44
 
 
-head lista_ze_zmiennymi3;
-//=^.^=   tail lista_ze_zmiennymi3;                                          NIE DZIAŁA!!!!!!!!!!
+head lista_ze_zmiennymi3;  //=^.^= function
+tail lista_ze_zmiennymi3;
 
 
 //=^.^=   zagnieżdżony head tail
-head (tail lista_ze_zmiennymi3);
+head (tail lista_ze_zmiennymi3);  //=^.^= function
 
 
 def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
-tail haha;
+tail haha;    //=^.^=  [[4], [1,[[True,True],False]]]
 
--20 + 4;
--20 - -60;
+-20 + 4;  //=^.^=  -16
+-20 - -60;  //=^.^=   40
+2 - 4;   //=^.^=  -2
+
 
 
 /=^.^=

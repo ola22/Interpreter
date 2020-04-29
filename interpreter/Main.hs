@@ -20,3 +20,4 @@ main = do
     -- putStrLn input
     -- putStrLn file
     runProgramm file input
+    
