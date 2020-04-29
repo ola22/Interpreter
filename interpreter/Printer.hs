@@ -17,7 +17,7 @@ printProgResult (DPrimi (PrimitiveFunc n _)) = "Primitive with arg num: " ++ sho
 printProgResult (DListPrimi (PrimitiveListFunc n _)) = "Primitive with arg num: " ++ show n ++ "\n"
 printProgResult (DList l) = "Parse trees of list elements: [" ++ show l ++ "]\n"
 printProgResult (DEvaluatedList l) = "List: [" ++ printList l ++ "]\n"
-printProgResult (DError err) = "ERROR: " ++ err ++ "\n"
+printProgResult (DError err) = "RUNTIME ERROR: " ++ err ++ "\n"
 
 
 -- Function for pretty printing of lists

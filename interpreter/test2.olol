@@ -24,7 +24,6 @@ lista_ze_zmiennymi3;
 
 
 
-
 /=^.^=
 [PEDef "\322o\347" (TFAppl (TFAppl (TData DPrimi 2) (TData DInt 15)) (TData DInt 2)),
 PEFunc "mu\263ka" (TFunc "x" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TData DInt 2))),

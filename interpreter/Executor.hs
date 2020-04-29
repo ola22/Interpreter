@@ -43,30 +43,21 @@ getEnv programm =
     let 
         addToEnv :: ProgElem -> Env -> Env
         addToEnv (PEExpr _) env = env
-        addToEnv (PEDef n t) env = M.insert n (evaluateTree result t) env
-        addToEnv (PEFunc n t) env = M.insert n (evaluateTree result t) env
-        result = foldr addToEnv M.empty programm
-    in result
-
-{-
-getEnv :: Programm -> Env
-getEnv programm = 
-    let 
-        addToEnv :: ProgElem -> Env -> (Either Env Data)
-        addToEnv (PEExpr _) env = env
         addToEnv (PEDef n t) env = 
             let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> DError ("Multiple declaration of variable: " ++ n)
+                Just _ -> M.insert n (DError ("Error during evaluation." ++ 
+                                "Multiple declaration of variable: " ++ n)) env
                 Nothing -> M.insert n (evaluateTree result t) env
         addToEnv (PEFunc n t) env = 
-            let lookRes = M.lookup var env
+            let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> DError ("Multiple declaration of function: " ++ n)
+                Just _ -> M.insert n (DError ("Error during evaluation." ++ 
+                                "Multiple declaration of function: " ++ n)) env
                 Nothing -> M.insert n (evaluateTree result t) env
         result = foldr addToEnv M.empty programm
     in result
--}
+
 
 -- evaluateProgramm evaluates all expressions and function's
 -- applications, which occur in given, parsed programm.

@@ -16,7 +16,7 @@ type Env = M.Map String Data
 -- as well as functions' bodies
 data Data = DInt Integer 
             | DBool Bool 
-            | DFunc String ParseTree Env  -- bo statyczne wiazanie identyfikatorow, jeden arg to name
+            | DFunc String ParseTree Env  -- storeing env for static binding
             | DPrimi PrimitiveFunc
             | DListPrimi PrimitiveListFunc
             | DError String

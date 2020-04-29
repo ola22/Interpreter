@@ -5,8 +5,8 @@ def x = 1;
 x;
 
 //=^.^= Bool type
-def b = true;
-b;
+def b1 = true;
+b1;
 
 
 
