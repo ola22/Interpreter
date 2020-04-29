@@ -14,14 +14,14 @@ type Env = M.Map String Data
 
 -- Data is a stucture for all possible programm and functions' outputs
 -- as well as functions' bodies
-data Data = DInt Integer 
-            | DBool Bool 
-            | DFunc String ParseTree Env  -- storeing env for static binding
-            | DPrimi PrimitiveFunc
-            | DListPrimi PrimitiveListFunc
-            | DError String
-            | DList [ParseTree]
-            | DEvaluatedList [Data]
+data Data = DInt Integer  -- store integer value
+            | DBool Bool -- stores boolean value
+            | DFunc String ParseTree Env  -- stores functions created by user (env for static binding)
+            | DPrimi PrimitiveFunc  -- stores primitive (builtin) functions and operations
+            | DListPrimi PrimitiveListFunc  -- stores builtin functions for lists
+            | DError String  -- stores error messages
+            | DList [ParseTree]  -- stores list with parse trees
+            | DEvaluatedList [Data] -- stores list with already evaluated exprs
 
 instance Show Data where
     show (DInt x) = show x 

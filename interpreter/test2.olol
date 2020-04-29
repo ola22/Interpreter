@@ -16,7 +16,7 @@ fun alpaczka b = if b then 44 else 66;
 mućka : 3;
 
 def lista_ze_zmiennymi3 = [mućka,  mućka, łoś];
-fun f = tail lista_ze_zmiennymi3;
+
 
 head lista_ze_zmiennymi3;
 tail lista_ze_zmiennymi3;
@@ -31,4 +31,22 @@ PEFunc "alpaczka" (TFunc "b" (TFAppl (TFAppl (TFAppl (TData DPrimi 3) (TVar "b")
 PEExpr (TFAppl (TVar "mu\263ka") (TData DInt 3)),
 PEDef "lista_ze_zmiennymi3" (TData DList [TVar "mu\263ka",TVar "mu\263ka",TVar "\322o\347"]),
 PEExpr (TFAppl (TData DListPrimi 1) (TVar "lista_ze_zmiennymi3"))]
+
+
+function mnozenie_przez(x) {
+  return function(y) {
+    return x * y;
+  };
+}
+
+var iloczyn_5_przez = mnozenie_przez(5);
+
+console.log(iloczyn_5_przez(12)); // 60
 =^.^=/
+
+
+fun multiply x = (\y -> x * y);
+
+def multiplied_by_5 = multiply : 5;
+
+multiplied_by_5 : 12;

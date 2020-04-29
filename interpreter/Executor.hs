@@ -37,7 +37,7 @@ executeProgramm programm = let env = getEnv programm
 
 
 -- getEnv prepears and returns environment
--- for given programm
+-- for given programm.
 getEnv :: Programm -> Env
 getEnv programm = 
     let 
@@ -61,7 +61,7 @@ getEnv programm =
 
 -- evaluateProgramm evaluates all expressions and function's
 -- applications, which occur in given, parsed programm.
--- Evaluation stops after getting error
+-- Evaluation stops after getting error.
 evaluateProgramm :: Env -> Programm -> ProgResult -> ProgResult
 evaluateProgramm _ [] resList = resList
 evaluateProgramm env ((PEDef _ _):rest) resList = evaluateProgramm env rest resList
