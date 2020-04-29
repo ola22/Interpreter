@@ -5,10 +5,23 @@
 (\x y -> x + y * 2) : 2 : 3;  //=^.^= 8
 
 
+//=^.^= Closure
+fun multiply x = (\y -> x * y);
+def multiplied_by_5 = multiply : 5;
+
+multiplied_by_5 : 12;    //=^.^= 60 (5*12)
+
+
 //=^.^= Application, higher order functions
 fun f_add x y = x + y;
 fun callAdd fadd x y = fadd : x : y;
 callAdd : f_add : 2 : 3; //=^.^= 5
+
+
+//=^.^= Partial application
+fun partial x y = x + y;
+fun partial_ = partial : 2;
+partial_ : 3;    //=^.^= 5
 
 
 //=^.^= Polymorphic functions
