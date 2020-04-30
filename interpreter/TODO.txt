@@ -61,6 +61,12 @@ cabal init
 bledy z linijkami                   !!!!!!!!!!!!!!!!!! TRUDNE
 monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
 TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
+TYPE INFERENCE 
+sprawdzic, czy to type inference beda polymorphic
+czy po type inference beda polymorphic recursive -> nierozstrzygalne????
+lambda polymorphism ?? -> nierobialna
+funkcje polimorfizm -> ??? bo walnelam ze mam a w sumie to nwm
+o tym wszytskim powyżej warto by napisać gdzieś
 
 if e1 e2                            !!!!!!!!!!!!!!!!!!
 

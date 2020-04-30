@@ -15,7 +15,7 @@ import qualified Data.Set as S
 import Control.Monad
 
 import Definitions
-import TreeEvaluator
+import BuiltinPrimiFuncs
 
 
 type Parser = Parsec Void String
