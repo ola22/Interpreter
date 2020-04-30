@@ -5,6 +5,8 @@ l_int;
 def l_bool = [true, false, true];
 l_bool;      //=^.^=  [True,False,True]
 
+[1, true, -5];  //=^.^=  [1, True, -5]
+
 
 //=^.^=  Lists of variables
 def a = 3 + 5;

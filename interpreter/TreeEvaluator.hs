@@ -203,16 +203,22 @@ haskellIf [DError e, _, _] = DError e
 haskellIf [DBool b, e1, e2] = if b then e1 else e2
 haskellIf _ = DError "Given not a boolean expression in if statement"
 
-{-
-haskellIf [DError e, _, _] = DError e
-haskellIf [_, DError e, _] = DError e
-haskellIf [_, _, DError e] = DError eftreeoolean expression in if statement"
+{-}
+haskellIf :: [Data] -> Data 
+haskellIf [DError e, ~_, ~_] = DError e
+haskellIf [_, ~(DError e), ~_] = DError e
+haskellIf [_, ~_, ~(DError e)] = DError e
+haskellIf [DBool b, e1, e2] = if b then e1 else e2
+    --if (ifCheckIfExpTypesMatches e1 e2)
+        --then if b then e1 else e2
+        --else DError "Types mismatch in if branches"
+haskellIf _ = DError "Given not a boolean expression in if statement"
 
 ifCheckIfExpTypesMatches :: Data -> Data -> Bool
-ifCheckIfExpTypesMatches (DInt _) (DInt _) = True
-ifCheckIfExpTypesMatches (DBool _) (DBool _) = True
-ifCheckIfExpTypesMatches (DFunc _ _ _) (DFunc _ _ _) = True
-ifCheckIfExpTypesMatches (DPrimi _) (DPrimi _) = True
+ifCheckIfExpTypesMatches ~(DInt _) ~(DInt _) = True
+ifCheckIfExpTypesMatches ~(DBool _) ~(DBool _) = True
+ifCheckIfExpTypesMatches ~(DFunc _ _ _) ~(DFunc _ _ _) = True
+ifCheckIfExpTypesMatches ~(DPrimi _) ~(DPrimi _) = True
 ifCheckIfExpTypesMatches _ _ = False
 -}
 

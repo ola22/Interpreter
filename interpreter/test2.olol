@@ -41,7 +41,7 @@ function mnozenie_przez(x) {
 
 var iloczyn_5_przez = mnozenie_przez(5);
 
-console.log(iloczyn_5_przez(12)); // 60
+console.log(iloczyn_5_przez(12)); // 60 
 =^.^=/
 
 
@@ -50,3 +50,9 @@ fun multiply x = (\y -> x * y);
 def multiplied_by_5 = multiply : 5;
 
 multiplied_by_5 : 12;
+
+
+
+fun new x = x + 2;
+
+new : 2 : 3;
