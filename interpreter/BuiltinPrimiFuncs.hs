@@ -6,7 +6,17 @@ import TreeEvaluator
 
 
 
+----------------------------------------- Primitive operations types ------------------------------------
+-------------------------------------------- (for type inference) ---------------------------------------
 
+arOpType :: Type
+arOpType = TypeFunc TypeInt $ TypeFunc TypeInt TypeInt
+
+comOpType :: Type
+comOpType = TypeFunc TypeInt $ TypeFunc TypeInt TypeBool
+
+logOpType :: Type
+logOpType = TypeFunc TypeBool $ TypeFunc TypeBool TypeBool
 
 
 
@@ -14,7 +24,7 @@ import TreeEvaluator
 
 
 primiAdd :: PrimitiveFunc
-primiAdd = PrimitiveFunc 2 haskellAdd
+primiAdd = PrimitiveFunc "Addition" arOpType 2 haskellAdd
 
 haskellAdd :: [Data] -> Data
 haskellAdd ((DInt x):[DInt y]) = DInt (x + y)
@@ -25,7 +35,7 @@ haskellAdd _ = DError $ "Given argument of wrong type " ++
 
 
 primiSub :: PrimitiveFunc
-primiSub = PrimitiveFunc 2 haskellSub
+primiSub = PrimitiveFunc "Subtraction" arOpType 2 haskellSub
 
 haskellSub :: [Data] -> Data
 haskellSub ((DInt x):[DInt y]) = DInt (x - y)
@@ -36,7 +46,7 @@ haskellSub _ = DError $ "Given argument of wrong type " ++
 
 
 primiMul :: PrimitiveFunc
-primiMul = PrimitiveFunc 2 haskellMul
+primiMul = PrimitiveFunc "Multiplication" arOpType 2 haskellMul
 
 haskellMul :: [Data] -> Data
 haskellMul ((DInt x):[DInt y]) = DInt (x * y)
@@ -47,7 +57,7 @@ haskellMul _ = DError $ "Given argument of wrong type " ++
 
 
 primiDiv :: PrimitiveFunc
-primiDiv = PrimitiveFunc 2 haskellDiv
+primiDiv = PrimitiveFunc "Division" arOpType 2 haskellDiv
 
 haskellDiv :: [Data] -> Data
 haskellDiv (_:[DInt 0]) = DError "Divide by 0"
@@ -59,7 +69,7 @@ haskellDiv _ = DError $ "Given argument of wrong type " ++
 
 
 primiMod :: PrimitiveFunc
-primiMod = PrimitiveFunc 2 haskellMod
+primiMod = PrimitiveFunc "Modulo" arOpType 2 haskellMod
 
 haskellMod :: [Data] -> Data
 haskellMod ((DInt x):[DInt y]) = DInt (x `mod` y)
@@ -73,7 +83,7 @@ haskellMod _ = DError $ "Given argument of wrong type " ++
 ----------------------------------------- PrimitiveFunc logical operatorations ---------------------------------
 
 primiAnd :: PrimitiveFunc
-primiAnd = PrimitiveFunc 2 haskellAnd
+primiAnd = PrimitiveFunc "And" logOpType 2 haskellAnd
 
 haskellAnd :: [Data] -> Data
 haskellAnd ((DBool b1):[DBool b2]) = DBool (b1 && b2)
@@ -84,7 +94,7 @@ haskellAnd _ = DError $ "Given argument of wrong type " ++
 
 
 primiOr :: PrimitiveFunc
-primiOr = PrimitiveFunc 2 haskellOr
+primiOr = PrimitiveFunc "Or" logOpType 2 haskellOr
 
 haskellOr :: [Data] -> Data
 haskellOr ((DBool b1):[DBool b2]) = DBool (b1 || b2)
@@ -97,7 +107,7 @@ haskellOr _ = DError $ "Given argument of wrong type " ++
 ----------------------------------------- PrimitiveFunc comparison operations ---------------------------------
 
 primiEq :: PrimitiveFunc
-primiEq = PrimitiveFunc 2 haskellEq
+primiEq = PrimitiveFunc "Equal" comOpType 2 haskellEq
 
 haskellEq :: [Data] -> Data
 haskellEq ((DInt x):[DInt y]) = DBool (x == y)
@@ -108,7 +118,7 @@ haskellEq _ = DError $ "Given argument of wrong type " ++
 
 
 primiNotEq :: PrimitiveFunc
-primiNotEq = PrimitiveFunc 2 haskellNotEq
+primiNotEq = PrimitiveFunc "Not equal" comOpType 2 haskellNotEq
 
 haskellNotEq :: [Data] -> Data
 haskellNotEq ((DInt x):[DInt y]) = DBool (not (x == y))
@@ -119,7 +129,7 @@ haskellNotEq _ = DError $ "Given argument of wrong type " ++
 
 
 primiLess :: PrimitiveFunc
-primiLess = PrimitiveFunc 2 haskellLess
+primiLess = PrimitiveFunc "Less" comOpType 2 haskellLess
 
 haskellLess :: [Data] -> Data
 haskellLess ((DInt x):[DInt y]) = DBool (x < y)
@@ -130,7 +140,7 @@ haskellLess _ = DError $ "Given argument of wrong type " ++
 
 
 primiMore :: PrimitiveFunc
-primiMore = PrimitiveFunc 2 haskellMore
+primiMore = PrimitiveFunc "More" comOpType 2 haskellMore
 
 haskellMore :: [Data] -> Data
 haskellMore ((DInt x):[DInt y]) = DBool (x > y)
@@ -143,7 +153,7 @@ haskellMore _ = DError $ "Given argument of wrong type " ++
 ------------------------------------------- If statement ----------------------------------------
 
 primiIf :: PrimitiveFunc
-primiIf = PrimitiveFunc 3 haskellIf
+primiIf = PrimitiveFunc "builtinIf" (TypeFunc TypeBool $ TypeFunc (TypeVar "a") $ TypeFunc (TypeVar "a") (TypeVar "a")) 3 haskellIf
 
 haskellIf :: [Data] -> Data 
 haskellIf [DError e, _, _] = DError e
@@ -175,7 +185,7 @@ ifCheckIfExpTypesMatches _ _ = False
 ----------------------------------------- PrimitiveFuncs for list operations ---------------------------------
 
 primiEmpty :: PrimitiveListFunc
-primiEmpty = PrimitiveListFunc 0 haskellEmpty
+primiEmpty = PrimitiveListFunc "Empty" undefined 0 haskellEmpty
 
 haskellEmpty :: Env -> [Data] -> Data 
 haskellEmpty _ _ = DEvaluatedList []
@@ -183,7 +193,7 @@ haskellEmpty _ _ = DEvaluatedList []
 
 
 primiIsEmpty :: PrimitiveListFunc
-primiIsEmpty = PrimitiveListFunc 1 haskellIsEmpty
+primiIsEmpty = PrimitiveListFunc "Is empty" undefined 1 haskellIsEmpty
 
 haskellIsEmpty :: Env -> [Data] -> Data
 haskellIsEmpty _ [DError err] = DError (err ++ ". Error inside list")
@@ -194,7 +204,7 @@ haskellIsEmpty _ _ = DError "Trying to apply 'isEmpty' to not-list object"
 
 
 primiHead :: PrimitiveListFunc
-primiHead = PrimitiveListFunc 1 haskellHead
+primiHead = PrimitiveListFunc "Head" undefined 1 haskellHead
 
 haskellHead :: Env -> [Data] -> Data
 haskellHead _ [DError err] = DError (err ++ ". Error inside list")
@@ -211,7 +221,7 @@ haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
 
 
 primiTail :: PrimitiveListFunc
-primiTail = PrimitiveListFunc 1 haskellTail
+primiTail = PrimitiveListFunc "Tail" undefined 1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
 haskellTail _ [DError err] = DError (err ++ ". Error inside list")
@@ -228,7 +238,7 @@ haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
 primiConcat :: PrimitiveListFunc
-primiConcat = PrimitiveListFunc 2 haskellConcat
+primiConcat = PrimitiveListFunc "Concat" undefined 2 haskellConcat
 
 haskellConcat :: Env -> [Data] -> Data 
 haskellConcat _ (DError err:_) = DError (err ++ ". Error inside first list")

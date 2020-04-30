@@ -5,11 +5,15 @@ module Executor where
 
 import qualified Data.Map.Lazy as M
 import Text.Megaparsec
+import Control.Monad.Error
+import Control.Monad.Reader
+import Control.Monad.State
 
 import Parser
 import Definitions
 import TreeEvaluator
 import Printer
+import TypeChecker
 
 
 -- TODO
@@ -31,9 +35,20 @@ runProgramm file input = do
 -- executeProgramm executes given, parsed programm
 -- and returns its string
 executeProgramm :: Programm -> String
+executeProgramm programm = 
+        let res = evalState (runReaderT (runExceptT  (typeCheck programm)) TIEnv) 0
+        in case res of
+            Left err -> fail $ "TYPECHECK ERROR: " ++ err
+            Right _ -> let env = getEnv programm
+                           results = reverse (evaluateProgramm env programm [])
+                        in concat (map printProgResult results)
+
+{-
+executeProgramm :: Programm -> String
 executeProgramm programm = let env = getEnv programm
                                results = reverse (evaluateProgramm env programm [])
                             in concat (map printProgResult results)
+-}
 
 
 -- getEnv prepears and returns environment

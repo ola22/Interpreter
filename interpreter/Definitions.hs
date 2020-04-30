@@ -12,6 +12,16 @@ import qualified Data.Map.Lazy as M
 type Env = M.Map String Data
 
 
+-- Type is a stucture for storeing all possible datatypes.
+-- It is used in types inference algorithm.
+data Type = TypeVar String
+            | TypeInt
+            | TypeBool
+            | TypeList
+            | TypeFunc Type Type
+    deriving (Eq, Ord, Show)
+
+
 -- Data is a stucture for all possible programm and functions' outputs
 -- as well as functions' bodies
 data Data = DInt Integer  -- store integer value
@@ -27,8 +37,8 @@ instance Show Data where
     show (DInt x) = show x 
     show (DBool b) = show b
     show (DFunc s _ _) = "Given function of argument " ++ show s
-    show (DPrimi (PrimitiveFunc n _)) = "DPrimi " ++ show n
-    show (DListPrimi (PrimitiveListFunc n _)) = "DListPrimi " ++ show n
+    show (DPrimi (PrimitiveFunc name _ n _)) = "DPrimi " ++ name ++ " " ++ show n
+    show (DListPrimi (PrimitiveListFunc name _ n _)) = "DListPrimi " ++ name ++ " " ++ show n
     show (DError err) = "DError: " ++ err
     show (DList l) = "DList " ++ show l
     show (DEvaluatedList l) = "List : " ++ show l
@@ -47,10 +57,11 @@ data ParseTree = TData Data
 
 
 -- Primitive is created for some primitive operations like arithmetical,
--- logical or comparison operations and other simple statements
-data PrimitiveFunc = PrimitiveFunc Int ([Data] -> Data)
+-- logical or comparison operations and other simple statements.
+-- Type is stored for type inference.
+data PrimitiveFunc = PrimitiveFunc String Type Int ([Data] -> Data)
 
-data PrimitiveListFunc = PrimitiveListFunc Int (Env -> [Data] -> Data)
+data PrimitiveListFunc = PrimitiveListFunc String Type Int (Env -> [Data] -> Data)
 
 
 -- ProgElem are all possible programm elemrnts: expression,

@@ -53,14 +53,15 @@ checkList l (_:rest) = checkList l rest
 -- Functions call given primitive function or collect next arguments from
 -- parse tree
 evaluatePrimi :: PrimitiveFunc -> Data -> Data
-evaluatePrimi (PrimitiveFunc 1 func) var = func [var]
-evaluatePrimi (PrimitiveFunc n func) var = DPrimi (PrimitiveFunc (n-1) (\x -> func (var:x)))
+evaluatePrimi (PrimitiveFunc _ _ 1 func) var = func [var]
+evaluatePrimi (PrimitiveFunc name typ n func) var = 
+    DPrimi (PrimitiveFunc name typ (n-1) (\x -> func (var:x)))
 
 evaluateListPrimi :: PrimitiveListFunc -> Data -> Env -> Data
-evaluateListPrimi (PrimitiveListFunc 0 func) _ env = func env []
-evaluateListPrimi (PrimitiveListFunc 1 func) var env = func env [var]
-evaluateListPrimi (PrimitiveListFunc n func) var env = 
-    DListPrimi (PrimitiveListFunc (n-1) (\_ y -> func env (var:y)))
+evaluateListPrimi (PrimitiveListFunc _ _ 0 func) _ env = func env []
+evaluateListPrimi (PrimitiveListFunc _ _ 1 func) var env = func env [var]
+evaluateListPrimi (PrimitiveListFunc name typ n func) var env = 
+    DListPrimi (PrimitiveListFunc name typ (n-1) (\_ y -> func env (var:y)))
 
 
 
