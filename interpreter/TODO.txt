@@ -8,7 +8,7 @@
 - tego cabal inita
     - podopisywac komentarze
 
-- DODAC NAZWY PRYMITYWOW!!!!!!!!!!!!!!!!! -> do wypisywania wsyztskiego
+    - DODAC NAZWY PRYMITYWOW!!!!!!!!!!!!!!!!! -> do wypisywania wsyztskiego
 
     - FUN czego nie wrzuce bedzie dobrze
     - def -> sprawdzic, co jak ktos da defowi funkcje, dalam ze jest tez do lambd i ifow i elo
@@ -24,14 +24,14 @@ JAK ROBIE TYLKO NA 20 PKT:
         - wtedy robie operacje na liscie
         - parse operacji na listach
         - evaluate expressions wewnatrz listy
-    - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
-    - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
+        - sprawdzenie, czy sa tego samego typu -> int/bool wiec chyba spoczko
+        - sprawdzenie, czy sa tego samego typu w ifie!!!!!!!!!!
     - eval program dla defa i funca jak beda errory to je dodac -> albo nie,, bo wyliczam dopiero jak musze ??
         - LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
         - ZEBY DZIALALO Z STDINA
 
 JAK ROBIE NA 25 PKT:
-    - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
+        - typechecker -> program będzie wymagał podawanie typów (statyczne typowanie)
         - statyczne wizanie -> juz mam :)
         - typedef -> nie
         - listy z patternmatchingiem -> nie
@@ -39,17 +39,17 @@ JAK ROBIE NA 25 PKT:
 
 
 Listy:
-    -   LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
-    - sprawdzenie, czy tego samego typu
+        -   LISTY ZEBY MOZNA BYLO ZE MNIENNYCH ROBI HEADA
+        - sprawdzenie, czy tego samego typu
         - concat
         - tail od funkcji????                                          JEEEEEEJ UDAŁO SIĘ <3
 
 
 
----------------------------------- PLANY
+---------------------------------- PLANY -----------------------------------------------
 
-    good
-    bad
+good
+bad
 
 readme
     tabelka
@@ -60,21 +60,26 @@ cabal init
 
 bledy z linijkami                   !!!!!!!!!!!!!!!!!! TRUDNE
 monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
-TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
-TYPE INFERENCE 
-sprawdzic, czy to type inference beda polymorphic
-czy po type inference beda polymorphic recursive -> nierozstrzygalne????
-lambda polymorphism ?? -> nierobialna
-funkcje polimorfizm -> ??? bo walnelam ze mam a w sumie to nwm
-o tym wszytskim powyżej warto by napisać gdzieś
+    TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
+    TYPE INFERENCE 
 
-if e1 e2                            !!!!!!!!!!!!!!!!!!
+    sprawdzic, czy to type inference beda polymorphic
+    czy po type inference beda polymorphic recursive -> nierozstrzygalne????
+    lambda polymorphism ?? -> nierobialna
+    funkcje polimorfizm -> ??? bo walnelam ze mam a w sumie to nwm
+o tym wszytskim powyżej warto by napisać gdzieś
+potestowac type inference
+typechecker pozmieniac nazwy i funkcje ...
+
+    if e1 e2                            !!!!!!!!!!!!!!!!!!
 
     listy tak porządnie!!!!!
     list ten bug :/                          !!!!!!!!!!!!!!!!!! TRUDNE -> <3
 
-? listy tego samego typu?
+    ? listy tego samego typu?
 ? def i fun errors?
 ? def multiple declarations ?
-??? to ze nie ma bledu za malo argumenntow, tylko zwraca funkcje ???
+    ??? to ze nie ma bledu za malo argumenntow, tylko zwraca funkcje ???
+
+
 

@@ -9,7 +9,5 @@ My language name is Olol. It's a simple functional language. It provides followi
 	- "if" as usual
 	- it provides creating annymous functions with "\x -> exp" clause
 	- its "match with" clause provides a posibility to use pattern matching
-	  with different datastructures
-	- it will probably contain simple library with some functionalities 
-	  (eg. if and List type will probably be made like this)
+	  with different datastructures (not done)
 	- all instructions and expressions in programm are separated by ;

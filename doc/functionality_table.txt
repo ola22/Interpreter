@@ -18,16 +18,16 @@ For 25 points
   + 10 (lists of any type, nested lists and lists of functions)
     11 (simple algebraic types with one level pattern matching)
   + 12 (static identifier binding)
-  13 (static typing)
+  + 13 (static typing)
 
 For 30 points
-  14 (polimorfic and recurrency algebraic types) ? when enough time
-  15 (nested pattern matching, complete test) ? when enough time
+  14 (polimorfic and recurrency algebraic types) 
+  15 (nested pattern matching, complete test)
 
 Bonus
-  16 (polimorphic types with types reconstruction algorithm)
+  + 16 (polimorphic types with types reconstruction algorithm)
 
 
 
-Together: 25 (for the ones with +)
+Together: more than 25 points
 
