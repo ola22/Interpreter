@@ -124,7 +124,7 @@ isEmpty (concat [] [1, 2]);   //=^.^=  False
 
 head (tail (tail (tail l)));  //=^.^=  4
 
-head (tail concat empty [1, 2]);   //=^.^=  2
+head (tail (concat empty [1, 2]));   //=^.^=  2
 
 
 
@@ -145,8 +145,8 @@ l_bool;      //=^.^=  [True,False,True]
 
 //=^.^=  Lists of variables
 def a = 3 + 5;
-def b = true;
-[a, b];   //=^.^=  [8,True]
+def b = if true then 14 else 18;
+[a, b];   //=^.^=  [8,14]                                                               TOOOOOOOOOOOOOO
 
 
 //=^.^=  Lists of ifs
@@ -156,30 +156,32 @@ tail [if true then 2 else 4, 12, if false then 2 else 4, 8];   //=^.^=  [12,4,8]
 
 //=^.^=  Lists of functions
 //=^.^=  higher order, multui lambda and "variable" function inside list
-fun sqr x = x * x;
-def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
+fun sqr x y = x * y;
+def list_of_funcs = [\x y -> x + y, sqr];
 (head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
-(head (tail list_of_funcs)) : sqr : 3;   //=^.^=  9 
 
-fun new b = if b then 44 else 66;
-(head (concat [new] list_of_funcs)) : false;  //=^.^=  66 
+fun new = \x y -> 2 * x + y;
+(head (concat [new] list_of_funcs)) : 2 : 4;  //=^.^= 8
+
+def list_of_higher_order = [(\f x -> f : x)];
+(head list_of_higher_order) : sqr : 3 : 3; //=^.^=  9 
+
 
 
 //=^.^=  Nested lists
-head [[2, 3], 1, 2];   //=^.^=  [2, 3]
-def nested = [[[[111, 2], 3], 4], 5];
+head [[2, 3], [1], [2]];   //=^.^=  [2, 3]
+def nested = [[ [[111, 2], [3]], [[4]]], [[[5]]]];
 head (head (head (head nested)));  //=^.^=  111
 
 
 //=^.^=  Nested lists with different types
-def nested_func_list = [[[\x y -> x + y * 2, \x y -> x + y], [[[sqr]]]], [[sqr]]];
+def nested_func_list = [[[\x y -> x + y * 2, \x y -> x + y], [sqr]], [[sqr]]];
 def second_func_from_list = head (tail (head (head nested_func_list)));
 second_func_from_list : 2 : 18;   //=^.^=  20
 
 
 //=^.^=  Nested lists with list functions
-[concat [] [1, 2], [3, 8], tail nested];  //=^.^=  [[1,2],[3,8],[5]]
-
+[concat [] [1, 2], [3, 8]];  //=^.^=  [[1,2],[3,8]]
 
 
 
@@ -196,7 +198,7 @@ fun static_fun z = z + static;
 
 //=^.^=  Functions taking lists as arguments/returning lists 04 08 10
 fun ret_concat l1 l2 = concat l1 l2;
-ret_concat : [1, [2, 3], 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,[2,3],4,5,11,3]
+ret_concat : [1, 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,[2,3],4,5,11,3]
 
 
 
@@ -206,8 +208,10 @@ if (head [true, false])
    then empty
    else [1, 2]; //=^.^=  []
 
+
 //=^.^=  If with functions
 if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
+
 
 //=^.^= If returning functions
 fun f1 x = x;
@@ -215,12 +219,9 @@ fun f2 x = 2 * x;
 (if 1 == 1 then f1 else f2) : 5;   //=^.^= ok -> 5
 (if false then f1 else f2) : 5;   //=^.^= ok -> 10
 
+
 //=^.^=  If with nested lists
 if (false) then [[[1]]] else (concat [[[2]]] [[[3]]]); //=^.^=  [[[2]], [[3]]]
-
-
-//=^.^=  If with list of function
-if ((head [\x -> x, \y -> y + y]) : true) then 4 else 5;  //=^.^=  4
 
 
 
@@ -239,8 +240,8 @@ combination_fun : ret_head_plus_x : [5, 4] : 6 : false;  //=^.^=  20
 
 //=^.^=  List recursion   04 08
 def rec_l = [1, 2, 3, 4];
-fun rec_list1 l = if (isEmpty l) then [true] else (rec_list1 : (tail l));
-rec_list1 : rec_l;       //=^.^= [True]
+fun rec_list1 l = if (isEmpty l) then [115] else (rec_list1 : (tail l));
+rec_list1 : rec_l;       //=^.^= [115]
 
 
 fun rec_list2 n l = if (n == 0) 
@@ -253,9 +254,6 @@ rec_list2 : 5 : [];   //=^.^=  [5,4,3,2,1]
 //=^.^=  List functions with functions   04 08
 fun list_maker a b c = [a, b, c];
 concat (list_maker : 4 : 8 : 9) [4];  //=^.^= [4,8,9,4]
-
-
-
 
 
 
@@ -291,6 +289,9 @@ aDawajSprawdzRekurencje : 5;  //=^.^= powinno byc 120
 
 
 /=^.^=
+
+//=^.^=  TYPECHECK ERROR If with list of function                                                            TOOOOOOOOOOOOOO
+if ((head [\x -> x && false, \y -> y + y]) : true) then 4 else 5;  //=^.^=  4
 
 //=^.^= ERROR: dividing by 0
 (\x y -> x / y) : 2 : 0;
@@ -391,7 +392,7 @@ head (empty);
 
 
 
-
+/=^.^=                                                             TUUUUUUUUUUUUUUUUUUUUUU
 
 //=^.^=  lista zmiennych
 def łoś = 15 * 2;
@@ -416,7 +417,9 @@ head (tail lista_ze_zmiennymi3);  //=^.^= function
 
 
 def haha = [[1, 2], [if true then 4 else 5], [1, [[true , true], false]]];
-tail haha;    //=^.^=  [[4], [1,[[True,True],False]]]
+tail haha;    //=^.^=  [[4], [1,[[True,True],False]]]                          TUUUUUUUUUUUUUUU
+
+=^.^=/                                                
 
 -20 + 4;  //=^.^=  -16
 -20 - -60;  //=^.^=   40
@@ -434,3 +437,135 @@ tail haha;    //=^.^=  [[4], [1,[[True,True],False]]]
    concat !!!!
 TAIL OD NIEARGUMENTOWANYCH FUNKCJI NIE DZIALA
 =^.^=/
+
+
+
+
+//=^.^= NIE MA W OUTPUCIE
+
+//=^.^= Closure
+fun multiply x = (\y -> x * y);
+def multiplied_by_5 = multiply : 5;
+
+multiplied_by_5 : 12;    //=^.^= 60 (5*12)
+
+
+//=^.^= Partial application
+fun partial x y = x + y;
+fun partial_ = partial : 2;
+partial_ : 3;    //=^.^= 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=^.^= TYPECHECKER ERRORS
+/=^.^= 
+
+
+fun new x = x + 2;
+new : 2 : 3;
+
+
+=^.^=/
+
+
+
+
+/=^.^=                                                       TUUUUUUUUUUUUUUUUUUUUUUUUU
+
+//=^.^= TYPECHECKER
+
+def lama = \x -> x;   //=^.^= polymorpfic
+lama : 2;
+lama : true;
+
+//=^.^= ( \id -> if id : true then id : 1 else id : 2) : (\x -> x) ;  //=^.^= to sie nie typuje
+[1, 2, 3];
+[1, true, 5];
+
+//=^.^=  (\id -> if id : true then id : [1, 2] else id : [3, 4]) : (\x -> x) ;   to sie nie typuje
+//=^.^= [1, 2] + [3, 4];               to tez nie
+
+if true then [1, 2] else [1, 2, 3];            //=^.^= to jest jak chcialam
+[1, 2, 3];   
+
+//=^.^=if true then [1, 2] else [true, false];    //=^.^= to jest jak chcialam
+//=^.^=if true then [1, 2] else [[1, 2]];      //=^.^= to jest jak chcialam
+
+
+fun sqr x = x * x;                              //=^.^= to jest jak chcialams
+def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
+list_of_funcs;
+
+if true then [] else [true, false];     //=^.^= 9    JAK CUDNIE, POPORSTU IDEALNIE
+
+
+
+//=^.^=fun rec3 x = if x == 1 then true else x * rec4 : (x - 1);     //=^.^= 9 działa jak powinno nawet na samuych deklaracjach
+//=^.^=fun rec4 x = if x == 1 then x else x + rec3 : (x - 1);
+//=^.^=rec1 : 3;   //=^.^= 9
+
+
+
+if false then 1 else 4 + 5 * 2;    //=^.^= jest ok
+
+
+
+empty;     //=^.^= jest supcio <3
+if true then empty else [true, false]; 
+
+
+
+
+
+isEmpty [];
+isEmpty [1, 2, 3];
+isEmpty [[]];
+isEmpty [[1, 2], 4, 5];
+//=^.^= isEmpty 1;
+
+//=^.^=head [];
+head [1, 2, 3];
+//=^.^=head 1;
+
+
+concat [1, 2] [3, 4];
+concat [1, 2] [true, false];
+//=^.^=concat 2 [1, 2];
+
+concat [\x -> x] [1, 2];
+if true then 1 else head [4, 5];
+if true then 1 else head [5, true];   //=^.^= jest supcio <3
+
+if true then 1 else head [1, 2, 3];
+
+
+
+tail [1, 2, [1, 3]];
+//=^.^=tail true;                           tail do dupy :(
+if false then [1, 2] else tail [1, 2, 3];
+if false then [1, 2] else tail [true, false, true]; 
+//=^.^=tail true;
+
+
+fun id x = x;          to a to?????????????????????????
+id : 2;
+id : true; 
+//=^.^=  fun alpaczka = if id : true then id : 44 else id : 66;
+
+
+
+
+//=^.^=if true then [1, 2, true] else concat [4, 5] [false]; 
+//=^.^=if true then [1, 2, true] else concat [4, true] [false];                     TUUUUUUUUUUU
+
+/=^.^=/

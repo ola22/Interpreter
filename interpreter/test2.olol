@@ -1,5 +1,8 @@
 
-[(\x y -> x / y), \x -> 2 * x];
+
+
+
+//=^.^=[(\x y -> x / y), \x -> 2 * x];
 
 (\x y -> x / y) : 2;
 
@@ -12,15 +15,16 @@ f : 1: 2;
 
 def łoś = 15 * 2;
 fun mućka = \x -> x + 2;
-fun alpaczka b = if b then 44 else 66;
+fun id x = x;
+id : 2;
+id : true; 
+//=^.^=  fun alpaczka = if id : true then id : 44 else id : 66;      to bez sensu :<
+if id : true then id : 44 else id : 66;
 mućka : 3;
 
-def lista_ze_zmiennymi3 = [mućka,  mućka, łoś];
 
 
-head lista_ze_zmiennymi3;
-tail lista_ze_zmiennymi3;
-lista_ze_zmiennymi3;
+
 
 
 
@@ -45,6 +49,9 @@ console.log(iloczyn_5_przez(12)); // 60
 =^.^=/
 
 
+
+
+
 fun multiply x = (\y -> x * y);
 
 def multiplied_by_5 = multiply : 5;
@@ -53,6 +60,8 @@ multiplied_by_5 : 12;
 
 
 
-fun new x = x + 2;
 
-new : 2 : 3;
+
+
+
+

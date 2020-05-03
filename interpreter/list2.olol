@@ -1,0 +1,162 @@
+
+
+//=^.^=[1, 2, true];
+
+//=^.^=[[1, 2], [true]];
+
+
+
+//=^.^=[[1], 1, 2];
+
+
+//=^.^=[[1, 2], 1];
+
+//=^.^=[[1, 2], [3, 4], [[]]];
+
+
+/=^.^=
+[1, 2, 3, 4];
+[\x -> x, \y -> y];
+
+=^.^=/
+
+
+//=^.^=[\x y -> if x then y else y + 1, \x y -> if true then x + 1 else y + 2];
+
+empty;
+
+//=^.^= empty == 2;
+
+head [1, 2, 3, 4];
+
+head [[1], [], [2, 3, 4]];
+
+//=^.^=head [true, 2, 3, 4];
+
+2 == head [1, 2];
+
+//=^.^= if true then 45 + 23 else head [false, true];
+
+
+if true then 3 else 5;
+if false then [1] else empty;
+
+concat [1, 2] [1];
+concat [1, 2] [];
+//=^.^= concat [1, 2] [[]];
+
+concat empty empty;
+
+head (concat [1, 2] empty);
+
+tail [1, 2, 3, 4];
+//=^.^=tail [true, 5];
+//=^.^=tail empty;
+tail nested_func_list;
+def k = head nested_func_list;
+k;
+def k2 = head k;
+k2;
+def k3 = tail k2;
+k3;
+def k4 = head k3;
+k4;
+//=^.^=k4 : 2 : 3;
+
+def head_l = [\x y -> x + y, sqr];
+(head head_l) : 2 : 3; 
+
+def head_l2 = [[\x y -> x + y], [sqr]];
+//=^.^=head (head head_l2);
+
+
+concat ([(head [1, 2, 3])]) (tail [5, 6, 7]);
+
+head (tail [1, 2, 3]);
+head (tail [[1], [2], [3]]);
+//=^.^=head (head [[1], [2], [3]]);
+
+(head (tail [sqr, sqr])) : 2 : 3;
+ 
+(head (head [[sqr], [sqr]])) : 2 : 3;
+
+
+//=^.^=  Nested lists with different types
+fun sqr x y = x * y;
+def nested_func_list = [ [[\x y -> x + y * 2, \x y -> x + y], [sqr]], [[sqr]] ];
+(head tail nested_func_list);
+
+
+tail (tail (tail [1, 2, 3, 4]));
+
+
+
+def second_func_from_list = head (tail (head (head nested_func_list)));
+second_func_from_list : 2 : 18;   //=^.^=  20
+
+
+
+
+
+//=^.^=   PIKNIE <3
+fun ret_concat l1 l2 = concat l1 l2;
+ret_concat : [1, 36, 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,[2,3],4,5,11,3]
+
+
+//=^.^=if ((head [true, false]) && true) then empty else [1, 2]; //=^.^=  []
+
+(head [true, false]) && true;
+
+
+
+//=^.^=   PIKNIE <3
+fun combination_fun f l x b = if b then (f : l : x) * 2
+                 else (f : (tail l) : x) * 2;
+
+fun ret_head_plus_x l x = (head l) + x;
+
+combination_fun : ret_head_plus_x : [5, 4] : 6 : true;  //=^.^=  22
+combination_fun : ret_head_plus_x : [5, 4] : 6 : false;  //=^.^=  20
+
+def ola = 3;
+concat [ola] [1, 4];
+
+
+fun rec_list2 n = if (n == 0) 
+                        then []
+                        else (concat [n] (rec_list2 : (n - 1))) ;
+rec_list2 : 5;   //=^.^=  [5,4,3,2,1]
+
+
+
+
+
+def l = [1, 2, 3, 4];
+l;  //=^.^= [1,2,3,4]
+
+//=^.^= Function empty
+empty;   //=^.^= []
+
+//=^.^= Function isEmpty
+isEmpty empty;   //=^.^= True
+isEmpty [];    //=^.^= True
+isEmpty [1, 2];   //=^.^= False
+isEmpty l;   //=^.^= False (on variable)
+
+(isEmpty l) && true;
+
+
+//=^.^=if true then [[1]] else [];
+
+isEmpty [[]];
+
+//=^.^=[[1]] == 2;
+
+//=^.^=[] == 2;
+
+//=^.^=if true then [[]] else [];
+
+//=^.^=if true then [[1], [2]] else [];
+
+[[true], [[1]]];
+
