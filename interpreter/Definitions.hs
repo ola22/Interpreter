@@ -7,6 +7,7 @@ import qualified Data.Map.Lazy as M
 
 
 
+
 -- Env is a map storeing variables and theirs values,
 -- functions and theirs "bodies"
 type Env = M.Map String Data
@@ -17,7 +18,7 @@ type Env = M.Map String Data
 data Type = TypeVar String
             | TypeInt
             | TypeBool
-            | TypeList
+            | TypeList Type
             | TypeFunc Type Type
     deriving (Eq, Ord, Show)
 

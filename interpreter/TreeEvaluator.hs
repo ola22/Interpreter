@@ -1,16 +1,12 @@
 {-# Options -Wall -Wname-shadowing #-}
 
+
 module TreeEvaluator where
 
 import qualified Data.Map.Lazy as M
+
 import Definitions
 
-
---import Debug.Trace
-
-
--- TODO
--- SPRAWDZIC,CZY E2 JEST TYPU E1 W IFIE
 
 
 
@@ -22,6 +18,7 @@ evaluateTree env (TData tdata) =
         DList l -> 
             let evalList = map (evaluateTree env) l
             in checkList evalList evalList
+        DListPrimi (PrimitiveListFunc _ _ 0 f) -> f env []
         _ -> tdata
 evaluateTree env (TVar var) =
     let maybeVar = M.lookup var env
@@ -30,8 +27,8 @@ evaluateTree env (TVar var) =
             Just res -> res
 evaluateTree env (TFunc var_name tree) = DFunc var_name tree env
 evaluateTree env (TFAppl f v) = 
-    let func = evaluateTree env f -- :: Dfunc/DPrimi
-        var_val = evaluateTree env v -- :: DInt/DBool
+    let func = evaluateTree env f -- Dfunc/DPrimi
+        var_val = evaluateTree env v -- DInt/DBool
     in case func of
             DPrimi p -> evaluatePrimi p var_val
             DListPrimi p -> evaluateListPrimi p var_val env
@@ -42,7 +39,8 @@ evaluateTree env (TFAppl f v) =
 
 
 
--- Function checks if given list contains any errors after evaluation
+-- Function checks if given list contains any errors after evaluation.
+-- If yes, then it returns error.
 checkList :: [Data] -> [Data] -> Data
 checkList l [] = DEvaluatedList l
 checkList _ (DError err:_) = DError err
@@ -58,39 +56,9 @@ evaluatePrimi (PrimitiveFunc name typ n func) var =
     DPrimi (PrimitiveFunc name typ (n-1) (\x -> func (var:x)))
 
 evaluateListPrimi :: PrimitiveListFunc -> Data -> Env -> Data
-evaluateListPrimi (PrimitiveListFunc _ _ 0 func) _ env = func env []
 evaluateListPrimi (PrimitiveListFunc _ _ 1 func) var env = func env [var]
 evaluateListPrimi (PrimitiveListFunc name typ n func) var env = 
     DListPrimi (PrimitiveListFunc name typ (n-1) (\_ y -> func env (var:y)))
 
 
 
-
-{- | Basic evaluateTree tests
->>> evaluateTree M.empty ( TData $ DInt 5 )
-DInt 5
->>> evaluateTree M.empty ( TData $ DBool True )
-DBool True
-
->>> evaluateTree M.empty ( TData $ DInt 5 )
-DInt 5
-
->>> evaluateTree M.empty (TFAppl (TData (DFunc "x" ( TFAppl ( TFAppl (TData $ DPrimi primiMul) (TVar "x") ) (TVar "x")) M.empty)) (TData $ DInt 5))
-DInt 25
--}
-
-
-{- | Primitives
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiAdd) (TData $ DInt 2) ) (TData $ DInt 2))
-DInt 4
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiSub) (TData $ DInt 5) ) (TData $ DInt 2))
-DInt 3
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiMul) (TData $ DInt 5) ) (TData $ DInt 2)) 
-DInt 10
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiDiv) (TData $ DInt 10) ) (TData $ DInt 3))
-DInt 3
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiMod) (TData $ DInt 10) ) (TData $ DInt 3))
-DInt 1
->>> evaluateTree M.empty ( TFAppl ( TFAppl (TData $DPrimi primiAnd) (TData $ DBool True) ) (TData $ DBool True))
-DBool True
--}

@@ -1,7 +1,10 @@
+{-# Options -Wall -Wname-shadowing #-}
+
 module BuiltinPrimiFuncs where
 
 import Definitions
 import TreeEvaluator
+
 
 
 
@@ -17,6 +20,7 @@ comOpType = TypeFunc TypeInt $ TypeFunc TypeInt TypeBool
 
 logOpType :: Type
 logOpType = TypeFunc TypeBool $ TypeFunc TypeBool TypeBool
+
 
 
 
@@ -104,6 +108,7 @@ haskellOr _ = DError $ "Given argument of wrong type " ++
                      "to '||' operator. Expected type: Bool"
 
 
+
 ----------------------------------------- PrimitiveFunc comparison operations ---------------------------------
 
 primiEq :: PrimitiveFunc
@@ -150,34 +155,18 @@ haskellMore _ = DError $ "Given argument of wrong type " ++
                      "to '>' operator. Expected type: Int"
 
 
+
 ------------------------------------------- If statement ----------------------------------------
 
 primiIf :: PrimitiveFunc
-primiIf = PrimitiveFunc "builtinIf" (TypeFunc TypeBool $ TypeFunc (TypeVar "a") $ TypeFunc (TypeVar "a") (TypeVar "a")) 3 haskellIf
+primiIf = PrimitiveFunc "builtinIf" 
+            (TypeFunc TypeBool $ TypeFunc (TypeVar "a") $ TypeFunc (TypeVar "a") (TypeVar "a")) 
+            3 haskellIf
 
 haskellIf :: [Data] -> Data 
 haskellIf [DError e, _, _] = DError e
 haskellIf [DBool b, e1, e2] = if b then e1 else e2
 haskellIf _ = DError "Given not a boolean expression in if statement"
-
-{-}
-haskellIf :: [Data] -> Data 
-haskellIf [DError e, ~_, ~_] = DError e
-haskellIf [_, ~(DError e), ~_] = DError e
-haskellIf [_, ~_, ~(DError e)] = DError e
-haskellIf [DBool b, e1, e2] = if b then e1 else e2
-    --if (ifCheckIfExpTypesMatches e1 e2)
-        --then if b then e1 else e2
-        --else DError "Types mismatch in if branches"
-haskellIf _ = DError "Given not a boolean expression in if statement"
-
-ifCheckIfExpTypesMatches :: Data -> Data -> Bool
-ifCheckIfExpTypesMatches ~(DInt _) ~(DInt _) = True
-ifCheckIfExpTypesMatches ~(DBool _) ~(DBool _) = True
-ifCheckIfExpTypesMatches ~(DFunc _ _ _) ~(DFunc _ _ _) = True
-ifCheckIfExpTypesMatches ~(DPrimi _) ~(DPrimi _) = True
-ifCheckIfExpTypesMatches _ _ = False
--}
 
 
 
@@ -185,7 +174,7 @@ ifCheckIfExpTypesMatches _ _ = False
 ----------------------------------------- PrimitiveFuncs for list operations ---------------------------------
 
 primiEmpty :: PrimitiveListFunc
-primiEmpty = PrimitiveListFunc "Empty" undefined 0 haskellEmpty
+primiEmpty = PrimitiveListFunc "Empty" (TypeList (TypeVar "a")) 0 haskellEmpty
 
 haskellEmpty :: Env -> [Data] -> Data 
 haskellEmpty _ _ = DEvaluatedList []
@@ -193,7 +182,8 @@ haskellEmpty _ _ = DEvaluatedList []
 
 
 primiIsEmpty :: PrimitiveListFunc
-primiIsEmpty = PrimitiveListFunc "Is empty" undefined 1 haskellIsEmpty
+primiIsEmpty = PrimitiveListFunc "Is empty" (TypeFunc (TypeList (TypeVar "a")) (TypeBool)) 
+                                    1 haskellIsEmpty
 
 haskellIsEmpty :: Env -> [Data] -> Data
 haskellIsEmpty _ [DError err] = DError (err ++ ". Error inside list")
@@ -204,7 +194,8 @@ haskellIsEmpty _ _ = DError "Trying to apply 'isEmpty' to not-list object"
 
 
 primiHead :: PrimitiveListFunc
-primiHead = PrimitiveListFunc "Head" undefined 1 haskellHead
+primiHead = PrimitiveListFunc "Head" (TypeFunc (TypeList (TypeVar "a")) ((TypeVar "a"))) 
+                                1 haskellHead
 
 haskellHead :: Env -> [Data] -> Data
 haskellHead _ [DError err] = DError (err ++ ". Error inside list")
@@ -221,7 +212,8 @@ haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
 
 
 primiTail :: PrimitiveListFunc
-primiTail = PrimitiveListFunc "Tail" undefined 1 haskellTail
+primiTail = PrimitiveListFunc "Tail" (TypeFunc (TypeList (TypeVar "a")) (TypeList (TypeVar "a"))) 
+                                1 haskellTail
 
 haskellTail :: Env -> [Data] -> Data 
 haskellTail _ [DError err] = DError (err ++ ". Error inside list")
@@ -238,7 +230,9 @@ haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
 
 
 primiConcat :: PrimitiveListFunc
-primiConcat = PrimitiveListFunc "Concat" undefined 2 haskellConcat
+primiConcat = PrimitiveListFunc "Concat" 
+        (TypeFunc (TypeList (TypeVar "a")) $ TypeFunc (TypeList (TypeVar "a")) $ TypeList (TypeVar "a")) 
+        2 haskellConcat
 
 haskellConcat :: Env -> [Data] -> Data 
 haskellConcat _ (DError err:_) = DError (err ++ ". Error inside first list")

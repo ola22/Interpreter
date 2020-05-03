@@ -7,9 +7,10 @@ import Executor
 
 
 
--- sprawdzic bledy parsowania po tamtych bledach
--- posprawdzac bledy wykonania
 
+
+-- Main program function. It gets input from file
+-- or from stdin and than runs program.
 main :: IO ()
 main = do 
     args <- getArgs
@@ -17,7 +18,5 @@ main = do
         if null args
             then (return "stdin", getContents)
             else (return (head args), readFile (head args))
-    -- putStrLn input
-    -- putStrLn file
     runProgramm file input
     

@@ -1,7 +1,7 @@
+{- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
 
 {-# Options -Wall -Wname-shadowing #-}
 
-{- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
 
 
 module Parser where
@@ -77,14 +77,10 @@ parseParens = between (symbol "(") (symbol ")")
 
 
 -- ParseNumber parses positive integers
-parsePositiveNumber :: Parser ParseTree                    --- parseTypeInt zwracam konstr
+parsePositiveNumber :: Parser ParseTree
 parsePositiveNumber = do
     n <- lexeme L.decimal
     return (TData (DInt n))
-{- | pInt
->>> parseTest parseNumber "376"
-TData DInt 376
--}
 
 
 -- ParseNegativeNumber parses negative integers
@@ -101,10 +97,6 @@ parseBool = do
     b <- (readString "false" *> pure False) <|>
          (readString "true" *> pure True)
     return (TData (DBool b))
-{- | pInt
->>> parseTest parseBool "false"
-TData DBool False
--}
 
 
 -- Function parses list
@@ -115,10 +107,6 @@ parseList = do
     content <- sepBy (parseExprHelper <|> parseidentifier) (symbol ",")
     readListOp "]"
     return (TData (DList content))
-{- | List
->>> parseTest parseList "[1, 2, 3]"
-
--}
 
 
 -- parseIf parses if statement
@@ -134,11 +122,12 @@ parseIf = do
             (TData (DPrimi primiIf)) b_exp) e1) e2)
 
 
+
 -- parseEmpty parses empty functions
 parseEmpty :: Parser ParseTree
 parseEmpty = do
     readString "empty"
-    return (TFAppl (TData (DListPrimi primiEmpty)) (TData (DList [])))
+    return (TData (DListPrimi primiEmpty))
 
 
 -- parseIsEmpty parses isEmpty functions
@@ -173,6 +162,7 @@ parseConcat = do
     list2 <- parseExprHelper
     return (TFAppl (TFAppl 
             (TData (DListPrimi primiConcat)) list1) list2)
+
 
 
 -- parseVarAndFuncNames parses names of variables and
@@ -219,9 +209,6 @@ parseidentifier :: Parser ParseTree
 parseidentifier = TVar <$> parseVarAndFuncNames "variable/function"
 
 
---parseIdentifier :: Parser ParseTree
-
-
 -- Function parses anonymous function
 -- \x -> x + 2
 parseLambda :: Parser ParseTree
@@ -232,6 +219,8 @@ parseLambda = do
     readOperator "->"
     body <- parseExprHelper
     return (foldr TFunc body vars)
+
+
 
 
 -- Following functions are used for parsing arithmetical,
@@ -251,7 +240,6 @@ parseTerm = choice
   , parseidentifier
   , parsePositiveNumber
   , parseNegativeNumber
-  --, parseIdentifier
   ]
 
 
@@ -281,22 +269,8 @@ postfix name f = E.Postfix (f <$ symbol name)
 -- Parsing expressions
 parseExprHelper :: Parser ParseTree
 parseExprHelper = E.makeExprParser parseTerm operatorTable
-{- | Parsing expressions
-evaluateTree M.empty (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 + 3 +  4"))
-DInt 10
 
-evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 < 3 then 4 else 5"))
-DInt 4
 
-evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "if 2 == 2 then true else false"))
-DInt 4
-
-evaluateTree M.empty (fromRight ( TData $ DInt 0 ) (runParser parseExprHelper "test" "1 + 2 * (3 + 4)"))
-DInt 15
-
-evaluateTree M.empty (fromRight (TData $ DInt 0) (runParser parseExprHelper "test" "(\\x y -> x + y * 2) : 2 : 3"))
-DInt 8
--}
 
 
 -- parsing any element of type PEExpr
@@ -319,10 +293,6 @@ parseFun = do
     body <- parseExprHelper
     readOperator ";"
     return (PEFunc name (foldr TFunc body vars))
-{- | Parse fun
->>> parseTest parseFun "fun f x y = x + y; "
-PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))))
--}
 
 
 -- parseDef parses variable definition
@@ -335,32 +305,13 @@ parseDef = do
     expr <- parseExprHelper
     readOperator ";"
     return (PEDef var_name (foldr TFunc expr []))
-{- | Parse def
->>> parseTest parseDef "def x = 3;"
-PEDef "x" (TData DInt 3)
 
-parseTest parseDef "def false = 3;"
-error
--}
+
 
 
 -- parseProgamm parses whole programm
 parseProgramm :: Parser Programm
 parseProgramm = between readSpacesAndComments eof 
                        (many (parseDef <|> parseFun <|> parseExpr))
-{- | Parse programm test
->>> parseTest parseProgramm "fun f x y = x + y; f : 1 : 2;"
-[PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y")))),PEExpr (TFAppl (TFAppl (TVar "f") (TData DInt 1)) (TData DInt 2))]
 
->>> parseTest parseProgramm "\\x y -> x * 2 + y : 2 : 3;"
-[PEExpr (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TData DPrimi 2) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TData DInt 2))) (TFAppl (TFAppl (TVar "y") (TData DInt 2)) (TData DInt 3)))))]
 
->>> parseTest parseProgramm "fun f x y = if x == y then 2 else 4;"
-[PEFunc "f" (TFunc "x" (TFunc "y" (TFAppl (TFAppl (TFAppl (TData DPrimi 3) (TFAppl (TFAppl (TData DPrimi 2) (TVar "x")) (TVar "y"))) (TData DInt 2)) (TData DInt 4))))]
-
->>> parseTest parseProgramm "2 == 2;  //=^.^= True"
-[PEExpr (TFAppl (TFAppl (TData DPrimi 2) (TData DInt 2)) (TData DInt 2))]
-
->>> parseTest parseProgramm "//=^.^= This is single-line comment"
-[]
--}

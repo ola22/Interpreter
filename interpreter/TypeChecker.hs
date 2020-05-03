@@ -6,10 +6,12 @@ module TypeChecker where
 
 import qualified Data.Map.Lazy as M
 import qualified Data.Set as S
-import Control.Monad.Except
 import Control.Monad.State
 import Control.Monad.Reader
+import Control.Monad.Trans.Error
 import Data.Maybe
+
+--import Debug.Trace
 
 
 import Definitions
@@ -20,54 +22,264 @@ import Definitions
 
 
 
+--------------------------------------------- TYPES AND STRUCTURES ------------------------------------------------
+
+class Types a where
+    freeVars :: a -> S.Set String
+    apply :: Subst -> a -> a
+
+instance Types Type where
+    -- Function returns free type variables
+    freeVars (TypeVar n) = S.singleton n
+    freeVars TypeInt = S.empty
+    freeVars TypeBool = S.empty
+    freeVars (TypeList typ) = freeVars typ
+    freeVars (TypeFunc t1 t2) = freeVars t1 `S.union` freeVars t2
+
+    -- Function applies given substitutions to given type.
+    apply s (TypeVar n) = fromMaybe (TypeVar n) (M.lookup n s)
+    apply s (TypeFunc t1 t2) = TypeFunc (apply s t1) (apply s t2)
+    apply s (TypeList t) = TypeList $ apply s t
+    apply _ t = t
+
+
+
+instance Types Scheme where
+    freeVars (Scheme vars t) = freeVars t `S.difference` S.fromList vars
+    apply s (Scheme vars t) = Scheme vars (apply (foldr M.delete s vars) t)
+
+instance Types a => Types [a] where
+    apply s  =  map (apply s)
+    freeVars = foldr (S.union . freeVars ) S.empty
+
+
+
+-- Type (map) storeing substitutions for given
+-- polymorphic type
+type Subst = M.Map String Type
+
+-- Return empty substitution
+nullSubst :: Subst
+nullSubst  =   M.empty
+
+-- Composes two substitutions in one
+compose :: Subst -> Subst -> Subst
+compose s1 s2   = M.map (apply s1) s2 `M.union` s1
+
+
+
+type TypeEnv = M.Map String Scheme
+
+instance Types TypeEnv where
+    freeVars env = freeVars (M.elems env)
+    apply s = M.map (apply s)
+
+generalize :: TypeEnv -> Type -> Scheme
+generalize env t =
+    let vars = S.toList (freeVars t `S.difference` freeVars env)
+    in Scheme vars t
+
+
+data Scheme  =  Scheme [String] Type
+
+data TIEnv = TIEnv {}
+
+type TypeM = ErrorT String (ReaderT TIEnv (State Int))
 
 
 
 
 
 
+--------------------------------------------- TYPE INFERENCE FUNCTIONS ------------------------------------------------
+
+-- Gives new char (eg. a01, a02 ...) for polimorphic types
+newTyVar :: String -> TypeM Type
+newTyVar prefix = do
+    s <- state (\n -> (n, n + 1))
+    return (TypeVar (prefix ++ show s))
 
 
 
+-- substitute all forall vars with fresh ones
+instantiate :: Scheme -> TypeM Type
+instantiate (Scheme vars t) = do
+    nvars <- mapM (\ _ -> newTyVar "scheme") vars
+    let s = M.fromList (zip vars nvars)
+    return (apply s t)
 
 
 
-{-
-    przechodze po adt i sprawdxam, czy typ jest dobry 
-    mam data i jest int i jest bool
-    dla prymitywow zapisuje sb typ, zeby potem sprawdzac 
-    (==) :: Eq a => a -> a -> Bool -> niec hecmy == dla booli
-    DFunc -> nie, bo w orginalnym drzewie parsowania nie powstanie funckja
-
-    tak sie zachowuje na data
-
-    TVar -> w tej funkcji trzymam śrdowisko mapa: string : typ 70 linia
-    dla data wiemy
-    dla var -> pilnujemy, żeby była anotacja typów
-    
-    aplikacja funkcji, czy typ argumentu sie zgadza z typem (cialo f, arg)
-    no to patrzymy, jaki typ argumentu -> wywoluje f ktora pisze rekurencyjnie
-    i patrze, czy to sie zgadza z tym, co mam w ciele funkcji)
-
-    jak mam cialo funkcji, to spr czy funkcja, czy prymityw, no to dPrimi wiem, jakiego jest typu
-    a dla dFunc trzeba cos podobnego do evala i jak wchodze do funkcji to wstawiam do srodowiska 
-    i sprawdzam, czy sie robia
-
-    ti :: TypeEnv -> ParseTree -> TypeM (Subst, Type) : subs to podstawienia
-
-    zwracam typ wyrażeń
-    A variable
-        nie ma -> false
-        jest -> true
-
-    Aplikacja
-        patrze czy typ lewego zgadza się z typem prawego
-
-    scheme -> srodowisko typow jest ze stringow w scheme(zmienen wolne)
--}
+-- Function used for type unification. It returns
+-- substitutions, which needs to be done in order to
+-- match two given types.
+unify :: Type -> Type -> TypeM Subst
+unify (TypeFunc l r) (TypeFunc l' r') = do
+    s1 <- unify l l'
+    s2 <- unify (apply s1 r) (apply s1 r')
+    return (s1 `compose` s2)
+unify (TypeVar u) t = varBind u t
+unify t (TypeVar u) = varBind u t
+unify TypeInt TypeInt = return nullSubst
+unify TypeBool TypeBool = return nullSubst
+unify (TypeList t1) (TypeList t2) = unify t1 t2
+unify t1 t2 = throwError $ "Given types do not unify: desired type " 
+                            ++ show t1 ++ " but got: " ++ show t2
 
 
 
+-- Function tries to bind variables
+varBind :: String -> Type -> TypeM Subst
+varBind u t | t == TypeVar u = return nullSubst
+            | u `S.member` freeVars t = 
+                throwError $ "Occurs check fails: " ++ u ++ " vs. " ++ show t
+            | otherwise = return (M.singleton u t)
 
+
+
+-- Function gives new types names for primitive functions.
+-- Since their types ("a") are strictly coded (file BuiltinPrimiFuncs.hs)
+-- we need to give each primitive different "a". Otherwise they are 
+-- "ruining each one's substitutions".
+type PolyMap = (M.Map String Type)
+getNewPolymorphicNames :: PolyMap -> Type -> TypeM (PolyMap, Type)
+getNewPolymorphicNames map (TypeVar v) = do
+    case M.lookup v map of
+        Nothing -> do
+            polyType <- newTyVar "var"
+            return (M.insert v polyType map, polyType)
+        Just polyType -> return (map, polyType)
+getNewPolymorphicNames map (TypeList l) = do
+    (newMap, newL) <- getNewPolymorphicNames map l
+    return (newMap, TypeList newL)
+getNewPolymorphicNames map (TypeFunc t1 t2) = do
+    (t1Map, newt1) <- getNewPolymorphicNames map t1
+    (t2Map, newt2) <- getNewPolymorphicNames t1Map t2
+    return (t2Map, TypeFunc newt1 newt2)
+getNewPolymorphicNames map t = return (map, t)
+
+
+
+-- Type inference function. Inferences types of given
+-- programm elements. For given parse tree it returns
+-- inferenced type and all substitutions made during
+-- inference process.
+inferType :: TypeEnv -> ParseTree -> TypeM (Subst, Type)
+inferType env (TData l) = case l of
+    DInt _ -> return (nullSubst, TypeInt)
+    DBool _ -> return (nullSubst, TypeBool)
+    DList [] -> do
+        typeName <- newTyVar "a"
+        return (nullSubst, TypeList typeName)
+    DList (h:t) -> do
+        (firstsSub, firstType) <- inferType env h
+        newSub <- (foldM (\sub nextType -> do
+                    (nextTypeSub, newNextType) <- inferType (apply sub env) nextType
+                    --traceM $ " newNextType = " ++ show newNextType
+                    --traceM $ " newNextType z apply = " ++ show (apply sT' newNextType)
+                    --traceM $ " typefirstType z apply = " ++ show (apply sT' firstType)
+                    allSubs <- unify (apply nextTypeSub newNextType) 
+                                    (apply nextTypeSub firstType)
+                    return (sub `compose` allSubs))
+                firstsSub
+                t)
+        return (newSub, TypeList (apply newSub firstType))
+    DPrimi (PrimitiveFunc _ t _ _) -> do
+        (_, newType) <- getNewPolymorphicNames M.empty t
+        return (nullSubst, newType)
+    DListPrimi (PrimitiveListFunc _ t _ _) -> do
+        (_, newT) <- getNewPolymorphicNames M.empty t
+        return (nullSubst, newT)
+    _ -> undefined
+inferType env (TVar n) =
+    case M.lookup n env of
+        Nothing -> 
+            throwError $ "Could't bind given varible. Unknown: " ++ n
+        Just poly -> do
+            t <- instantiate poly
+            return (nullSubst, t)
+inferType env (TFAppl e1 e2) = do
+    polyType <- newTyVar "ret"
+    (s1, t1) <- inferType env e1
+    (s2, t2) <- inferType (apply s1 env) e2
+    s3 <- unify (apply s2 t1) (TypeFunc t2 polyType)
+    return (s3 `compose` s2 `compose` s1, apply s3 polyType)
+inferType env (TFunc n e) = do
+    polyType <- newTyVar "arg"
+    let newEnv = M.insert n (Scheme [] polyType) env
+    (s1, t1) <- inferType newEnv e
+    return (s1, TypeFunc (apply s1 polyType) t1)
+
+
+
+-- Function adds new declarations types to types environment.
+addToEnv :: TypeEnv -> (String, ParseTree) -> TypeM TypeEnv
+addToEnv env (n, _) = do
+    polyType <- newTyVar "a"
+    return (M.insert n (Scheme [] polyType) env)
+
+
+
+-- Function tries to infer type of given program declaration.
+inferenceDeclaration :: (Subst, TypeEnv) -> (String, ParseTree) -> TypeM (Subst, TypeEnv)
+inferenceDeclaration (sub, env) (name, tree) = do
+    (sub2, t) <- inferType env tree
+    let newEnv = apply sub2 env
+    polyType <- instantiate (fromJust (M.lookup name newEnv))
+    sub3 <- unify t polyType
+    return (sub3 `compose` sub2 `compose` sub, apply sub3 newEnv)
+
+
+
+-- Function generalizes given program declaration.
+generalizeDeclaration :: (TypeEnv, TypeEnv) -> (String, ParseTree) -> TypeM (TypeEnv, TypeEnv)
+generalizeDeclaration (acc, env) (name, _) = do
+    polyType <- instantiate (fromJust (M.lookup name acc))
+    let genRes = generalize env polyType
+    return (M.insert name genRes acc, env)
+
+
+
+-- Function prepears types environment and all substitutions done during
+-- adding all declarations to types environment.
+getEnvAndSubst :: TypeEnv -> [(String, ParseTree)] -> TypeM (TypeEnv, Subst)
+getEnvAndSubst env decls = do
+    newEnv <- foldM addToEnv env decls
+    (sub, envInfer) <- foldM inferenceDeclaration (nullSubst, newEnv) decls
+    (envGen, _) <- foldM generalizeDeclaration (envInfer, apply sub env) decls
+    return (envGen, sub)
+
+
+
+-- Function returns all declarations (def and fun instructions)
+-- which occure in program. 
+-- Return list contains paris: (func or var name, its body).
+getProgDeclarations :: Programm -> [(String, ParseTree)]
+getProgDeclarations [] = []
+getProgDeclarations ((PEExpr _):rest) = getProgDeclarations rest
+getProgDeclarations ((PEDef n t):rest) = (n, t) : getProgDeclarations rest
+getProgDeclarations ((PEFunc n t):rest) = (n, t) : getProgDeclarations rest
+
+
+
+-- Function calls type inference function on each program
+-- expression. Each time it is called in environment with
+-- applied declarations substitutions.
+inferenceProgElem :: TypeEnv -> ProgElem -> TypeM TypeEnv
+inferenceProgElem env (PEDef _ _) = return env
+inferenceProgElem env (PEFunc _ _) = return env
+inferenceProgElem env (PEExpr tree) = do
+    (_, _) <- inferType env tree
+    return env
+
+
+
+-- Main typechecker function
+typeCheck :: Programm -> TypeM ()
+typeCheck program =
+    let decls = getProgDeclarations program
+    in do
+        (env, sub) <- getEnvAndSubst M.empty decls
+        foldM_ inferenceProgElem (apply sub env) program
 
 
