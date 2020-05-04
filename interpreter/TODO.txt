@@ -58,7 +58,7 @@ makefile
     STDINA
 cabal init
 
-bledy z linijkami                   !!!!!!!!!!!!!!!!!! TRUDNE
+    bledy z linijkami                   !!!!!!!!!!!!!!!!!! TRUDNE
 monada jako environment!!!!!!! -> byłoby fajnie, gdyby się udało
     TYPECHECKER :/                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 TRUDNE
     TYPE INFERENCE 
@@ -80,6 +80,11 @@ typechecker pozmieniac nazwy i funkcje ...
 ? def i fun errors?
 ? def multiple declarations ?
     ??? to ze nie ma bledu za malo argumenntow, tylko zwraca funkcje ???
+
+potestowac pozycje ifow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+potestowac mocno te linijki bledow
+np dzileenie przez 0 wewnatrz listypotestowac typy
+dodac duzo skomplikowanych testow na typy zlych
 
 
 
