@@ -470,6 +470,7 @@ partial_ : 3;    //=^.^= 5
 //=^.^= TYPECHECKER ERRORS
 /=^.^= 
 
+DODAC BLAD WYKONANIA W CONCACIE W JEDNEJ Z LIST NP \0, TO WTEDY LADNY BLAD <3
 
 fun new x = x + 2;
 new : 2 : 3;
