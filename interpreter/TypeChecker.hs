@@ -190,9 +190,6 @@ inferType env (TData pos l) = case l of
     DPrimi (PrimitiveFunc _ t _ _) -> do
         (_, newType) <- getNewPolymorphicNames M.empty t
         return (nullSubst, newType)
-    DListPrimi (PrimitiveListFunc _ t _ _) -> do
-        (_, newT) <- getNewPolymorphicNames M.empty t
-        return (nullSubst, newT)
     _ -> undefined
 inferType env (TVar pos n) =
     case M.lookup n env of

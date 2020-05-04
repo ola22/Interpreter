@@ -28,8 +28,7 @@ data Type = TypeVar String
 data Data = DInt Integer  -- store integer value
             | DBool Bool -- stores boolean value
             | DFunc String ParseTree Env  -- stores functions created by user (env for static binding)
-            | DPrimi PrimitiveFunc  -- stores primitive (builtin) functions and operations
-            | DListPrimi PrimitiveListFunc  -- stores builtin functions for lists
+            | DPrimi PrimitiveFunc  -- stores primitive (builtin) list functions and operations
             | DError String  -- stores error messages
             | DList [ParseTree]  -- stores list with parse trees
             | DEvaluatedList [Data] -- stores list with already evaluated exprs
@@ -39,7 +38,6 @@ instance Show Data where
     show (DBool b) = show b
     show (DFunc s _ _) = "Given function of argument " ++ show s
     show (DPrimi (PrimitiveFunc name _ n _)) = "DPrimi " ++ name ++ " " ++ show n
-    show (DListPrimi (PrimitiveListFunc name _ n _)) = "DListPrimi " ++ name ++ " " ++ show n
     show (DError err) = "DError: " ++ err
     show (DList l) = "DList " ++ show l
     show (DEvaluatedList l) = "List : " ++ show l
@@ -75,8 +73,6 @@ getPos (TFunc pos _ _) = pos
 -- logical or comparison operations and other simple statements.
 -- Type is stored for type inference.
 data PrimitiveFunc = PrimitiveFunc String Type Int ([Data] -> Data)
-
-data PrimitiveListFunc = PrimitiveListFunc String Type Int (Env -> [Data] -> Data)
 
 
 -- ProgElem are all possible programm elemrnts: expression,

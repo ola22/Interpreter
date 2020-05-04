@@ -8,7 +8,6 @@ module Parser where
 
 import Text.Megaparsec
 import Text.Megaparsec.Char
---import Text.Megaparsec.Pos
 import Data.Void
 import qualified Text.Megaparsec.Char.Lexer as L
 import qualified Control.Monad.Combinators.Expr as E
@@ -65,40 +64,13 @@ readListOp s = try $ string s
             *> readSpacesAndComments
 
 
--- Function returns actual file name and read line number
+-- Function returns actual file name and line number
 getFilePos :: Parser FilePosition
 getFilePos = do
-  --(getPos l) <- getPosition
-  --(State _ _ (PosState _ _ (getPos l) _ _) _) <- getParserState
-  --st <- getParserState
-  --posSt <- statePosState st
   p <- getSourcePos
   return (FilePosition
     (sourceName p)
     (fromIntegral $ unPos $ sourceLine p))
-
-{-getFilePos :: FilePosition
-getFilePos = do
-  --(getPos l) <- getPosition
-  --(State _ _ (PosState _ _ (getPos l) _ _) _) <- getParserState
-  st <- getParserState
-  posSt <- statePosState
-  (getPos l) <- pstateSourcePos posSt
-  return (FilePosition
-    (sourceName (getPos l))
-    (fromIntegral $ unPos $ sourceLine (getPos l)))-}
-  --return (st)
-
-{-getFilePos = 
-  let
-    --(getPos l) <- getPosition
-    --(State _ _ (PosState _ _ (getPos l) _ _) _) <- getParserState
-    st = getParserState
-    posSt = statePosState
-    (getPos l) = pstateSourcePos posSt
-  in FilePosition
-    (sourceName (getPos l))
-    (fromIntegral $ unPos $ sourceLine (getPos l))-}
 
 
 
@@ -152,7 +124,7 @@ parseList = do
 -- parseIf parses if statement
 parseIf :: Parser ParseTree
 parseIf = do
-    pos1 <- getFilePos
+    pos <- getFilePos
     readString "if"
     b_exp <- parseExprHelper
     pos2 <- getFilePos
@@ -161,8 +133,8 @@ parseIf = do
     pos3 <- getFilePos
     readString "else"
     e2 <- parseExprHelper
-    return (TFAppl pos3 (TFAppl pos2 (TFAppl pos1 
-            (TData pos1 (DPrimi primiIf)) b_exp) e1) e2)
+    return (TFAppl pos3 (TFAppl pos2 (TFAppl pos 
+            (TData pos (DPrimi primiIf)) b_exp) e1) e2)
 
 
 
@@ -171,7 +143,7 @@ parseEmpty :: Parser ParseTree
 parseEmpty = do
     pos <- getFilePos
     readString "empty"
-    return (TData pos (DListPrimi primiEmpty))
+    return (TData pos (DPrimi primiEmpty))
 
 
 -- parseIsEmpty parses isEmpty functions
@@ -180,7 +152,7 @@ parseIsEmpty = do
     pos <- getFilePos
     readString "isEmpty"
     list <- parseExprHelper
-    return (TFAppl pos (TData pos (DListPrimi primiIsEmpty)) list)
+    return (TFAppl pos (TData pos (DPrimi primiIsEmpty)) list)
 
 
 -- parseHead parses head functions
@@ -189,7 +161,7 @@ parseHead = do
     pos <- getFilePos
     readString "head"
     list <- parseExprHelper
-    return (TFAppl pos (TData pos (DListPrimi primiHead)) list)
+    return (TFAppl pos (TData pos (DPrimi primiHead)) list)
 
 
 -- parseTail parses tail functions
@@ -198,7 +170,7 @@ parseTail = do
     pos <- getFilePos
     readString "tail"
     list <- parseExprHelper
-    return (TFAppl pos (TData pos (DListPrimi primiTail)) list)
+    return (TFAppl pos (TData pos (DPrimi primiTail)) list)
 
 
 -- parseConcat parses concat functions
@@ -209,7 +181,7 @@ parseConcat = do
     list1 <- parseExprHelper
     list2 <- parseExprHelper
     return (TFAppl pos (TFAppl pos
-            (TData pos (DListPrimi primiConcat)) list1) list2)
+            (TData pos (DPrimi primiConcat)) list1) list2)
 
 
 
@@ -262,9 +234,6 @@ parseidentifier :: Parser ParseTree
 parseidentifier = do
     var <- parseVarAndFuncNames "variable/function"
     pos <- getFilePos
-    --f <- TVar
-    --a <- parseVarAndFuncNames "variable/function"
-    --pure (f pos a)
     return (TVar pos var)
 
 
@@ -278,7 +247,6 @@ parseLambda = do
     checkIfNotRepeted vars
     readOperator "->"
     body <- parseExprHelper
-    --return (foldr (\x -> TFunc pos x body) vars)
     return (foldr (TFunc pos) body vars)
 
 
@@ -303,41 +271,6 @@ parseTerm = choice
   , parseNegativeNumber
   ]
 
-
-{-
-operatorTable :: [[E.Operator Parser ParseTree]]
-operatorTable = [ [ binary ":" (\l r -> TFAppl (getFilePos) l r)]
-  , [ binary "*" (\l r -> TFAppl (getFilePos) (TFAppl (getFilePos) (TData (getFilePos) $ DPrimi primiMul) l) r)
-    , binary "/" (\l r -> TFAppl (getFilePos) (TFAppl (getFilePos) (TData (getFilePos) $ DPrimi primiDiv) l) r)
-    , binary "%" (\l r -> TFAppl (getFilePos) (TFAppl (getFilePos) (TData (getFilePos) $ DPrimi primiMod) l) r)]
-  , [ binary "+" (\l r -> TFAppl (getFilePos) (TFAppl (getFilePos) (TData (getFilePos) $ DPrimi primiAdd) l) r)
-    , binary "-" (\l r -> TFAppl (getFilePos) (TFAppl (getFilePos) (TData (getFilePos) $ DPrimi primiSub) l) r)]
-  , [ binary ">" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiMore) l) r)
-    , binary "<" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiLess) l) r)
-    , binary "==" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiEq) l) r)
-    , binary "!=" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiNotEq) l) r)]
-  , [ binary "&&" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiAnd) l) r)
-    , binary "||" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiOr) l) r)]
-  ]
-
-  operatorTable :: [[E.Operator Parser ParseTree]]
-operatorTable = do
-    (getPos l) <- getFilePos;
-    return $
-    [ [ binary ":" (\l r -> TFAppl l r)]
-  , [ binary "*" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiMul) l) r)
-    , binary "/" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiDiv) l) r)
-    , binary "%" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiMod) l) r)]
-  , [ binary "+" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiAdd) l) r)
-    , binary "-" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiSub) l) r)]
-  , [ binary ">" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiMore) l) r)
-    , binary "<" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiLess) l) r)
-    , binary "==" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiEq) l) r)
-    , binary "!=" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiNotEq) l) r)]
-  , [ binary "&&" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiAnd) l) r)
-    , binary "||" (\l r -> TFAppl (TFAppl (TData $ DPrimi primiOr) l) r)]
-  ]
--}
 
 operatorTable :: [[E.Operator Parser ParseTree]]
 operatorTable =
@@ -382,7 +315,7 @@ parseExpr = do
 -- fun f x .. = exp
 parseFun :: Parser ProgElem
 parseFun = do
-    pos1 <- getFilePos
+    pos <- getFilePos
     readString "fun"
     pos2 <- getFilePos
     name <- parseVarAndFuncNames "function"
@@ -391,7 +324,7 @@ parseFun = do
     readOperator "="
     body <- parseExprHelper
     readOperator ";"
-    return (PEFunc pos1 name (foldr (TFunc pos2) body vars))
+    return (PEFunc pos name (foldr (TFunc pos2) body vars))
 
 
 -- parseDef parses variable definition

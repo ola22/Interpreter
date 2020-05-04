@@ -3,8 +3,6 @@
 module BuiltinPrimiFuncs where
 
 import Definitions
-import TreeEvaluator
-import Printer
 
 
 
@@ -174,83 +172,69 @@ haskellIf _ = DError "Given not a boolean expression in if statement"
 
 ----------------------------------------- PrimitiveFuncs for list operations ---------------------------------
 
-primiEmpty :: PrimitiveListFunc
-primiEmpty = PrimitiveListFunc "Empty" (TypeList (TypeVar "a")) 0 haskellEmpty
+primiEmpty :: PrimitiveFunc
+primiEmpty = PrimitiveFunc "Empty" (TypeList (TypeVar "a")) 0 haskellEmpty
 
-haskellEmpty :: Env -> [Data] -> Data 
-haskellEmpty _ _ _ = DEvaluatedList []
+haskellEmpty :: [Data] -> Data 
+haskellEmpty _ = DEvaluatedList []
 
 
 
-primiIsEmpty :: PrimitiveListFunc
-primiIsEmpty = PrimitiveListFunc "Is empty" (TypeFunc (TypeList (TypeVar "a")) (TypeBool)) 
+primiIsEmpty :: PrimitiveFunc
+primiIsEmpty = PrimitiveFunc "Is empty" (TypeFunc (TypeList (TypeVar "a")) (TypeBool)) 
                                     1 haskellIsEmpty
 
-haskellIsEmpty :: Env -> [Data] -> Data
-haskellIsEmpty _ [DError err] = DError (err ++ ". Error inside list")
-haskellIsEmpty _ [DList l] = DBool (null l)
-haskellIsEmpty _ [DEvaluatedList l] = DBool (null l)
-haskellIsEmpty _ _ = 
+haskellIsEmpty :: [Data] -> Data
+haskellIsEmpty [DError err] = DError (err ++ ". Error inside list")
+haskellIsEmpty [DList l] = DBool (null l)
+haskellIsEmpty [DEvaluatedList l] = DBool (null l)
+haskellIsEmpty _ = 
     DError $ "Trying to apply 'isEmpty' to not-list object"
 
 
 
-primiHead :: PrimitiveListFunc
-primiHead = PrimitiveListFunc "Head" (TypeFunc (TypeList (TypeVar "a")) ((TypeVar "a"))) 
+primiHead :: PrimitiveFunc
+primiHead = PrimitiveFunc "Head" (TypeFunc (TypeList (TypeVar "a")) ((TypeVar "a"))) 
                                 1 haskellHead
 
-haskellHead :: Env -> [Data] -> Data
-haskellHead _ [DError err] = DError (err ++ ". Error inside list")
-haskellHead env [DList l] = 
-    case l of
-        [] -> DError $ "Trying to apply 'head' to empty list"
-        _ -> evaluateTree env (head l)
-haskellHead _ [DEvaluatedList l] =
+haskellHead :: [Data] -> Data
+haskellHead [DError err] = DError (err ++ ". Error inside list")
+haskellHead [DList _] = DError $ "Trying to apply 'head' to not-evaluated list"
+haskellHead [DEvaluatedList l] =
     case l of
         [] -> DError $ "Trying to apply 'head' to empty list"
         _ -> head l
-haskellHead _ _ = 
+haskellHead _ = 
     DError $ "Trying to apply 'head' to not-list object"
 
 
 
-primiTail :: PrimitiveListFunc
-primiTail = PrimitiveListFunc "Tail" (TypeFunc (TypeList (TypeVar "a")) (TypeList (TypeVar "a"))) 
+primiTail :: PrimitiveFunc
+primiTail = PrimitiveFunc "Tail" (TypeFunc (TypeList (TypeVar "a")) (TypeList (TypeVar "a"))) 
                                 1 haskellTail
 
-haskellTail :: Env -> [Data] -> Data 
-haskellTail _ [DError err] = DError (err ++ ". Error inside list")
-haskellTail env [DList l] =
-    case l of
-        [] -> DError $ "Trying to apply 'tail' to empty list"
-        _ -> evaluateTree env (TData pos (DList (tail l)))
-haskellTail _ [DEvaluatedList l] =
+haskellTail :: [Data] -> Data 
+haskellTail [DError err] = DError (err ++ ". Error inside list")
+haskellTail [DList _] = DError $ "Trying to apply 'tail' to not-evaluated list"
+haskellTail [DEvaluatedList l] =
     case l of
         [] -> DError $ "Trying to apply 'tail' to empty list"
         _ -> DEvaluatedList (tail l)
-haskellTail _ _ = DError $ "Trying to apply 'tail' to not-list object"
+haskellTail _ = DError $ "Trying to apply 'tail' to not-list object"
 
 
 
-primiConcat :: PrimitiveListFunc
-primiConcat = PrimitiveListFunc "Concat" 
+primiConcat :: PrimitiveFunc
+primiConcat = PrimitiveFunc "Concat" 
         (TypeFunc (TypeList (TypeVar "a")) $ TypeFunc (TypeList (TypeVar "a")) $ TypeList (TypeVar "a")) 
         2 haskellConcat
 
-haskellConcat :: Env -> [Data] -> Data 
-haskellConcat _ (DError err:_) = DError (err ++ ". Error inside first list")
-haskellConcat _ (_:[DError err]) = DError (err ++ ". Error inside second list")
-haskellConcat env (DList l1:[DList l2]) =
-    let l1_ = evaluateTree env (TData pos (DList l1))
-        l2_ = evaluateTree env (TData pos (DList l2))
-    in case l1_ of
-        DEvaluatedList l1E -> 
-            case l2_ of
-                DEvaluatedList l2E -> DEvaluatedList (l1E ++ l2E)
-                _ -> DError $ "Trying to apply 'concat' to not-list object"
-        _ -> DError $ "Trying to apply 'concat' to not-list object"
-haskellConcat _ (DEvaluatedList l1:[DEvaluatedList l2]) = 
+haskellConcat :: [Data] -> Data 
+haskellConcat (DError err:_) = DError (err ++ ". Error inside first list")
+haskellConcat (_:[DError err]) = DError (err ++ ". Error inside second list")
+haskellConcat (DList _:[DList _]) = DError $ "Trying to apply 'concat' to not-evaluated lists"
+haskellConcat (DEvaluatedList l1:[DEvaluatedList l2]) = 
     DEvaluatedList (l1 ++ l2)
-haskellConcat _ _ = DError $ "Trying to apply 'concat' to not-list object"
+haskellConcat _ = DError $ "Trying to apply 'concat' to not-list object"
 
 
