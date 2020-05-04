@@ -45,16 +45,30 @@ instance Show Data where
     show (DEvaluatedList l) = "List : " ++ show l
 
 
+-- FilePosition stores position in input file.
+-- It stores file name and line number. It is
+-- stored in ParseTree (each node stores its 
+-- line number). Positions are used for writing errors.
+data FilePosition = FilePosition String Integer deriving Show
+
+
 -- ParseTree is a tree storeing parsed programm where:
 --  * Tdata - leaf storeing simple data (eg. 5)
 --  * TVar - leaf storeing variables, operators, func names (eg. "x", "+")
 --  * TFAppl - node storeing two ParseTrees (first is a TVar: operator/func or TFAppl
 --             and second is TVar: var or TData)
-data ParseTree = TData Data 
-                | TVar String 
-                | TFAppl ParseTree ParseTree
-                | TFunc String ParseTree
+data ParseTree = TData FilePosition Data 
+                | TVar FilePosition String 
+                | TFAppl FilePosition ParseTree ParseTree
+                | TFunc FilePosition String ParseTree
     deriving Show
+
+-- Function returns position of given parse tree node
+getPos :: ParseTree -> FilePosition
+getPos (TData pos _) = pos
+getPos (TVar pos _) = pos
+getPos (TFAppl pos _ _) = pos
+getPos (TFunc pos _ _) = pos
 
 
 -- Primitive is created for some primitive operations like arithmetical,
@@ -68,8 +82,8 @@ data PrimitiveListFunc = PrimitiveListFunc String Type Int (Env -> [Data] -> Dat
 -- ProgElem are all possible programm elemrnts: expression,
 -- variable definiction and function definition
 data ProgElem = PEExpr ParseTree
-                | PEDef String ParseTree
-                | PEFunc String ParseTree
+                | PEDef FilePosition String ParseTree
+                | PEFunc FilePosition String ParseTree
     deriving Show
 
 

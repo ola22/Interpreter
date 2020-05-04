@@ -4,6 +4,7 @@ module BuiltinPrimiFuncs where
 
 import Definitions
 import TreeEvaluator
+import Printer
 
 
 
@@ -177,7 +178,7 @@ primiEmpty :: PrimitiveListFunc
 primiEmpty = PrimitiveListFunc "Empty" (TypeList (TypeVar "a")) 0 haskellEmpty
 
 haskellEmpty :: Env -> [Data] -> Data 
-haskellEmpty _ _ = DEvaluatedList []
+haskellEmpty _ _ _ = DEvaluatedList []
 
 
 
@@ -189,7 +190,8 @@ haskellIsEmpty :: Env -> [Data] -> Data
 haskellIsEmpty _ [DError err] = DError (err ++ ". Error inside list")
 haskellIsEmpty _ [DList l] = DBool (null l)
 haskellIsEmpty _ [DEvaluatedList l] = DBool (null l)
-haskellIsEmpty _ _ = DError "Trying to apply 'isEmpty' to not-list object"
+haskellIsEmpty _ _ = 
+    DError $ "Trying to apply 'isEmpty' to not-list object"
 
 
 
@@ -201,13 +203,14 @@ haskellHead :: Env -> [Data] -> Data
 haskellHead _ [DError err] = DError (err ++ ". Error inside list")
 haskellHead env [DList l] = 
     case l of
-        [] -> DError "Trying to apply 'head' to empty list"
+        [] -> DError $ "Trying to apply 'head' to empty list"
         _ -> evaluateTree env (head l)
 haskellHead _ [DEvaluatedList l] =
     case l of
-        [] -> DError "Trying to apply 'head' to empty list"
+        [] -> DError $ "Trying to apply 'head' to empty list"
         _ -> head l
-haskellHead _ _ = DError "Trying to apply 'head' to not-list object"
+haskellHead _ _ = 
+    DError $ "Trying to apply 'head' to not-list object"
 
 
 
@@ -219,13 +222,13 @@ haskellTail :: Env -> [Data] -> Data
 haskellTail _ [DError err] = DError (err ++ ". Error inside list")
 haskellTail env [DList l] =
     case l of
-        [] -> DError "Trying to apply 'tail' to empty list"
-        _ -> evaluateTree env (TData (DList (tail l)))
+        [] -> DError $ "Trying to apply 'tail' to empty list"
+        _ -> evaluateTree env (TData pos (DList (tail l)))
 haskellTail _ [DEvaluatedList l] =
     case l of
-        [] -> DError "Trying to apply 'tail' to empty list"
+        [] -> DError $ "Trying to apply 'tail' to empty list"
         _ -> DEvaluatedList (tail l)
-haskellTail _ _ = DError "Trying to apply 'tail' to not-list object"
+haskellTail _ _ = DError $ "Trying to apply 'tail' to not-list object"
 
 
 
@@ -238,16 +241,16 @@ haskellConcat :: Env -> [Data] -> Data
 haskellConcat _ (DError err:_) = DError (err ++ ". Error inside first list")
 haskellConcat _ (_:[DError err]) = DError (err ++ ". Error inside second list")
 haskellConcat env (DList l1:[DList l2]) =
-    let l1_ = evaluateTree env (TData (DList l1))
-        l2_ = evaluateTree env (TData (DList l2))
+    let l1_ = evaluateTree env (TData pos (DList l1))
+        l2_ = evaluateTree env (TData pos (DList l2))
     in case l1_ of
         DEvaluatedList l1E -> 
             case l2_ of
                 DEvaluatedList l2E -> DEvaluatedList (l1E ++ l2E)
-                _ -> DError "Trying to apply 'concat' to not-list object"
-        _ -> DError "Trying to apply 'concat' to not-list object"
+                _ -> DError $ "Trying to apply 'concat' to not-list object"
+        _ -> DError $ "Trying to apply 'concat' to not-list object"
 haskellConcat _ (DEvaluatedList l1:[DEvaluatedList l2]) = 
     DEvaluatedList (l1 ++ l2)
-haskellConcat _ _ = DError "Trying to apply 'concat' to not-list object"
+haskellConcat _ _ = DError $ "Trying to apply 'concat' to not-list object"
 
 

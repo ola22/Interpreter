@@ -27,3 +27,10 @@ printList :: [Data] -> String
 printList [] = ""
 printList (h:[]) = show h
 printList (h:t) = show h ++ ", " ++ printList t 
+
+
+
+-- Function returns string, which contains information about position in file
+-- where given error occured.
+addPosToError :: FilePosition -> String
+addPosToError (FilePosition file line) = "In file: " ++ file ++ " in line " ++ show line ++ ": "

@@ -50,21 +50,23 @@ executeProgramm programm =
 getEnv :: Programm -> Env
 getEnv programm = 
     let 
-        addToEnv :: ProgElem -> Env -> Env
-        addToEnv (PEExpr _) env = env
-        addToEnv (PEDef n t) env = 
+        addDeclsToEnv :: ProgElem -> Env -> Env
+        addDeclsToEnv (PEExpr _) env = env
+        addDeclsToEnv (PEDef pos n t) env = 
             let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> M.insert n (DError ("Error during evaluation." ++ 
+                Just _ -> M.insert n (DError ((addPosToError pos) ++ 
+                                "Error during evaluation." ++ 
                                 "Multiple declaration of variable: " ++ n)) env
                 Nothing -> M.insert n (evaluateTree result t) env
-        addToEnv (PEFunc n t) env = 
+        addDeclsToEnv (PEFunc pos n t) env = 
             let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> M.insert n (DError ("Error during evaluation." ++ 
+                Just _ -> M.insert n (DError ((addPosToError pos) ++ 
+                                "Error during evaluation." ++ 
                                 "Multiple declaration of function: " ++ n)) env
                 Nothing -> M.insert n (evaluateTree result t) env
-        result = foldr addToEnv M.empty programm
+        result = foldr addDeclsToEnv M.empty programm
     in result
 
 
@@ -73,8 +75,8 @@ getEnv programm =
 -- Evaluation stops after getting error.
 evaluateProgramm :: Env -> Programm -> ProgResult -> ProgResult
 evaluateProgramm _ [] resList = resList
-evaluateProgramm env ((PEDef _ _):rest) resList = evaluateProgramm env rest resList
-evaluateProgramm env ((PEFunc _ _):rest) resList = evaluateProgramm env rest resList
+evaluateProgramm env ((PEDef _ _ _):rest) resList = evaluateProgramm env rest resList
+evaluateProgramm env ((PEFunc _ _ _):rest) resList = evaluateProgramm env rest resList
 evaluateProgramm env ((PEExpr e):rest) resList = 
     let evaluated = evaluateTree env e 
     in case evaluated of
