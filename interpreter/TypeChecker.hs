@@ -201,7 +201,7 @@ inferType env (TVar pos n) =
             return (nullSubst, t)
 inferType env (TFAppl pos e1 e2) = do
     polyType <- newTyVar "ret"
-    (s1, t1) <- inferType env e1
+    (s1, t1) <- inferType env e13
     (s2, t2) <- inferType (apply s1 env) e2
     s3 <- unify pos (apply s2 t1) (TypeFunc t2 polyType)
     return (s3 `compose` s2 `compose` s1, apply s3 polyType)

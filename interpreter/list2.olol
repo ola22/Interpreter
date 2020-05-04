@@ -158,18 +158,18 @@ isEmpty [[]];
 
 //=^.^=if true then [[1], [2]] else [];
 
-[[true], [[1]]];
+//=^.^=[[true], [[1]]];
 
 
 
-def krowa = 7;
+//=^.^=def krowa = 7;
 
-
+//=^.^=def krowa = 12;
 
 
 //=^.^=head [];
 
 
-krowa + 2;
+//=^.^=krowa + 2;
 
 

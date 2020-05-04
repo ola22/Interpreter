@@ -28,8 +28,16 @@ printList (h:[]) = show h
 printList (h:t) = show h ++ ", " ++ printList t 
 
 
-
 -- Function returns string, which contains information about position in file
 -- where given error occured.
 addPosToError :: FilePosition -> String
-addPosToError (FilePosition file line) = "In file: " ++ file ++ " in line " ++ show line ++ ": "
+addPosToError (FilePosition file line) = "In file: " ++ file ++ " at line " ++ show line ++ ": "
+
+
+-- Function returns string, which contains information about position of 
+-- multiple-declaration error of given variable.
+-- Argument what stores information, if var is a function or varible name.
+addPosToDeclError :: FilePosition -> String -> String -> String
+addPosToDeclError (FilePosition _ line) var what = "used multiple-declared " ++ what ++ " " 
+                                    ++ var ++ " .First repeated declaration at line " ++ show line ++ "."
+

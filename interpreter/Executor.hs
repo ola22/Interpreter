@@ -5,7 +5,6 @@ module Executor where
 
 import qualified Data.Map.Lazy as M
 import Text.Megaparsec
---import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.State
 import Control.Monad.Error
@@ -55,16 +54,12 @@ getEnv programm =
         addDeclsToEnv (PEDef pos n t) env = 
             let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> M.insert n (DError ((addPosToError pos) ++ 
-                                "Error during evaluation." ++ 
-                                "Multiple declaration of variable: " ++ n)) env
+                Just _ -> M.insert n (DError $ addPosToDeclError pos n "variable") env
                 Nothing -> M.insert n (evaluateTree result t) env
         addDeclsToEnv (PEFunc pos n t) env = 
             let lookRes = M.lookup n env
             in case lookRes of
-                Just _ -> M.insert n (DError ((addPosToError pos) ++ 
-                                "Error during evaluation." ++ 
-                                "Multiple declaration of function: " ++ n)) env
+                Just _ -> M.insert n (DError $ addPosToDeclError pos n "function") env
                 Nothing -> M.insert n (evaluateTree result t) env
         result = foldr addDeclsToEnv M.empty programm
     in result
