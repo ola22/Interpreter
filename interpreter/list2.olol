@@ -173,3 +173,25 @@ isEmpty [[]];
 //=^.^=krowa + 2;
 
 
+
+//=^.^= DODAC
+/=^.^=
+//=^.^=[\x y -> if x then y else y + 1, \x y -> if true then x + 1 else y + 2];
+fun rec_list2 n = if (n == 0) 
+                        then [true]
+                        else (concat [n] (rec_list2 : (n - 1))) ;
+rec_list2 : 5;   //=^.^=  [5,4,3,2,1]
+
+
+//=^.^=  Lists of functions
+//=^.^=  higher order, multiargument lambdas and "variable" functions inside lists
+fun sqr x = x * x;
+def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
+(head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
+(head (tail list_of_funcs)) : sqr : 3;   //=^.^=  9 
+
+
+
+
+
+/=^.^=/

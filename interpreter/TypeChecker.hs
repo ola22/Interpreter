@@ -195,13 +195,13 @@ inferType env (TVar pos n) =
     case M.lookup n env of
         Nothing -> 
             throwError $ (addPosToError pos) ++ 
-             "Could't bind given varible. Unknown: " ++ n
+             "Could't bind given varible. Unknown identifier: " ++ n
         Just poly -> do
             t <- instantiate poly
             return (nullSubst, t)
 inferType env (TFAppl pos e1 e2) = do
     polyType <- newTyVar "ret"
-    (s1, t1) <- inferType env e13
+    (s1, t1) <- inferType env e1
     (s2, t2) <- inferType (apply s1 env) e2
     s3 <- unify pos (apply s2 t1) (TypeFunc t2 polyType)
     return (s3 `compose` s2 `compose` s1, apply s3 polyType)
