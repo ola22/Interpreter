@@ -7,6 +7,3 @@
 
 //=^.^=if true then [1, 2] else [true, false];
 
-
-
-tail head ((tail (tail [1, 2, 3, 4])));
