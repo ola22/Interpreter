@@ -8,7 +8,7 @@ fun rec n = if n == 1 then n else n * rec : (n - 1);
 rec : 6;   //=^.^=  720
 
 
-//=^.^= Recursion in two func (each one calls the other one)
+//=^.^= Recursion in two func at the same time (each one calls the other one)
 fun rec1 x = if x == 1 then x else x * rec2 : (x - 1);
 fun rec2 x = if x == 1 then x else x + rec1 : (x - 1);
 rec1 : 3;   //=^.^= 9

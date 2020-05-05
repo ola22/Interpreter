@@ -9,10 +9,11 @@ if ((\x y -> x > y) : 2 : 3) then 22 else 33; //=^.^= powinno byc 33
 
 
 //=^.^= If returning functions
+//=^.^= Types are matched (function a -> a and int -> int)
 fun f1 x = x;
 fun f2 x = 2 * x;
 (if 1 == 1 then f1 else f2) : 5;   //=^.^=  5
-(if false then f1 else f2) : 5;   //=^.^=  s10
+(if false then f1 else f2) : 5;   //=^.^=  10
 
 
 //=^.^=  If with nested lists
@@ -20,5 +21,6 @@ if (false) then [[[1]]] else (concat [[[2]]] [[[3]]]); //=^.^=  [[[2]], [[3]]]
 
 
 //=^.^=  If with list of function
-if ((head [\x -> x, \y -> y + y]) : true) then 4 else 5;  //=^.^=  4
+//=^.^=  Types are matched (list of functions of type bool -> bool)
+if ((head [\x -> x, \y -> y && y]) : true) then 4 else 5;  //=^.^=  4
 

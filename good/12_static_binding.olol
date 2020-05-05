@@ -1,5 +1,6 @@
 //=^.^=  Static binding (if the binding was dynamic the output would be 10)
 
+
 def static = 3;
 fun static_fun z = z + static;
 

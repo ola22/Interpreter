@@ -1,4 +1,5 @@
 //=^.^=  Functions taking lists as arguments/returning lists
 
+
 fun ret_concat l1 l2 = concat l1 l2;
-ret_concat : [1, [2, 3], 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,[2,3],4,5,11,3]
+ret_concat : [1, 2, 3, 4, 5] : [if true then 5 + 6 else 7, 3]; //=^.^= [1,2,3,4,5,11,3]

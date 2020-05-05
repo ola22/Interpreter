@@ -1,4 +1,6 @@
 //=^.^=  Function which uses lists, if, multiargument, higher order
+//=^.^=  All types are matched here.
+
 
 fun combination_fun f l x b = if b then (f : l : x) * 2
                  else (f : (tail l) : x) * 2;

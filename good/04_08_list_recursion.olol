@@ -1,5 +1,6 @@
 //=^.^=  List recursion
 
+
 def rec_l = [1, 2, 3, 4];
 fun rec_list1 l = if (isEmpty l) then [true] else (rec_list1 : (tail l));
 rec_list1 : rec_l;       //=^.^= [True]
@@ -11,3 +12,10 @@ fun rec_list2 n l =
         then l 
         else rec_list2 : (n - 1) : (concat l [n]) ;
 rec_list2 : 5 : [];   //=^.^=  [5,4,3,2,1]
+
+
+
+fun rec_list3 n = if (n == 0) 
+                        then []
+                        else (concat [n] (rec_list3 : (n - 1))) ;
+rec_list3 : 7;   //=^.^=  [7,6,5,4,3,2,1]

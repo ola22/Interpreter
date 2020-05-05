@@ -5,13 +5,11 @@ l_int;
 def l_bool = [true, false, true];
 l_bool;      //=^.^=  [True,False,True]
 
-[1, true, -5];  //=^.^=  [1, True, -5]
-
 
 //=^.^=  Lists of variables
 def a = 3 + 5;
-def b = true;
-[a, b];   //=^.^=  [8,True]
+def b = 146;
+[a, b];   //=^.^=  [8, 146]
 
 
 //=^.^=  Lists of ifs
@@ -19,29 +17,35 @@ head [if true then 2 else 4, 5, 7, 8];    //=^.^=  2
 tail [if true then 2 else 4, 12, if false then 2 else 4, 8];   //=^.^=  [12,4,8]
 
 
-//=^.^=  Lists of functions
-//=^.^=  higher order, multiargument lambdas and "variable" functions inside lists
-fun sqr x = x * x;
-def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
-(head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
-(head (tail list_of_funcs)) : sqr : 3;   //=^.^=  9 
 
-fun new b = if b then 44 else 66;
-(head (concat [new] list_of_funcs)) : false;  //=^.^=  66 
+//=^.^=  Lists of functions (they must be the same type)
+//=^.^=  higher order, multiargument lambdas and "variable" functions inside lists
+fun sqr x y = x * y;
+def list_of_funcs = [\x y -> x + y, (\a b -> a * a * b), sqr];
+(head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
+
+fun new = \x y -> 2 * x + y;
+(head (concat [new] list_of_funcs)) : 2 : 4;  //=^.^= 8
+
+def list_of_higher_order_funcs = [(\f x y -> f : x : y), (\f x y -> (f : x : y) * 4)];
+(head (tail list_of_higher_order_funcs)) : sqr : 3 : 3;   //=^.^=  9  * 4 = 36
+
 
 
 //=^.^=  Nested lists
-head [[2, 3], 1, 2];   //=^.^=  [2, 3]
-def nested = [[[[111, 2], 3], 4], 5];
+head [[2, 3], [1], [2]];   //=^.^=  [2, 3]
+def nested = [[ [[111, 2], [3]], [[4]]], [[[5]]]];
 head (head (head (head nested)));  //=^.^=  111
 
 
+
 //=^.^=  Nested lists with different types
-def nested_func_list = [[[\x y -> x + y * 2, \x y -> x + y], [[[sqr]]]], [[sqr]]];
+def nested_func_list = [[[\x y -> x + y * 2, \x y -> x + y], [sqr]], [[sqr]]];
 def second_func_from_list = head (tail (head (head nested_func_list)));
 second_func_from_list : 2 : 18;   //=^.^=  20
 
 
+
 //=^.^=  Nested lists with list functions
-[concat [] [1, 2], [3, 8], tail nested];  //=^.^=  [[1,2],[3,8],[5]]
+[concat [] [1, 2], [3, 8], tail l_int];  //=^.^=  [[1,2],[3,8],[2,3]]
 

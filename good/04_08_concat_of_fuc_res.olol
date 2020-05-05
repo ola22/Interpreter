@@ -1,4 +1,6 @@
 //=^.^=  List functions with functions 
+//=^.^=  All types are matched here.
+
 
 fun list_maker a b c = [a, b, c];
 concat (list_maker : 4 : 8 : 9) [4];  //=^.^= [4,8,9,4]
