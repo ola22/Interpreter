@@ -125,8 +125,8 @@ unify _ TypeInt TypeInt = return nullSubst
 unify _ TypeBool TypeBool = return nullSubst
 unify pos (TypeList t1) (TypeList t2) = unify pos t1 t2
 unify pos t1 t2 = throwError $ (addPosToError pos) ++ 
-                            "Given types do not unify: desired type " 
-                            ++ show t1 ++ " but got: " ++ show t2
+                            "Given types do not unify: type " 
+                            ++ show t1 ++ " vs expected: " ++ show t2
 
 
 
