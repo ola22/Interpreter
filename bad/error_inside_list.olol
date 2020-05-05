@@ -1,4 +1,8 @@
-//=^.^= ERROR: Evaluation, type error inside list (true - 1)
+//=^.^= ERROR: Evaluation, type error inside list (4 / 0)
+//=^.^= The types are matched, program stoped since got runtime error
+//=^.^= Error line: 7
 
-def l = [[1, 2], [if true then 4 else 5], [1, [[true - 1, true], false]]];
+def l = [[1, 2], 
+         [if true then 4 else 5], 
+         [1, 4 / 0]];
 l;

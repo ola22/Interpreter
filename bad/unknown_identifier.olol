@@ -1,2 +1,4 @@
-//=^.^= ERROR: Invalid identifier p
+//=^.^= ERROR: Unknown identifier p (static check during type inference)
+
+
 (\x y -> x + y * 2) : p : 3;
