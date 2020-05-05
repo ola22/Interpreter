@@ -1,0 +1,11 @@
+//=^.^=  Static type check (3 + 4 won't evaluate)
+//=^.^= All funcs inside list are of different type
+
+3 + 4;
+
+
+fun sqr x = x * x;
+def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
+
+(head list_of_funcs) : 2 : 3;   //=^.^=  (2 + 3) 5
+(head (tail list_of_funcs)) : sqr : 3;   //=^.^=  9 

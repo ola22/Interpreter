@@ -1,0 +1,8 @@
+/=^.^=
+    Typecheck error. List must consist of element s, which are the same type.
+    Here we have f1 :: bool -> int -> int and f2 :: int -> int -> int 
+    (known from type inference).
+=^.^=/
+
+
+[\x y -> if x then y else y + 1, \x y -> if true then x + 1 else y + 2];

@@ -1,0 +1,10 @@
+/=^.^=
+    Typecheck error. Typecheck of declarations. Detected type mismatch
+    in declaration of recursion in two functions at the same time.
+    One of them returns boolean value in one of its if branch.
+=^.^=/
+
+
+//=^.^= Typechec of recursion in two funcs at the same time
+fun rec3 x = if x == 1 then true else x * rec4 : (x - 1);
+fun rec4 x = if x == 1 then x else x + rec3 : (x - 1);

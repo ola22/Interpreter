@@ -1,0 +1,10 @@
+/=^.^=
+    Typecheck error. Concat must be applied to two lists, which are the same type.
+    Here in last recursive call concat will be applied to typeList int and typeList bool.
+=^.^=/
+
+
+fun rec_list2 n = if (n == 0) 
+                        then [true]
+                        else (concat [n] (rec_list2 : (n - 1))) ;
+rec_list2 : 5;   //=^.^=  [5,4,3,2,1]

@@ -1,0 +1,12 @@
+/=^.^=
+    Typecheck error. Detected firstly-occured type mismatch. 
+    In first tail, it would be applied to not list object.
+    (line 9)
+=^.^=/
+
+
+head
+    (tail 
+        (head
+            (tail
+                (tail [1, 2, 3, 4]))));

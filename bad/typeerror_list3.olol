@@ -1,0 +1,11 @@
+/=^.^=
+    Typecheck error. Lists must consist of elements, which are the
+    same type. The first list is ok, but the second one not.
+=^.^=/
+
+
+//=^.^= ok
+[[[[1], [4]]], [[[2], []], [[3], [5, 7, 8]]]];
+
+//=^.^= not there is an empty list instead of int "before list with 3"
+[[[[1], [4]]], [[[2], [[]]], [[3], [5, 7, 8]]]];

@@ -1,0 +1,12 @@
+/=^.^=
+    Typecheck error. Returned types in both if branches must be
+    the same. Here we have bool list and int list.
+=^.^=/
+
+
+
+//=^.^=if true then [1, 2] else [true, false];
+
+
+
+tail head ((tail (tail [1, 2, 3, 4])));
