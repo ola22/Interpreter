@@ -40,7 +40,7 @@ instance Show Data where
     show (DPrimi (PrimitiveFunc name _ n _)) = "DPrimi " ++ name ++ " " ++ show n
     show (DError err) = "DError: " ++ err
     show (DList l) = "DList " ++ show l
-    show (DEvaluatedList l) = "List : " ++ show l
+    show (DEvaluatedList l) = show l
 
 
 -- FilePosition stores position in input file.
