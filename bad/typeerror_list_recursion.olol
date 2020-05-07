@@ -7,4 +7,4 @@
 fun rec_list2 n = if (n == 0) 
                         then [true]
                         else (concat [n] (rec_list2 : (n - 1))) ;
-rec_list2 : 5;   //=^.^=  [5,4,3,2,1]
+rec_list2 : 5; 

@@ -2,4 +2,9 @@
 //=^.^= It is parsing, but not typing
 
 
+//=^.^= This one is ok, since lambda inside returns boolean value
+if ((\x y -> x > y) : 2 : 3) then 22 else 33;
+
+
+//=^.^= And this one is not
 if (\x y -> x + y * 2) then 2 else false;

@@ -63,7 +63,7 @@ primiDiv :: PrimitiveFunc
 primiDiv = PrimitiveFunc "Division" arOpType 2 haskellDiv
 
 haskellDiv :: [Data] -> Data
-haskellDiv (_:[DInt 0]) = DError "Divide by 0"
+haskellDiv (_:[DInt 0]) = DError "Trying to divide by 0"
 haskellDiv ((DInt x):[DInt y]) = DInt (x `div` y)
 haskellDiv (DError e:_) = DError e
 haskellDiv (_:[DError e]) = DError e
@@ -75,6 +75,7 @@ primiMod :: PrimitiveFunc
 primiMod = PrimitiveFunc "Modulo" arOpType 2 haskellMod
 
 haskellMod :: [Data] -> Data
+haskellMod (_:[DInt 0]) = DError "Trying to apply modulo operation to 0"
 haskellMod ((DInt x):[DInt y]) = DInt (x `mod` y)
 haskellMod (DError e:_) = DError e
 haskellMod (_:[DError e]) = DError e

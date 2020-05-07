@@ -1,4 +1,5 @@
 //=^.^= If statement (combined with arithmetic and logical operations)
+//=^.^= It's polymorphic (more examples in ..._if_with_lists_and_functions.olol)
 
 
 if (true || false) then false else true;  //=^.^= False
