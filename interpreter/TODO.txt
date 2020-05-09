@@ -48,8 +48,8 @@ Listy:
 
 ---------------------------------- PLANY -----------------------------------------------
 
-good
-bad
+    good
+    bad
 
 readme
     tabelka
@@ -83,8 +83,19 @@ typechecker pozmieniac nazwy i funkcje ...
 
 potestowac pozycje ifow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 potestowac mocno te linijki bledow
-np dzileenie przez 0 wewnatrz listypotestowac typy
-dodac duzo skomplikowanych testow na typy zlych
+    np dzileenie przez 0 wewnatrz listypotestowac typy
+    dodac duzo skomplikowanych testow na typy zlych
 
 
 
+
+
+
+readme
+makefile
+good biblioteka
+dokończyć biblioteke
+stderr, stdout
+potestowac pozycje bledow
+pozmieniac jeszcze troszke typechecker
+przejrzec jeszcze raz porzadnie polecenie!!!!!!!!!!!!!!!
