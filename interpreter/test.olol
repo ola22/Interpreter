@@ -570,3 +570,29 @@ id : true;
 //=^.^=if true then [1, 2, true] else concat [4, true] [false];                     TUUUUUUUUUUU
 
 /=^.^=/
+
+
+
+
+def nowiutka = [1, 2, 3, 4, 5];
+
+take : 3 : nowiutka;
+
+len : nowiutka;
+
+len : empty;
+
+//=^.^=len : (head nowiutka);
+
+get : 2 : nowiutka;
+
+get : 3 : nowiutka;
+
+get : -1 : nowiutka;
+
+get : 0 : nowiutka;
+
+get : 6 : nowiutka;
+
+get : 5 : nowiutka;
+

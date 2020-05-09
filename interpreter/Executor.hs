@@ -26,7 +26,8 @@ import TypeChecker
 -- returns programm's output
 runProgramm :: String -> String -> IO ()
 runProgramm file input = do
-    let parsedProg = runParser parseProgramm file input
+    ololLib <- readFile "lib.olol"
+    let parsedProg = runParser parseProgramm file (input ++ "\n" ++ ololLib)
     case parsedProg of
         Left parse_error -> putStrLn (errorBundlePretty parse_error)
         Right programm -> putStrLn (executeProgramm programm)
