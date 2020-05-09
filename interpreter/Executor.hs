@@ -4,6 +4,7 @@
 module Executor where
 
 import qualified Data.Map.Lazy as M
+import System.IO (stderr, stdout , hPutStrLn)
 import Text.Megaparsec
 import Control.Monad.Reader
 import Control.Monad.State
@@ -21,28 +22,31 @@ import TypeChecker
 
 
 
+
+
+
 -- runProgramm parses input string. If the input is not
--- a proper programm returns parsing error. Otherwise it
--- returns programm's output
+-- a proper programm/non-typing program, it returns parsing/typecheck error.
+-- Otherwise it returns programm's output.
 runProgramm :: String -> String -> IO ()
 runProgramm file input = do
     ololLib <- readFile "lib.olol"
     let parsedProg = runParser parseProgramm file (input ++ "\n" ++ ololLib)
     case parsedProg of
-        Left parse_error -> putStrLn (errorBundlePretty parse_error)
-        Right programm -> putStrLn (executeProgramm programm)
+        Left parse_error -> hPutStrLn stderr (errorBundlePretty parse_error)
+        Right programm -> 
+            let res = evalState (runReaderT (runErrorT  (typeCheck programm)) TIEnv) 0
+            in case res of
+                Left err -> hPutStrLn stderr ("TYPECHECK ERROR: " ++ err)
+                Right _ -> hPutStrLn stdout (executeProgramm programm)
 
 
 -- executeProgramm first typechecks and than executes given, 
 -- parsed programm and returns its string.
 executeProgramm :: Programm -> String
-executeProgramm programm = 
-        let res = evalState (runReaderT (runErrorT  (typeCheck programm)) TIEnv) 0
-        in case res of
-            Left err -> ("TYPECHECK ERROR: " ++ err)
-            Right _ -> let env = getEnv programm
-                           results = reverse (evaluateProgramm env programm [])
-                        in concat (map printProgResult results)
+executeProgramm programm = let env = getEnv programm
+                               results = reverse (evaluateProgramm env programm [])
+                            in concat (map printProgResult results)
 
 
 -- getEnv prepears and returns environment

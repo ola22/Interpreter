@@ -597,4 +597,4 @@ get : 6 : nowiutka;
 get : 5 : nowiutka;
 
 
-fun len l= 44;
+def len k = 44;
