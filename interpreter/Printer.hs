@@ -38,6 +38,20 @@ addPosToError (FilePosition file line) = "In file: " ++ file ++ " at line " ++ s
 -- multiple-declaration error of given variable.
 -- Argument what stores information, if var is a function or varible name.
 addPosToDeclError :: FilePosition -> String -> String -> String
-addPosToDeclError (FilePosition _ line) var what = "used multiple-declared " ++ what ++ " " 
-                                    ++ var ++ " .First repeated declaration at line " ++ show line ++ "."
+addPosToDeclError (FilePosition _ line) var what = 
+    if (isLibraryFuncName var)
+        then "used multiple-declared " ++ what ++ " " 
+            ++ var ++ ", " ++ var ++ " is olol's library function name"
+            ++ " and therefore cannot be used in your program. Forbidden declaration at line "
+            ++ show line ++ "."
+        else "used multiple-declared " ++ what ++ " " 
+            ++ var ++ ". First repeated declaration at line " ++ show line ++ "."
 
+
+-- Function isLibraryFuncName checks if given variable name 'var',
+-- chosen by user is the same, as any library function's name.
+isLibraryFuncName :: String -> Bool
+isLibraryFuncName var = var == "take"
+                    || var == "len"
+                    || var == "len_len_helper"
+                    || var == "get"

@@ -99,3 +99,5 @@ stderr, stdout
 potestowac pozycje bledow
 pozmieniac jeszcze troszke typechecker
 przejrzec jeszcze raz porzadnie polecenie!!!!!!!!!!!!!!!
+    błąd użycia czegoś z biblioteki
+library typechecker błąd

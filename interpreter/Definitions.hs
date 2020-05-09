@@ -61,7 +61,7 @@ data ParseTree = TData FilePosition Data
                 | TFunc FilePosition String ParseTree
     deriving Show
 
--- Function returns position of given parse tree node
+-- Function returns file position of given parse tree node
 getPos :: ParseTree -> FilePosition
 getPos (TData pos _) = pos
 getPos (TVar pos _) = pos
