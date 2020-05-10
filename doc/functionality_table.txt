@@ -1,5 +1,5 @@
-First I plan to create language for 20 points and than probably the one for 25 points.
-If I have enough time I would do the one for 30 points too
+Here is functionality table. I've managed to do all functionalities, which have + next to them.
+These are: things for 25 points + list syntax sugar + bonus (polimorphic types reconstruction algorithm).
 
 
 For 20 points
@@ -25,9 +25,9 @@ For 30 points
   15 (nested pattern matching, complete test)
 
 Bonus
-  + 16 (polimorphic types with types reconstruction algorithm)
+  + 16 (polimorphic types reconstruction algorithm)
 
++ additional list functions: concat, empty
++ olol's library with some useful functions (more list operations, filp)
 
-
-Together: more than 25 points
 
