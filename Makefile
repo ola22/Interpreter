@@ -1,4 +1,5 @@
 all:
+	cabal new-update
 	cabal new-build
 
 clean:

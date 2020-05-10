@@ -4,18 +4,22 @@ Functional language (Olol) interpreter.
 
 
 ## Build:
-
+Project is built with cabal. I've tested it on students and my computer.
+To build the project you just need to type 'make' in Aleksandra_Falkiewicz directory.
+Cabal will make dist-newstyle directory, where are all executable files.
 
 
 ## Running interpreter:
-Main interpreters file (Main.hs) is in directory interpreter. Interpreter can be run in two ways:
-* from file: ./Main <file_name>
-* from console: ./Main (EOF signal needs to be sent (eg. crl+d))
+Main interpreters file (Main.hs) is in directory interpreter. Interpreter is run using
+cabal new-exec command. You can run it from Aleksandra_Falkiewicz directory.
+It can be run in two ways:
+* from file: cabal new-exec interpreter <input_file_name>
+* from console: cabal new-exec interpreter (EOF signal needs to be sent (eg. crl+d))
 
 
 
 ## Usage exaples
-In directories good/bad you can find positive/negative usage examples of code written in Olol. You can run them for example with ./Main ../good/<file_name>. The output returned by given program is in its comments, next to each expression.
+In directories good/bad you can find positive/negative usage examples of code written in Olol. You can run them for example with cabal new-exec interpreter ../good/<input_file_name>. The output returned by given program is in its comments, next to each expression.
 
 
 
