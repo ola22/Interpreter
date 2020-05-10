@@ -95,7 +95,7 @@ readme
 makefile
 good biblioteka
 dokończyć biblioteke
-stderr, stdout
+    stderr, stdout
 potestowac pozycje bledow
 pozmieniac jeszcze troszke typechecker
 przejrzec jeszcze raz porzadnie polecenie!!!!!!!!!!!!!!!
