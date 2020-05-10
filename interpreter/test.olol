@@ -597,4 +597,16 @@ get : 6 : nowiutka;
 get : 5 : nowiutka;
 
 
-def len k = 44;
+def ej = get : 4;
+ej : nowiutka;
+//=^.^=get : nowiutka;
+
+drop : -1 : nowiutka;
+drop : 0 : nowiutka;
+drop : 2 : nowiutka;
+drop : 8 : nowiutka;
+drop : 5 : nowiutka;
+
+(flip : drop) : nowiutka : 1;
+
+//=^.^=def len k = 44;

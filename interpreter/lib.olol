@@ -30,3 +30,26 @@ fun get k l =
     if (k < 0 || k == 0 || (isEmpty l) || (len : l) == 1) || k == 1
     then head l
     else (get : (k - 1) : (tail l));
+
+
+
+/=^.^=
+    Function 'drop' returns list without k first elements.
+    If k < 0 or k == 0, then it returns whole list.
+    If given list is empty then it returns empty list.
+    If given k > list_len then it returns empty list.
+=^.^=/
+fun drop k l =
+    if (isEmpty l) || k > (len : l)
+    then empty
+    else (
+        if k == 0 || k < 0
+        then l
+        else drop : (k - 1) : (tail l));
+
+
+
+/=^.^=
+    Function 'filp' flips arguments of given function.
+=^.^=/
+fun flip f x y = f : y : x;
