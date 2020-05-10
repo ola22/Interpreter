@@ -21,7 +21,7 @@ For 25 points
   + 13 (static typing)
 
 For 30 points
-  14 (polimorfic and recurrency algebraic types) 
+  14 (polymorphic and recurrency algebraic types) 
   15 (nested pattern matching, complete test)
 
 Bonus
