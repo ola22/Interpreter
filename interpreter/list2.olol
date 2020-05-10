@@ -195,3 +195,5 @@ def list_of_funcs = [\x y -> x + y, (\f x -> f : x), sqr];
 
 
 /=^.^=/
+
+

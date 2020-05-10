@@ -101,3 +101,5 @@ pozmieniac jeszcze troszke typechecker
 przejrzec jeszcze raz porzadnie polecenie!!!!!!!!!!!!!!!
     błąd użycia czegoś z biblioteki
 library typechecker błąd
+co z tym testem spytac iwonke?????
+poopisywać lepiej te wszytskie testy, jak asia
