@@ -11,8 +11,6 @@ import Control.Monad.Reader
 import Control.Monad.Trans.Error
 import Data.Maybe
 
---import Debug.Trace
-
 
 import Definitions
 import Printer

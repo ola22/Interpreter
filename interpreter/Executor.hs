@@ -17,9 +17,6 @@ import Printer
 import TypeChecker
 
 
--- TODO
--- def i func w getEnv trzeba putStrLn na wyjście
-
 
 
 

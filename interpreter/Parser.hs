@@ -225,11 +225,6 @@ isReservedSyntax s = s == "if"
 
 
 -- Function parses variable/function name
-{-parseidentifier :: Parser ParseTree
-parseidentifier = do
-    pos <- getFilePos
-    return (TVar pos <$> parseVarAndFuncNames "variable/function")
--}
 parseidentifier :: Parser ParseTree
 parseidentifier = do
     var <- parseVarAndFuncNames "variable/function"
