@@ -33,18 +33,6 @@ Exp := "True" | "False" | Integer
     | "match" Exp "with" ("case" MatchExp "->" Exp)+ "matchend"   -> pattern matching
 
 
-MatchExp := "True" | "False" | Integer | List?
-	identifier | Identifier (identifier)*
-
-
-Type := "Int" | "Bool"
-    | Type "->" Type
-    | Identifier (Type)*  -> for new types
-
-
-Typedef := "new type" Identifier identifier* "=" Identifier (Type | identifier)* 
-		("|" Identifier (Type | identifier)*)*
-
 
 Comment := "/=^.^=" Char* "=^.^=/" -> multiple-line comments
 	| "//=^.^=" Char*          -> single-line comments

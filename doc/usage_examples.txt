@@ -1,4 +1,4 @@
-//=^.^= This is single-line comment                               -- TUTAJ
+//=^.^= This is single-line comment
 
 /=^.^=
     This is multiple-line comment
@@ -20,43 +20,13 @@ def b = 2 - 2 * 3;
 2 != 2;  //=^.^= False
 
 
-//=^.^= Match usage
-func match_func x = match x with
-			   case 2 -> True
-			   case 3 -> False
-		    matchend;
-
 
 //=^.^= Calling function
 def a = match_func : 2;  /=^.^= True
 
 
-//=^.^= Anonymous function                                         ---- TUTAJ
-(\x -> x * 2) : 6; ----->    (lambda x -> x * 2) 6
-
-
-//=^.^= Typedef usage
-new type Tree a = Leaf a | Node a Tree Tree;
-new type List a = Null | Elem a List;
+//=^.^= Anonymous function
+(\x -> x * 2) : 6;
 
 
 
-	zmienic comments
-zmienic lambde pewnie
-	funkcji aplikacje
-moze dodac jakiegos let ina??? -> a moze nie
-	dodac sredniki wszedzie w gramatyce
-	zmienic tamto def na toplevela
-
-
-1. zapomnialam dodac srednikow w przykladowym -> przez przypadek zle wkleilam, ale bylo w opisie jezyka
-2. ujemnych nie przewiduje -> ?????????????????????????????????
-3. : jako aplikacja czesciowa -> ??????????????????????????????????
-4. defa i func dalam do parsera -> bo ich nie trzeba ewaluowac tylko dodac do srodowiska ???
-5. zobacze co z ta lambda ?? -> gdyby user nie mógł normalnmie pisa
-6. zobaczyc czy tem if nie bedzie sprawial klopotow
-
-
-
-CO INACZEJ????
-cala struktura tego, jak to jest trzymane: ze typ danych dla funkcji i potem to tak skacze
