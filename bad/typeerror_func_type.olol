@@ -1,3 +1,5 @@
-
+/=^.^=
+    Lambda argument function type is mismatched.
+=^.^=/
 
 (\f -> if (f : true) then (f : 4) else (f : 6)) : (\x -> x);

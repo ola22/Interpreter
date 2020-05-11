@@ -26,7 +26,7 @@ For 30 points
   15 (nested pattern matching, complete test)
 
 Bonus
-  + 16 (polimorphic types reconstruction algorithm)
+  + 16 (polymorphic types reconstruction algorithm)
 
 + additional list functions: concat, empty
 + olol's library with some useful functions (more list operations, filp)

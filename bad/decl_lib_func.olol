@@ -1,0 +1,8 @@
+/=^.^=
+    ERROR: Declaring function, which already exsists in olol'slibrary.
+=^.^=/
+
+
+fun len l = 4;
+
+len : [1, 2];
