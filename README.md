@@ -41,6 +41,7 @@ zero division, zero modulo or multiple declaration of the same type) are detecte
 
 ## Used resources
 https://markkarpov.com/tutorial/megaparsec.html
+
 http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.65.7733&rep=rep1&type=pdf
 
 
