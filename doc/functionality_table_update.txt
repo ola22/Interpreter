@@ -32,3 +32,4 @@ Bonus
 + olol's library with some useful functions (more list operations, filp)
 
 
+Together: 25+ (bonus and additionals)

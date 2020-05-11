@@ -1,4 +1,3 @@
-{- Parser was writen based on https://markkarpov.com/tutorial/megaparsec.html tutorial -}
 {-# Options -Wall -Wname-shadowing #-}
 
 

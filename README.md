@@ -39,9 +39,14 @@ Parsing errors, types mismatch and unknown identifiers errors are detected stati
 zero division, zero modulo or multiple declaration of the same type) are detected dynamicaly.
 
 
+## Used resources
+https://markkarpov.com/tutorial/megaparsec.html
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.65.7733&rep=rep1&type=pdf
+
+
 
 ## Language features:
-Functionality table with all accomplished language funcionalities is located in doc directory.
+Functionality table with all accomplished language funcionalities `funcionality_table_update.txt` is located in doc directory.
 Non-obvious in Olol is function application, beacuse it uses ':' char (eg. f : 1 : 2). 
 Here are somelol's features:
 * type inference using H-M algorithm W (with polymorphism) - static typing
