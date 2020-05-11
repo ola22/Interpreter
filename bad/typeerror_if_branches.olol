@@ -1,9 +1,21 @@
 /=^.^=
     Typecheck error. Returned types in both if branches must be
-    the same. Here we have bool list and int list.
+    the same. Here we have many nested ifs. Almost all of them 
+    returns list of ints, but the else at line 18 returns list 
+    of boolean values.
 =^.^=/
 
 
 
-//=^.^=if true then [1, 2] else [true, false];
+if true 
+    then [1, 2] 
+    else (
+        if true
+            then []
+            else (
+                if true
+                    then [5, 6]
+                    else  [true, false]
+            ) 
+    );
 

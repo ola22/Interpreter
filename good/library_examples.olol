@@ -1,0 +1,53 @@
+/=^.^=
+    Example usage of all library functions.
+=^.^=/
+
+
+def l = [1, 2, 3, 4, 5, 6, 7];
+
+
+take : 4 : l;    //=^.^=  [1, 2, 3, 4]
+take : 11 : l;    //=^.^=  [1, 2, 3, 4, 5, 6, 7]
+take : -1 : l;    //=^.^=  []
+
+
+get : 4 : l;    //=^.^=  4
+get : 11 : l;    //=^.^=  7
+get : -1 : l;    //=^.^=  1
+
+
+len : empty;    //=^.^=  0
+len : l;    //=^.^=  7
+
+
+drop : -1 : l;    //=^.^=  [1, 2, 3, 4, 5, 6, 7]
+drop : 0 : l;    //=^.^=  [1, 2, 3, 4, 5, 6, 7]
+drop : 2 : l;    //=^.^=  [3, 4, 5, 6, 7]
+drop : 8 : l;    //=^.^=  []
+drop : 7 : l;    //=^.^=  []
+
+
+(flip : drop) : l : 1;     //=^.^=  [2, 3, 4, 5, 6, 7]
+
+
+
+/=^.^=
+    All types are infered well: all if branches are 
+    returning integers. fliping arguments works well 
+    with types too.
+=^.^=/
+fun get_num l =
+    if isEmpty l
+        then 0
+        else (
+            if (len : l) == 2
+                then (head l) * 2 + get_num : (tail l)
+                else (
+                    if (len : l) == 4
+                        then get_num : (flip : drop : l : 1)
+                        else (head l) + get_num : (tail l)
+                ) 
+        );
+
+get_num : l;     //=^.^=  1 + 2 + 3 + -> + 5 + 2 * 6 + 7 = 30
+

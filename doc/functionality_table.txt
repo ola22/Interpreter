@@ -1,3 +1,4 @@
+
 Here is functionality table. I've managed to do all functionalities, which have + next to them.
 These are: things for 25 points + list syntax sugar + bonus (polimorphic types reconstruction algorithm).
 

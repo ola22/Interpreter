@@ -1,4 +1,4 @@
-{-# Options -Wall -Wname-shadowing #-}
+{-# Options -Wname-shadowing #-}
 {-# LANGUAGE FlexibleInstances #-}
 
 module TypeChecker where
