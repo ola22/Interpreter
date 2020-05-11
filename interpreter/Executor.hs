@@ -1,4 +1,4 @@
-{-# Options -Wname-shadowing #-}
+{-# Options -Wall -Wname-shadowing -Wno-deprecations #-}
 
 
 module Executor where
