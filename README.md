@@ -15,6 +15,8 @@ Project should build without any problems (for me it builds perfectly on student
 but if there would be problems with `cabal new-update`, which is called in `make` then there is this cabal issue:
 https://github.com/haskell/cabal/issues/5574.
 
+All source files are located in `interpreter`.
+
 
 ## Running interpreter:
 Main interpreters file (Main.hs) is in directory interpreter. Interpreter is run using
@@ -26,7 +28,7 @@ It can be run in two ways:
 
 
 ## Usage exaples
-In directories good/bad you can find positive/negative usage examples of code written in Olol. You can run them with `cabal new-exec interpreter good/<input_file_name>`. The output returned by given program is in its comments, next to each expression. In each file (specialy those in bad dir) there is also an explanation to given example.
+In directories `good/bad` you can find positive/negative usage examples of code written in Olol. You can run them with `cabal new-exec interpreter good/<input_file_name>`. The output returned by given program is in its comments, next to each expression. In each file (specialy those in bad dir) there is also an explanation to given example.
 
 
 
@@ -47,8 +49,8 @@ http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.65.7733&rep=rep1&type=p
 
 
 ## Language features:
-Functionality table with all accomplished language funcionalities `funcionality_table_update.txt` is located in doc directory.
-Non-obvious in Olol is function application, beacuse it uses ':' char (eg. f : 1 : 2). 
+Functionality table with all accomplished language funcionalities `funcionality_table_update.txt` is located in `doc` directory. There is also updated grammar.
+Non-obvious in Olol is function application, beacuse it uses ':' char (eg. f : 1 : 2). Instructions must be separated by ';'.
 Here are somelol's features:
 * type inference using H-M algorithm W (with polymorphism) - static typing
 * static identifier binding
