@@ -20,6 +20,7 @@ printProgResult (DEvaluatedList l) = "[" ++ printList l ++ "]\n"
 printProgResult (DError err) = "RUNTIME ERROR: " ++ err ++ "\n"
 
 
+
 -- Function for pretty printing of lists
 -- (with spaces and commas)
 printList :: [Data] -> String
@@ -28,10 +29,12 @@ printList (h:[]) = show h
 printList (h:t) = show h ++ ", " ++ printList t 
 
 
+
 -- Function returns string, which contains information about position in file
 -- where given error occured.
 addPosToError :: FilePosition -> String
 addPosToError (FilePosition file line) = "In file: " ++ file ++ " at line " ++ show line ++ ": "
+
 
 
 -- Function returns string, which contains information about position of 
@@ -46,6 +49,7 @@ addPosToDeclError (FilePosition _ line) var what =
             ++ show line ++ "."
         else "used multiple-declared " ++ what ++ " " 
             ++ var ++ ". First repeated declaration at line " ++ show line ++ "."
+
 
 
 -- Function isLibraryFuncName checks if given variable name 'var',
